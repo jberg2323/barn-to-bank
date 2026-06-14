@@ -1,12 +1,12 @@
 /**
- * Federal DNC scrub proxy — DNCScrub (Contact Center Compliance)
+ * Federal DNC scrub proxy, DNCScrub (Contact Center Compliance)
  * POST { phones: string[] } → scrub results (API key stays server-side)
  *
  * Env:
- *   DNC_SCRUB_API_KEY      — loginId from dncscrub.com portal (required for live)
- *   DNC_SCRUB_PROJECT_ID   — optional projId
- *   DNC_SCRUB_CAMPAIGN_ID  — optional campaignId
- *   DNC_SCRUB_MOCK=true    — local/demo mock when no vendor key
+ *   DNC_SCRUB_API_KEY    , loginId from dncscrub.com portal (required for live)
+ *   DNC_SCRUB_PROJECT_ID , optional projId
+ *   DNC_SCRUB_CAMPAIGN_ID, optional campaignId
+ *   DNC_SCRUB_MOCK=true  , local/demo mock when no vendor key
  */
 
 const { scrubPhones } = require('../lib/dnc-scrub');

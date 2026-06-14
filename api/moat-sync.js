@@ -1,5 +1,5 @@
 /**
- * Barn to Bank — team moat cloud sync (Supabase via server-side credentials).
+ * Barn to Bank, team moat cloud sync (Supabase via server-side credentials).
  * GET  ?teamId=...  → pull latest bundle
  * POST { teamId, bundle, mode? } → push / merge bundle
  */
@@ -143,7 +143,7 @@ module.exports = async function handler(req, res) {
       const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const localBundle = body?.bundle;
       if (!localBundle || !Array.isArray(localBundle.deals)) {
-        return json(res, 400, { ok: false, error: 'Invalid bundle — missing deals array' });
+        return json(res, 400, { ok: false, error: 'Invalid bundle, missing deals array' });
       }
 
       let remoteBundle = null;
