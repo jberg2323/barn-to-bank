@@ -1802,6 +1802,12 @@
       font-family: var(--sans);
     }
     .btn-sync:hover { border-color: var(--border-strong); color: var(--accent-bright); }
+    .btn-sync.primary {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-bright);
+    }
+    .btn-sync.primary:hover { background: rgba(212, 181, 106, 0.22); }
 
     .moat-section { margin-top: 32px; }
     .moat-grid {
@@ -2233,23 +2239,23 @@
       background: var(--bg-elevated);
     }
 
-    /* Mobile bottom navigation */
+    /* Section navigation — visible on all screen sizes */
     .mobile-nav {
-      display: none;
+      display: block;
       position: sticky;
       top: 0;
       z-index: 95;
       background: rgba(23, 21, 18, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      padding: 0 8px;
-      padding-left: max(8px, env(safe-area-inset-left));
-      padding-right: max(8px, env(safe-area-inset-right));
+      padding: 0 12px;
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
     }
     .mobile-nav-inner {
       display: flex;
       gap: 4px;
-      max-width: 480px;
+      max-width: 900px;
       margin: 0 auto;
     }
     .mobile-nav button {
@@ -2405,8 +2411,6 @@
 
       .header-stat .value { font-size: 11px; }
 
-      .mobile-nav { display: block; }
-
       .main.panel-intake .content { display: none; }
       .main.panel-pipeline .sidebar { display: none; }
       .main.panel-pipeline .silos { display: none; }
@@ -2421,7 +2425,7 @@
       .main.panel-outreach .pipeline-table-wrap,
       .main.panel-outreach .pipeline-cards,
       .main.panel-outreach .silos,
-      .main.panel-outreach .page-hero { display: none !important; }
+      .main.panel-outreach #pipeline-hero { display: none !important; }
       .main.panel-outreach .outreach-section { margin-top: 0; }
       .main.panel-outreach .moat-section { display: none !important; }
       .main.panel-intake .moat-section,
@@ -2433,7 +2437,7 @@
       .main.panel-intel .pipeline-cards,
       .main.panel-intel .silos,
       .main.panel-intel .outreach-section,
-      .main.panel-intel .page-hero { display: none !important; }
+      .main.panel-intel #pipeline-hero { display: none !important; }
       .main.panel-intel .moat-section { margin-top: 0; }
       .owner-contact-row { grid-template-columns: 1fr; }
       .mail-label-grid { grid-template-columns: 1fr; }
@@ -2581,7 +2585,10 @@
           <span class="hide-mobile">Feature Request</span><span class="show-mobile">Request</span>
           <span class="fr-badge hidden" id="fr-badge">0</span>
         </button>
-        <button type="button" class="btn-sync" id="moat-sync-btn" title="Sync team data">Sync</button>
+        <button type="button" class="btn-sync" id="moat-sync-btn" title="Open Intel — comps, plat alerts, team sync">Intel</button>
+        <button type="button" class="btn-sync primary" id="moat-cloud-sync-header" title="Sync pipeline with Supabase">
+          <span class="hide-mobile">Cloud Sync</span><span class="show-mobile">Sync</span>
+        </button>
       </div>
       <div class="header-stats">
         <div class="header-stat">
@@ -2698,7 +2705,7 @@
 
     <!-- DASHBOARD -->
     <section class="content">
-      <div class="page-hero">
+      <div class="page-hero" id="pipeline-hero">
         <div class="page-hero-eyebrow">Pipeline</div>
         <h2>Your land opportunities</h2>
         <p>Every enriched deal in one view — triage into develop, direct sale, or retail brokerage.</p>
@@ -2809,6 +2816,11 @@
 
       <!-- MOAT INTELLIGENCE -->
       <div class="moat-section" id="moat-section">
+        <div class="page-hero" id="moat-hero">
+          <div class="page-hero-eyebrow">Moat Intelligence</div>
+          <h2>Team intel &amp; cloud sync</h2>
+          <p>Comp lake, plat alerts, outreach audit trail — sync with Jack via <strong>Cloud Sync</strong> (Supabase).</p>
+        </div>
         <div class="sync-bar" id="sync-bar">
           <div>
             <div class="section-title" style="margin:0 0 6px">Team Moat Sync</div>
@@ -6529,11 +6541,7 @@
     }
 
     function scrollToMoatIntel() {
-      if (isMobileLayout()) {
-        setMobilePanel('intel');
-      } else {
-        document.getElementById('moat-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      setMobilePanel('intel');
     }
 
     // =========================================================================
@@ -7074,6 +7082,14 @@
       return MOBILE_MQ.matches;
     }
 
+    const SECTION_SCROLL_TARGETS = {
+      intake: '.sidebar',
+      pipeline: '.pipeline-toolbar',
+      silos: '.silos',
+      outreach: '#outreach-section',
+      intel: '#moat-section',
+    };
+
     function setMobilePanel(panel) {
       mobilePanel = panel;
       const main = document.getElementById('main-layout');
@@ -7083,35 +7099,42 @@
       document.querySelectorAll('#mobile-nav button').forEach((btn) => {
         btn.classList.toggle('active', btn.dataset.panel === panel);
       });
+      if (!isMobileLayout()) {
+        const target = document.querySelector(SECTION_SCROLL_TARGETS[panel] || '#moat-section');
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
       if (panel !== 'intake') window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function applyMobileViewDefaults() {
-      if (!isMobileLayout()) return;
-      if (viewMode === 'table') {
-        viewMode = 'cards';
-        document.getElementById('pipeline-table-wrap')?.classList.add('hidden');
-        document.getElementById('pipeline-cards')?.classList.add('active');
-        document.querySelectorAll('.view-toggle button').forEach((b) => {
-          b.classList.toggle('active', b.dataset.view === 'cards');
+      if (isMobileLayout()) {
+        if (viewMode === 'table') {
+          viewMode = 'cards';
+          document.getElementById('pipeline-table-wrap')?.classList.add('hidden');
+          document.getElementById('pipeline-cards')?.classList.add('active');
+          document.querySelectorAll('.view-toggle button').forEach((b) => {
+            b.classList.toggle('active', b.dataset.view === 'cards');
+          });
+        }
+        setMobilePanel(mobilePanel || 'intake');
+      } else {
+        document.getElementById('main-layout')?.classList.remove(
+          'panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach', 'panel-intel',
+        );
+        const defaultPanel = 'pipeline';
+        document.querySelectorAll('#mobile-nav button').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.panel === defaultPanel);
         });
+        mobilePanel = defaultPanel;
       }
-      setMobilePanel(mobilePanel || 'intake');
     }
 
     function initMobileNav() {
       document.querySelectorAll('#mobile-nav button').forEach((btn) => {
         btn.addEventListener('click', () => setMobilePanel(btn.dataset.panel));
       });
-      const onMqChange = () => {
-        const main = document.getElementById('main-layout');
-        if (!main) return;
-        if (isMobileLayout()) {
-          applyMobileViewDefaults();
-        } else {
-          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach', 'panel-intel');
-        }
-      };
+      const onMqChange = () => applyMobileViewDefaults();
       if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onMqChange);
       else MOBILE_MQ.addListener(onMqChange);
       applyMobileViewDefaults();
@@ -7412,6 +7435,7 @@
       document.getElementById('fr-export').addEventListener('click', exportFeatureRequests);
 
       document.getElementById('moat-sync-btn')?.addEventListener('click', scrollToMoatIntel);
+      document.getElementById('moat-cloud-sync-header')?.addEventListener('click', () => MoatStore.cloudSync());
       document.getElementById('moat-export-bundle')?.addEventListener('click', () => MoatStore.exportBundle());
       document.getElementById('moat-import-bundle')?.addEventListener('click', () => {
         document.getElementById('moat-import-file')?.click();
