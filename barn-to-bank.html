@@ -142,10 +142,51 @@
       z-index: 100;
     }
 
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.2s var(--ease);
+    }
+    .logo-link:hover { opacity: 0.88; }
+    .logo-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
     .logo {
       display: flex;
       align-items: center;
       gap: 14px;
+    }
+
+    .btn-main-site {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      min-height: 44px;
+      background: linear-gradient(180deg, rgba(212,181,106,0.18), rgba(212,181,106,0.08));
+      border: 1px solid rgba(212,181,106,0.45);
+      border-radius: var(--radius-sm);
+      color: var(--accent-bright);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--sans);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .btn-main-site:hover {
+      background: rgba(212,181,106,0.22);
+      border-color: var(--accent);
     }
 
     .logo-mark {
@@ -2360,6 +2401,31 @@
       background: var(--accent-soft);
       border-radius: 8px 8px 0 0;
     }
+    .mobile-nav-exit {
+      display: none;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 44px;
+      padding: 8px 12px;
+      margin-right: 2px;
+      background: rgba(212,181,106,0.12);
+      border: 1px solid rgba(212,181,106,0.35);
+      border-radius: 8px;
+      color: var(--accent-bright);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--sans);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-nav-exit:hover {
+      background: rgba(212,181,106,0.2);
+      border-color: var(--accent);
+    }
 
     .sidebar::-webkit-scrollbar,
     .content::-webkit-scrollbar,
@@ -2455,6 +2521,9 @@
         gap: 8px;
       }
 
+      .btn-main-site { display: inline-flex; margin-left: auto; }
+      .logo-link { flex: 1 1 auto; min-width: 0; }
+
       .logo h1 { font-size: 15px; }
       .logo span { font-size: 10px; }
 
@@ -2470,6 +2539,13 @@
         grid-template-columns: 1fr 1fr;
         gap: 8px;
       }
+
+      .header-actions .btn-public-site,
+      .header-actions #auth-sign-out {
+        display: none;
+      }
+
+      .mobile-nav-exit { display: inline-flex; }
 
       .btn-share-link,
       .btn-feature-request {
@@ -2640,6 +2716,7 @@
 <body>
 
   <header class="header">
+    <a href="/" class="logo-link" title="Back to main website">
     <div class="logo">
       <div class="logo-mark" aria-hidden="true">
         <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2663,9 +2740,11 @@
         <span class="tagline">Raw tract → routed deal → funded</span>
       </div>
     </div>
+    </a>
+    <a href="/" class="btn-main-site" title="Back to barntobank.com">← Main Site</a>
     <div class="header-right">
       <div class="header-actions">
-        <a href="/" class="btn-share-link" title="Back to public marketing site" style="text-decoration:none;display:inline-flex;align-items:center;">Public Site</a>
+        <a href="/" class="btn-share-link btn-public-site" title="Back to public marketing site" style="text-decoration:none;display:inline-flex;align-items:center;">Public Site</a>
         <button type="button" class="btn-share-link" id="auth-sign-out" title="Sign out of origination platform">Sign Out</button>
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
           <span class="hide-mobile">Copy App Link</span><span class="show-mobile">Share</span>
@@ -2698,6 +2777,7 @@
 
   <nav class="mobile-nav" id="mobile-nav" aria-label="Main sections">
     <div class="mobile-nav-inner">
+      <a href="/" class="mobile-nav-exit" title="Back to main website">← Site</a>
       <button type="button" data-panel="intake" class="active">Intake</button>
       <button type="button" data-panel="pipeline">Deals</button>
       <button type="button" data-panel="silos">Silos</button>
