@@ -2087,6 +2087,56 @@
       }
     }
 
+    const DEFAULT_TYLER_DEAL_ID = 'deal-tyler-001';
+
+    /** Real Smith County (Tyler TX) parcel — kept as the default pipeline deal */
+    function getDefaultTylerDeal() {
+      const mock = MOCK_ENRICHMENT_BY_COUNTY.Smith;
+      const acreage = 109.4;
+      const askingPerAcre = 18500;
+      return {
+        id: DEFAULT_TYLER_DEAL_ID,
+        address: '11650 C R 4215',
+        city: 'Tyler',
+        county: 'Smith',
+        parcelId: 'PID-40456',
+        acreage,
+        zoning: 'Ag or Timber',
+        askingPerAcre,
+        enrichmentStatus: 'enriched',
+        route: 'DEVELOP',
+        owner: 'Owner of record — verify via CAD / id.land',
+        taxHistory: buildTaxHistory(acreage * askingPerAcre * 0.82, null),
+        utilities: [
+          { type: 'Electric', status: 'partial', detail: `Oncor Electric — ${mock.distPowerMi} mi` },
+          { type: 'Water', status: 'partial', detail: `${mock.waterCcn.split('(')[0].trim()} — ${mock.distWaterMi} mi` },
+          { type: 'Sewer', status: 'none', detail: `${mock.sewerCcn.split('—')[0].trim()} — ${mock.distSewerMi} mi` },
+        ],
+        lat: 32.447, lng: -95.356,
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        sellerName: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes: 'Tyler ETJ tract — Smith County CAD parcel PID-40456 (109.4 ac ag/timber).',
+        dataSource: 'Smith County CAD',
+        margin: { entitledValuePerAcre: 32000, flipValuePerAcre: 24000, retailCommissionPct: 3 },
+      };
+    }
+
+    function initDeals() {
+      const loaded = loadPersistedDeals();
+      const tyler = getDefaultTylerDeal();
+      const hasTyler = loaded.some((d) =>
+        d.id === DEFAULT_TYLER_DEAL_ID
+        || (d.county === 'Smith' && String(d.city).toLowerCase() === 'tyler'),
+      );
+      if (loaded.length === 0) return [tyler];
+      if (!hasTyler) return [tyler, ...loaded];
+      return loaded;
+    }
+
     // =========================================================================
     // Live enrichment — county GIS + optional Regrid / ATTOM
     // =========================================================================
@@ -4464,7 +4514,7 @@
     // Init
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      deals = loadPersistedDeals();
+      deals = initDeals();
       await Promise.all(deals.map(d => buildSeedDealRecord(d)));
       saveDeals();
       renderAll();
