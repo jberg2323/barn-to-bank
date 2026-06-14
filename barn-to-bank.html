@@ -1679,6 +1679,119 @@
       font-family: var(--mono);
     }
 
+    .outreach-path-guide {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 720px) { .outreach-path-guide { grid-template-columns: 1fr; } }
+    .outreach-path-card {
+      padding: 14px 16px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .outreach-path-card.recommended {
+      border-color: var(--border-strong);
+      background: linear-gradient(155deg, var(--accent-soft) 0%, var(--bg-card) 100%);
+      box-shadow: var(--shadow-glow);
+    }
+    .outreach-path-card.optional {
+      border-color: rgba(244, 122, 114, 0.22);
+      background: linear-gradient(155deg, rgba(244, 122, 114, 0.06) 0%, var(--bg-card) 100%);
+    }
+    .outreach-path-card h3 {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .outreach-path-badge {
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .outreach-path-badge.rec { color: var(--land); background: rgba(114, 168, 120, 0.12); border-color: rgba(114, 168, 120, 0.35); }
+    .outreach-path-badge.adv { color: var(--red); background: rgba(244, 122, 114, 0.1); border-color: rgba(244, 122, 114, 0.28); }
+    .outreach-path-card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .outreach-path-card li { margin-bottom: 4px; }
+    .outreach-path-card strong { color: var(--text-primary); }
+
+    .outreach-mode-picker {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .outreach-mode-chip {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.45;
+      touch-action: manipulation;
+    }
+    .outreach-mode-chip.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-bright);
+    }
+    .outreach-mode-chip .chip-title {
+      display: block;
+      font-size: 12px;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .outreach-mode-chip.active .chip-title { color: var(--accent-bright); }
+    .outreach-tab-note {
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+    }
+    .outreach-tab-note.warn {
+      border-color: rgba(244, 122, 114, 0.28);
+      background: rgba(244, 122, 114, 0.08);
+      color: var(--text-secondary);
+    }
+    .outreach-tab-note.warn strong { color: var(--red); }
+    .outreach-tab-note.ok {
+      border-color: rgba(114, 168, 120, 0.28);
+      background: rgba(114, 168, 120, 0.08);
+    }
+    .outreach-tab-note.ok strong { color: var(--land); }
+
     .outreach-section { margin-top: 32px; }
 
     .outreach-toolbar {
@@ -2884,7 +2997,7 @@
         <ol class="partner-welcome-steps">
           <li><span class="step-num">1</span><span><strong>Intake</strong>, one address or parcel → jurisdiction, flood, utilities, comps, owner contact</span></li>
           <li><span class="step-num">2</span><span><strong>Route</strong>, entitlement score + three silos: develop, direct sale, or retail</span></li>
-          <li><span class="step-num">3</span><span><strong>Outreach</strong>, DNC scrubbed texts and mail; bottlenecked tracts stay out of queue</span></li>
+          <li><span class="step-num">3</span><span><strong>Outreach</strong>, direct mail by default; cold texts only with a DNC vendor</span></li>
           <li><span class="step-num">4</span><span><strong>Intel</strong>, log off market comps, plat alerts, team sync via Cloud Sync</span></li>
         </ol>
         <button type="button" class="partner-welcome-dismiss" id="partner-welcome-dismiss">Got it, let’s go</button>
@@ -3056,39 +3169,55 @@
       <div class="outreach-section" id="outreach-section">
         <div class="page-hero" id="outreach-hero" style="margin-bottom:18px;padding-bottom:16px">
           <div class="page-hero-eyebrow">Outreach</div>
-          <h2>Reach owners, legally</h2>
-          <p>Forewarn contact on enriched deals only. Entitlement bottlenecked tracts are filtered out. Every number passes Federal DNC scrub before a text can queue.</p>
+          <h2>Reach owners the safe way</h2>
+          <p>Start with <strong>direct mail</strong> — no DNC vendor needed. Use <strong>cold texts</strong> only if you have a federal DNC scrub service wired up.</p>
         </div>
-        <div class="compliance-banner" id="compliance-banner">
-          <strong>TCPA / DNC Compliance Required</strong>, Contacting numbers on the Federal Do Not Call Registry without consent can result in fines of <strong>$500 to $50,000+ per violation</strong>. Every phone number must pass a Federal DNC Registry scrub before any text or call. Barn to Bank blocks un scrubbed and failed numbers from the text queue.
-          <div class="fine-print">Live scrub via DNCScrub (Contact Center Compliance) · DNC scrubbing is mandatory · No bypass · Printed direct mail is exempt from DNC but must still comply with state solicitation rules</div>
+        <div class="outreach-path-guide" id="outreach-path-guide">
+          <div class="outreach-path-card recommended">
+            <h3>Direct mail <span class="outreach-path-badge rec">Recommended</span></h3>
+            <p>Letters and Avery labels to owner mailing addresses. This is how most land shops start.</p>
+            <ul>
+              <li><strong>No DNC vendor</strong> — federal Do Not Call list does not apply to postal mail</li>
+              <li><strong>No cold-call risk</strong> — owner reads on their timeline</li>
+              <li><strong>Works today</strong> — export CSV or print labels from the mail queue</li>
+            </ul>
+          </div>
+          <div class="outreach-path-card optional">
+            <h3>Cold texts <span class="outreach-path-badge adv">Advanced</span></h3>
+            <p>Unsolicited SMS to owner phones. High TCPA exposure without compliance tooling.</p>
+            <ul>
+              <li><strong>DNC vendor required</strong> — e.g. DNCScrub + FTC SAN before live scrub</li>
+              <li><strong>Fines are real</strong> — $500–$50,000+ per violation if you skip scrub</li>
+              <li><strong>Inbound leads are different</strong> — website form fills do not need this path</li>
+            </ul>
+          </div>
         </div>
         <div class="outreach-toolbar">
           <div class="section-title" style="margin:0">Owner Outreach</div>
-          <button type="button" class="btn-outreach" id="build-outreach-open">Build Outreach List</button>
+          <button type="button" class="btn-outreach" id="build-outreach-open">Build Mail List</button>
         </div>
         <div class="outreach-steps" id="outreach-steps-bar">
-          <span class="outreach-step-pill" data-ostep="1">1 · Filter (not bottlenecked)</span>
-          <span class="outreach-step-pill locked" data-ostep="2">2 · DNC scrub (required)</span>
-          <span class="outreach-step-pill locked" data-ostep="3">3 · Queue</span>
+          <span class="outreach-step-pill active" data-ostep="1">1 · Pick tracts</span>
+          <span class="outreach-step-pill locked" data-ostep="2">2 · Mail queue</span>
         </div>
         <div id="outreach-queue-panel">
           <div class="outreach-queue-tabs">
-            <button type="button" class="active" data-oq-tab="text">Text queue</button>
-            <button type="button" data-oq-tab="mail">Direct mail / labels</button>
+            <button type="button" class="active" data-oq-tab="mail">Direct mail (recommended)</button>
+            <button type="button" data-oq-tab="text">Cold texts (DNC vendor)</button>
           </div>
-          <div id="outreach-tab-text">
-            <div class="text-template-hint">Merge field: <code>{{owner_name}}</code>, only DNC cleared numbers can be queued</div>
-            <textarea class="text-template-box" id="text-template" rows="3">Hi {{owner_name}}, I'm reaching out about your land in {{county}} County. Would you have a few minutes to discuss an offer? Barn to Bank</textarea>
-            <div id="text-queue-list"><div class="silo-empty">Run <strong>Build Outreach List</strong> to populate the queue.</div></div>
-          </div>
-          <div id="outreach-tab-mail" style="display:none">
-            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Handwritten style direct mail, export CSV or open print view for Avery labels.</p>
+          <div id="outreach-tab-mail">
+            <div class="outreach-tab-note ok"><strong>No DNC vendor needed.</strong> Build a mail list, export CSV, or print Avery labels. Bottlenecked tracts are filtered out automatically.</div>
             <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
               <button type="button" class="btn btn-ghost" id="mail-export-csv">Export CSV</button>
               <button type="button" class="btn btn-primary" id="mail-print-open">Print Labels</button>
             </div>
-            <div id="mail-queue-list"><div class="silo-empty">Cleared contacts appear here after DNC scrub.</div></div>
+            <div id="mail-queue-list"><div class="silo-empty">Click <strong>Build Mail List</strong> to queue letters for eligible owners.</div></div>
+          </div>
+          <div id="outreach-tab-text" style="display:none">
+            <div class="outreach-tab-note warn"><strong>DNC vendor required for live scrub.</strong> Cold texts must pass a federal Do Not Call registry check first. Barn to Bank blocks un-scrubbed numbers. Skip this tab and use mail unless you have DNCScrub (or similar) configured.</div>
+            <div class="text-template-hint">Merge field: <code>{{owner_name}}</code> — only DNC-cleared numbers can be queued</div>
+            <textarea class="text-template-box" id="text-template" rows="3">Hi {{owner_name}}, I'm reaching out about your land in {{county}} County. Would you have a few minutes to discuss an offer? — Barn to Bank</textarea>
+            <div id="text-queue-list"><div class="silo-empty">Switch here after mail, or run <strong>Build Mail List</strong> and choose <strong>Cold texts</strong> in the wizard.</div></div>
           </div>
         </div>
       </div>
@@ -3186,8 +3315,8 @@
     <div class="modal-panel outreach-modal-panel" id="outreach-modal-panel">
       <div class="modal-header">
         <div>
-          <h2>Build Outreach List</h2>
-          <div class="sub">Filter → DNC scrub → queue (steps cannot be skipped)</div>
+          <h2 id="outreach-modal-title">Build Mail List</h2>
+          <div class="sub" id="outreach-modal-sub">Pick tracts → queue letters (no DNC vendor needed)</div>
         </div>
         <button class="modal-close" id="outreach-modal-close" aria-label="Close">&times;</button>
       </div>
@@ -3817,9 +3946,10 @@
     let viewMode = 'table';
     let mobilePanel = 'intake';
     let enrichDualView = 'internal';
-    let outreachQueueTab = 'text';
+    let outreachQueueTab = 'mail';
 
     let outreachWizard = {
+      mode: 'mail',
       step: 1,
       selectedIds: [],
       dncComplete: false,
@@ -5928,6 +6058,59 @@
       return results;
     }
 
+    function setOutreachQueueTab(tab) {
+      outreachQueueTab = tab === 'text' ? 'text' : 'mail';
+      document.querySelectorAll('[data-oq-tab]').forEach((b) => {
+        b.classList.toggle('active', b.dataset.oqTab === outreachQueueTab);
+      });
+      const textTab = document.getElementById('outreach-tab-text');
+      const mailTab = document.getElementById('outreach-tab-mail');
+      if (textTab) textTab.style.display = outreachQueueTab === 'text' ? 'block' : 'none';
+      if (mailTab) mailTab.style.display = outreachQueueTab === 'mail' ? 'block' : 'none';
+    }
+
+    function updateOutreachModalChrome() {
+      const title = document.getElementById('outreach-modal-title');
+      const sub = document.getElementById('outreach-modal-sub');
+      const openBtn = document.getElementById('build-outreach-open');
+      if (outreachWizard.mode === 'text') {
+        if (title) title.textContent = 'Build Text List';
+        if (sub) sub.textContent = 'Pick tracts → DNC scrub → queue texts (vendor required)';
+        if (openBtn) openBtn.textContent = 'Build Text List';
+      } else {
+        if (title) title.textContent = 'Build Mail List';
+        if (sub) sub.textContent = 'Pick tracts → queue letters (no DNC vendor needed)';
+        if (openBtn) openBtn.textContent = 'Build Mail List';
+      }
+    }
+
+    function buildOutreachMailOnly(dealIds) {
+      const mailQueue = [];
+      dealIds.forEach((id) => {
+        const deal = deals.find((d) => d.id === id);
+        if (!deal) return;
+        mailQueue.push({
+          dealId: id,
+          ownerName: deal.ownerContact?.ownerName || deal.owner,
+          mailingAddress: deal.ownerContact?.mailingAddress || fullAddress(deal),
+          propertyAddress: fullAddress(deal),
+          parcelId: deal.parcelId,
+          acres: deal.acreage,
+          county: deal.county,
+          note: `Re: your ${fmtNum(deal.acreage)} ac tract — we'd welcome a conversation about your land.`,
+        });
+      });
+      outreachWizard.mailQueue = mailQueue;
+      saveOutreachState();
+      appendOutreachAudit({
+        type: 'outreach_queue',
+        summary: `Mail queue built — ${mailQueue.length} piece(s)`,
+        detail: `${dealIds.length} deal(s) · no DNC scrub required`,
+      });
+      renderOutreachQueues();
+      setOutreachQueueTab('mail');
+    }
+
     function buildOutreachQueues(dealIds) {
       const template = document.getElementById('text-template')?.value || DEFAULT_TEXT_TEMPLATE;
       const textQueue = [];
@@ -5968,7 +6151,7 @@
           });
         });
 
-        if (cleared.length || deal.ownerContact?.mailingAddress) {
+        if (deal.ownerContact?.mailingAddress || deal.address) {
           mailQueue.push({
             dealId: id,
             ownerName: deal.ownerContact?.ownerName || deal.owner,
@@ -5991,11 +6174,13 @@
         detail: `${dealIds.length} deal(s) selected`,
       });
       renderOutreachQueues();
+      setOutreachQueueTab('text');
     }
 
     function saveOutreachState() {
       try {
         localStorage.setItem(OUTREACH_STORAGE_KEY, JSON.stringify({
+          mode: outreachWizard.mode,
           scrubByDealId: outreachWizard.scrubByDealId,
           dncComplete: outreachWizard.dncComplete,
           textQueue: outreachWizard.textQueue,
@@ -6009,14 +6194,29 @@
         const raw = localStorage.getItem(OUTREACH_STORAGE_KEY);
         if (!raw) return;
         const data = JSON.parse(raw);
+        outreachWizard.mode = data.mode === 'text' ? 'text' : 'mail';
         outreachWizard.scrubByDealId = data.scrubByDealId || {};
         outreachWizard.dncComplete = !!data.dncComplete;
         outreachWizard.textQueue = data.textQueue || [];
         outreachWizard.mailQueue = data.mailQueue || [];
+        updateOutreachModalChrome();
       } catch { /* ignore */ }
     }
 
     function updateOutreachStepBar(step) {
+      const bar = document.getElementById('outreach-steps-bar');
+      if (bar) {
+        if (outreachWizard.mode === 'text') {
+          bar.innerHTML = `
+            <span class="outreach-step-pill" data-ostep="1">1 · Pick tracts</span>
+            <span class="outreach-step-pill" data-ostep="2">2 · DNC scrub</span>
+            <span class="outreach-step-pill" data-ostep="3">3 · Text queue</span>`;
+        } else {
+          bar.innerHTML = `
+            <span class="outreach-step-pill" data-ostep="1">1 · Pick tracts</span>
+            <span class="outreach-step-pill" data-ostep="2">2 · Mail queue</span>`;
+        }
+      }
       document.querySelectorAll('.outreach-step-pill').forEach((el) => {
         const n = parseInt(el.dataset.ostep, 10);
         el.classList.remove('active', 'done', 'locked');
@@ -6026,12 +6226,30 @@
       });
     }
 
+    function renderOutreachModePicker() {
+      const mailActive = outreachWizard.mode !== 'text';
+      return `<div class="outreach-mode-picker" role="group" aria-label="Outreach channel">
+        <button type="button" class="outreach-mode-chip${mailActive ? ' active' : ''}" data-outreach-mode="mail">
+          <span class="chip-title">Direct mail</span>
+          Recommended · no DNC vendor
+        </button>
+        <button type="button" class="outreach-mode-chip${mailActive ? '' : ' active'}" data-outreach-mode="text">
+          <span class="chip-title">Cold texts</span>
+          Advanced · DNC vendor required
+        </button>
+      </div>`;
+    }
+
     function renderOutreachWizardStep1() {
       const eligible = deals.filter(isOutreachEligible);
       const excluded = deals.filter((d) => d.enrichmentStatus === 'enriched' && !isOutreachEligible(d));
 
-      let html = `<p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">
-        <strong>Step 1: Filter:</strong> Only properties <em>not</em> flagged as entitlement bottlenecked are eligible.
+      const modeHint = outreachWizard.mode === 'text'
+        ? 'Cold texts require a federal DNC scrub in the next step.'
+        : 'Direct mail does not require a DNC vendor — you can print labels right after this step.';
+      let html = `${renderOutreachModePicker()}
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">
+        <strong>Step 1 — Pick tracts:</strong> ${modeHint}
         ${eligible.length} eligible · ${excluded.length} excluded (bottlenecked or missing contact)
       </p><div class="outreach-filter-list">`;
 
@@ -6057,17 +6275,37 @@
         </div>`;
       });
 
+      const nextLabel = outreachWizard.mode === 'text' ? 'Continue to DNC Scrub →' : 'Build Mail Queue →';
       html += `</div>
         <button type="button" class="btn btn-primary" id="outreach-step1-next" style="width:100%" ${eligible.length ? '' : 'disabled'}>
-          Continue to DNC Scrub →
+          ${nextLabel}
         </button>`;
       return html;
     }
 
+    function renderOutreachWizardStep2Mail() {
+      const ids = outreachWizard.selectedIds;
+      let html = `<p style="font-size:12px;color:var(--green);margin-bottom:12px">
+        ✓ <strong>${outreachWizard.mailQueue.length} mail piece(s)</strong> queued — no DNC scrub required.
+      </p>
+      <ul style="font-size:11px;color:var(--text-muted);margin:0 0 12px 16px">`;
+      ids.forEach((id) => {
+        const d = deals.find((x) => x.id === id);
+        if (!d) return;
+        const m = outreachWizard.mailQueue.find((x) => x.dealId === id);
+        html += `<li>${escapeHtml(d.address)} → ${escapeHtml(m?.mailingAddress || '—')}</li>`;
+      });
+      html += `</ul>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Export CSV or print Avery labels from the <strong>Direct mail</strong> tab.</p>
+      <button type="button" class="btn btn-primary" id="outreach-wizard-done" style="width:100%">Done</button>`;
+      return html;
+    }
+
     function renderOutreachWizardStep2() {
+      if (outreachWizard.mode !== 'text') return renderOutreachWizardStep2Mail();
       const ids = outreachWizard.selectedIds;
       let html = `<p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">
-        <strong>Step 2: DNC Scrub (required):</strong> Every number must pass Federal DNC Registry scrub before any text can be queued. This step cannot be skipped.
+        <strong>Step 2 — DNC scrub (texts only):</strong> Every number must pass a federal Do Not Call registry check before it can enter the text queue. You need a vendor such as DNCScrub configured in Vercel.
       </p>
       <ul style="font-size:11px;color:var(--text-muted);margin:0 0 12px 16px">`;
       ids.forEach((id) => {
@@ -6107,10 +6345,14 @@
     }
 
     function openOutreachWizard() {
+      outreachWizard.mode = outreachQueueTab === 'text' ? 'text' : 'mail';
       outreachWizard.step = 1;
       outreachWizard.selectedIds = deals.filter(isOutreachEligible).map((d) => d.id);
-      outreachWizard.dncComplete = false;
-      outreachWizard.scrubByDealId = {};
+      if (outreachWizard.mode === 'text') {
+        outreachWizard.dncComplete = false;
+        outreachWizard.scrubByDealId = {};
+      }
+      updateOutreachModalChrome();
       document.getElementById('outreach-modal-overlay').classList.add('open');
       renderOutreachWizardBody();
     }
@@ -6140,10 +6382,25 @@
         });
       });
 
+      document.querySelectorAll('[data-outreach-mode]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          outreachWizard.mode = btn.dataset.outreachMode === 'text' ? 'text' : 'mail';
+          updateOutreachModalChrome();
+          if (outreachWizard.mode === 'mail') outreachWizard.dncComplete = false;
+          renderOutreachWizardBody();
+        });
+      });
+
       document.getElementById('outreach-step1-next')?.addEventListener('click', () => {
         if (!outreachWizard.selectedIds.length) return;
-        outreachWizard.step = 2;
-        outreachWizard.dncComplete = false;
+        if (outreachWizard.mode === 'mail') {
+          buildOutreachMailOnly(outreachWizard.selectedIds);
+          outreachWizard.step = 2;
+          showToast(`${outreachWizard.mailQueue.length} mail piece(s) queued`);
+        } else {
+          outreachWizard.step = 2;
+          outreachWizard.dncComplete = false;
+        }
         renderOutreachWizardBody();
       });
 
@@ -6180,7 +6437,7 @@
       if (!textList) return;
 
       if (!outreachWizard.textQueue.length) {
-        textList.innerHTML = '<div class="silo-empty">Run <strong>Build Outreach List</strong> to populate the queue.</div>';
+        textList.innerHTML = '<div class="silo-empty">Cold texts need a DNC vendor. Run <strong>Build Mail List</strong>, choose <strong>Cold texts</strong>, and complete the DNC scrub step.</div>';
       } else {
         textList.innerHTML = outreachWizard.textQueue.map((t, i) => {
           const blocked = !t.canSend;
@@ -6223,7 +6480,7 @@
       }
 
       if (!outreachWizard.mailQueue.length) {
-        mailList.innerHTML = '<div class="silo-empty">Cleared contacts appear here after DNC scrub.</div>';
+        mailList.innerHTML = '<div class="silo-empty">Click <strong>Build Mail List</strong> to queue letters — no DNC vendor needed.</div>';
       } else {
         mailList.innerHTML = outreachWizard.mailQueue.map((m) => `
           <div class="outreach-queue-item">
@@ -8055,12 +8312,13 @@
 
       document.querySelectorAll('[data-oq-tab]').forEach((btn) => {
         btn.addEventListener('click', () => {
-          outreachQueueTab = btn.dataset.oqTab;
-          document.querySelectorAll('[data-oq-tab]').forEach((b) => b.classList.toggle('active', b.dataset.oqTab === outreachQueueTab));
-          document.getElementById('outreach-tab-text').style.display = outreachQueueTab === 'text' ? 'block' : 'none';
-          document.getElementById('outreach-tab-mail').style.display = outreachQueueTab === 'mail' ? 'block' : 'none';
+          setOutreachQueueTab(btn.dataset.oqTab);
+          outreachWizard.mode = outreachQueueTab === 'text' ? 'text' : 'mail';
+          updateOutreachModalChrome();
         });
       });
+      setOutreachQueueTab(outreachQueueTab);
+      updateOutreachModalChrome();
 
       document.querySelectorAll('#enrich-dual-toggle button').forEach((btn) => {
         btn.addEventListener('click', () => {
