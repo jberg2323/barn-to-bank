@@ -1082,7 +1082,16 @@
             <option value="Travis">Travis</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary" id="intake-submit">Run Automation 1</button>
+        <div class="section-title" style="margin-top:14px">id.land Connection</div>
+        <div id="landid-connect-status" style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.4">Checking…</div>
+        <div class="form-group">
+          <label for="landid-token-paste">Access token (auto-saved locally)</label>
+          <input type="password" id="landid-token-paste" placeholder="eyJ… or paste full Bearer value" autocomplete="off">
+        </div>
+        <button type="button" class="btn btn-ghost" id="landid-save-token" style="margin-bottom:6px">Save id.land Token</button>
+        <button type="button" class="btn btn-ghost" id="landid-open-signin">Open id.land Sign-In ↗</button>
+
+        <button type="submit" class="btn btn-primary" id="intake-submit" style="margin-top:12px">Run Automation 1</button>
         <div class="loading-bar" id="intake-loading"></div>
         <div class="pipeline-steps" id="pipeline-steps"></div>
       </form>
@@ -2092,9 +2101,41 @@
       }`,
     };
 
+    const LANDID_TOKEN_STORAGE_KEY = 'barn-to-bank-landid-token';
+
     function landIdToken() {
+      try {
+        const stored = localStorage.getItem(LANDID_TOKEN_STORAGE_KEY);
+        if (stored) return stored;
+      } catch (e) { /* file:// or private mode */ }
       return DATA_SOURCES.LANDID_ACCESS_TOKEN || DATA_SOURCES.LANDID_API_KEY
         || DATA_SOURCES.TIER_2.landId.accessToken || '';
+    }
+
+    function saveLandIdToken(token) {
+      const trimmed = (token || '').trim().replace(/^Bearer\s+/i, '');
+      try {
+        if (trimmed) localStorage.setItem(LANDID_TOKEN_STORAGE_KEY, trimmed);
+        else localStorage.removeItem(LANDID_TOKEN_STORAGE_KEY);
+      } catch (e) { console.warn('Could not persist id.land token:', e); }
+      DATA_SOURCES.LANDID_ACCESS_TOKEN = trimmed;
+      DATA_SOURCES.LANDID_API_KEY = trimmed;
+      DATA_SOURCES.TIER_2.landId.accessToken = trimmed;
+      updateLandIdConnectStatus();
+      return trimmed;
+    }
+
+    function updateLandIdConnectStatus() {
+      const el = document.getElementById('landid-connect-status');
+      if (!el) return;
+      const token = landIdToken();
+      if (token) {
+        el.textContent = `Connected · token ${token.slice(0, 8)}…${token.slice(-6)} (${token.length} chars)`;
+        el.style.color = 'var(--green)';
+      } else {
+        el.textContent = 'Not connected — sign in to id.land below or paste token';
+        el.style.color = 'var(--text-muted)';
+      }
     }
 
     function landIdDiscoverUrl(lat, lng, parcelId) {
@@ -3665,6 +3706,21 @@
       deals = seedDeals();
       await Promise.all(deals.map(d => buildSeedDealRecord(d)));
       renderAll();
+      updateLandIdConnectStatus();
+
+      document.getElementById('landid-save-token').addEventListener('click', () => {
+        const token = saveLandIdToken(document.getElementById('landid-token-paste').value);
+        if (token) {
+          document.getElementById('landid-token-paste').value = '';
+          alert('id.land token saved in this browser.');
+        } else {
+          alert('Token cleared.');
+        }
+      });
+
+      document.getElementById('landid-open-signin').addEventListener('click', () => {
+        window.open('https://id.land/users/sign_in', '_blank', 'noopener,noreferrer');
+      });
 
       // Intake type toggle
       document.getElementById('intake-type').addEventListener('change', (e) => {

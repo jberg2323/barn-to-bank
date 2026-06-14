@@ -1,0 +1,25 @@
+{
+  "name": "barn-to-bank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "connect-landid": "node scripts/landid-connect.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jberg2323/barn-to-bank.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jberg2323/barn-to-bank/issues"
+  },
+  "homepage": "https://github.com/jberg2323/barn-to-bank#readme",
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}
