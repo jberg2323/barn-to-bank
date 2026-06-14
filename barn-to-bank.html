@@ -2105,7 +2105,7 @@
         askingPerAcre,
         enrichmentStatus: 'enriched',
         route: 'DEVELOP',
-        owner: 'Owner of record — verify via CAD / id.land',
+        owner: 'Kathy Brunson',
         taxHistory: buildTaxHistory(acreage * askingPerAcre * 0.82, null),
         utilities: [
           { type: 'Electric', status: 'partial', detail: `Oncor Electric — ${mock.distPowerMi} mi` },
@@ -2116,25 +2116,38 @@
         nearbyCommunities: [],
         nearbyDevExcluded: [],
         nearbyDev: '',
-        sellerName: '',
+        sellerName: 'Kathy Brunson',
         lastContact: new Date().toISOString().split('T')[0],
         callReminder: true,
-        notes: 'Tyler ETJ tract — Smith County CAD parcel PID-40456 (109.4 ac ag/timber).',
+        notes: 'Listing — Kathy Brunson. Tyler ETJ tract, Smith County CAD PID-40456 (109.4 ac ag/timber).',
         dataSource: 'Smith County CAD',
         margin: { entitledValuePerAcre: 32000, flipValuePerAcre: 24000, retailCommissionPct: 3 },
       };
     }
 
+    function isTylerDeal(d) {
+      return d.id === DEFAULT_TYLER_DEAL_ID
+        || (d.county === 'Smith' && String(d.city).toLowerCase() === 'tyler');
+    }
+
+    function applyTylerListingDefaults(deal) {
+      const tyler = getDefaultTylerDeal();
+      deal.owner = tyler.owner;
+      deal.sellerName = tyler.sellerName;
+      if (!deal.notes || deal.notes.includes('verify via CAD')) {
+        deal.notes = tyler.notes;
+      }
+      return deal;
+    }
+
     function initDeals() {
       const loaded = loadPersistedDeals();
       const tyler = getDefaultTylerDeal();
-      const hasTyler = loaded.some((d) =>
-        d.id === DEFAULT_TYLER_DEAL_ID
-        || (d.county === 'Smith' && String(d.city).toLowerCase() === 'tyler'),
-      );
-      if (loaded.length === 0) return [tyler];
-      if (!hasTyler) return [tyler, ...loaded];
-      return loaded;
+      const merged = loaded.map((d) => (isTylerDeal(d) ? applyTylerListingDefaults({ ...d }) : d));
+      const hasTyler = merged.some(isTylerDeal);
+      if (merged.length === 0) return [tyler];
+      if (!hasTyler) return [tyler, ...merged];
+      return merged;
     }
 
     // =========================================================================
