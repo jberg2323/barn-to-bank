@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Barn to Bank — Land Deal Origination</title>
   <style>
     :root {
@@ -38,7 +41,11 @@
       font-size: 13px;
       line-height: 1.5;
       min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
     }
+
+    .show-mobile { display: none; }
 
     /* Header */
     .header {
@@ -1176,6 +1183,250 @@
       font-family: var(--sans);
     }
     .partner-welcome-dismiss:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+    /* Mobile bottom navigation */
+    .mobile-nav {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 95;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      padding: 0 8px;
+      padding-left: max(8px, env(safe-area-inset-left));
+      padding-right: max(8px, env(safe-area-inset-right));
+    }
+    .mobile-nav-inner {
+      display: flex;
+      gap: 4px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .mobile-nav button {
+      flex: 1;
+      min-height: 44px;
+      padding: 8px 4px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-nav button.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .pipeline-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ── Tablet (≤900px) ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .main {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: none;
+      }
+
+      .content {
+        padding: 16px;
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+
+      .silo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .margin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Phone (≤640px) ───────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .show-mobile { display: inline; }
+      .hide-mobile { display: none !important; }
+
+      body { font-size: 14px; }
+
+      .header {
+        flex-wrap: wrap;
+        padding: 10px 12px;
+        padding-top: max(10px, env(safe-area-inset-top));
+        gap: 8px;
+      }
+
+      .logo h1 { font-size: 15px; }
+      .logo span { font-size: 10px; }
+
+      .header-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .btn-share-link,
+      .btn-feature-request {
+        justify-content: center;
+        min-height: 44px;
+        font-size: 12px;
+      }
+
+      .header-stats {
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .header-stat {
+        text-align: center;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .header-stat .value { font-size: 11px; }
+
+      .mobile-nav { display: block; }
+
+      .main.panel-intake .content { display: none; }
+      .main.panel-pipeline .sidebar { display: none; }
+      .main.panel-pipeline .silos { display: none; }
+      .main.panel-silos .sidebar { display: none; }
+      .main.panel-silos .pipeline-toolbar,
+      .main.panel-silos .pipeline-table-wrap,
+      .main.panel-silos .pipeline-cards { display: none !important; }
+      .main.panel-silos .silos { margin-top: 0; }
+
+      .sidebar {
+        padding: 14px 12px;
+        padding-bottom: max(14px, env(safe-area-inset-bottom));
+      }
+
+      .form-group input,
+      .form-group select,
+      .notes-field {
+        font-size: 16px;
+        min-height: 44px;
+      }
+
+      .notes-field { min-height: 100px; }
+
+      .btn {
+        min-height: 44px;
+        font-size: 13px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .view-toggle button {
+        min-height: 36px;
+        padding: 8px 14px;
+      }
+
+      .enrichment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline-cards.active { display: grid; }
+
+      .deal-card-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .pipeline-toolbar {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .contact-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .margin-summary {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
+
+      /* Full-screen bottom sheet modals */
+      .modal-overlay,
+      #fr-modal-overlay.open {
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .modal-panel,
+      .fr-modal-panel {
+        width: 100%;
+        max-width: 100%;
+        max-height: 92vh;
+        max-height: 92dvh;
+        border-left: none;
+        border-radius: 14px 14px 0 0;
+        animation: slideUp 0.22s ease;
+      }
+
+      @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+
+      .modal-header,
+      .modal-body {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+
+      .modal-body {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      }
+
+      .modal-close {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .a1-field {
+        grid-template-columns: 1fr;
+      }
+
+      .fr-actions-row {
+        flex-direction: column;
+      }
+      .fr-actions-row .btn { width: 100%; min-width: 0; }
+    }
   </style>
 </head>
 <body>
@@ -1191,10 +1442,10 @@
     <div class="header-right">
       <div class="header-actions">
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
-          Copy App Link
+          <span class="hide-mobile">Copy App Link</span><span class="show-mobile">Share</span>
         </button>
         <button type="button" class="btn-feature-request" id="feature-request-open" title="Submit a feature request or customization">
-          <span>Feature Request</span>
+          <span class="hide-mobile">Feature Request</span><span class="show-mobile">Request</span>
           <span class="fr-badge hidden" id="fr-badge">0</span>
         </button>
       </div>
@@ -1215,7 +1466,15 @@
     </div>
   </header>
 
-  <main class="main">
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Main sections">
+    <div class="mobile-nav-inner">
+      <button type="button" data-panel="intake" class="active">Intake</button>
+      <button type="button" data-panel="pipeline">Deals</button>
+      <button type="button" data-panel="silos">Silos</button>
+    </div>
+  </nav>
+
+  <main class="main panel-intake" id="main-layout">
     <!-- INTAKE -->
     <aside class="sidebar">
       <div class="partner-welcome" id="partner-welcome">
@@ -1795,6 +2054,9 @@
     let pendingEnrichment = null;
     let activeDealId = null;
     let viewMode = 'table';
+    let mobilePanel = 'intake';
+
+    const MOBILE_MQ = window.matchMedia('(max-width: 640px)');
 
     const ROUTES = {
       DEVELOP: { label: 'Develop / Entitle', class: 'route-develop' },
@@ -3976,6 +4238,7 @@
       activeDealId = id;
       const deal = deals.find(d => d.id === id);
       if (!deal) return;
+      if (isMobileLayout() && mobilePanel !== 'pipeline') setMobilePanel('pipeline');
       renderModal(deal);
       document.getElementById('modal-overlay').classList.add('open');
     }
@@ -4015,6 +4278,7 @@
         <div class="enrichment-full" style="margin-top:8px">${renderNearbyCommunitiesHtml(data)}</div>
       `;
       el.classList.add('visible');
+      if (isMobileLayout()) setMobilePanel('intake');
     }
 
     function showEnrichmentError(message) {
@@ -4027,6 +4291,56 @@
       document.getElementById('add-to-pipeline').style.display = 'none';
       el.classList.add('visible', 'error');
       pendingEnrichment = null;
+    }
+
+    // =========================================================================
+    // Mobile layout
+    // =========================================================================
+    function isMobileLayout() {
+      return MOBILE_MQ.matches;
+    }
+
+    function setMobilePanel(panel) {
+      mobilePanel = panel;
+      const main = document.getElementById('main-layout');
+      if (!main) return;
+      main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos');
+      if (isMobileLayout()) main.classList.add('panel-' + panel);
+      document.querySelectorAll('#mobile-nav button').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.panel === panel);
+      });
+      if (panel !== 'intake') window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function applyMobileViewDefaults() {
+      if (!isMobileLayout()) return;
+      if (viewMode === 'table') {
+        viewMode = 'cards';
+        document.getElementById('pipeline-table-wrap')?.classList.add('hidden');
+        document.getElementById('pipeline-cards')?.classList.add('active');
+        document.querySelectorAll('.view-toggle button').forEach((b) => {
+          b.classList.toggle('active', b.dataset.view === 'cards');
+        });
+      }
+      setMobilePanel(mobilePanel || 'intake');
+    }
+
+    function initMobileNav() {
+      document.querySelectorAll('#mobile-nav button').forEach((btn) => {
+        btn.addEventListener('click', () => setMobilePanel(btn.dataset.panel));
+      });
+      const onMqChange = () => {
+        const main = document.getElementById('main-layout');
+        if (!main) return;
+        if (isMobileLayout()) {
+          applyMobileViewDefaults();
+        } else {
+          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos');
+        }
+      };
+      if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onMqChange);
+      else MOBILE_MQ.addListener(onMqChange);
+      applyMobileViewDefaults();
     }
 
     // =========================================================================
@@ -4300,6 +4614,7 @@
       updateLandIdConnectStatus();
       updateFeatureRequestBadge();
       initPartnerWelcome();
+      initMobileNav();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
@@ -4386,6 +4701,7 @@
         document.getElementById('enrichment-result').classList.remove('visible');
         document.getElementById('intake-query').value = '';
         renderAll();
+        if (isMobileLayout()) setMobilePanel('pipeline');
       });
 
       // View toggle
