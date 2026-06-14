@@ -1,0 +1,3350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barn to Bank — Land Deal Origination</title>
+  <style>
+    :root {
+      --bg-deep: #0d1117;
+      --bg-panel: #161b22;
+      --bg-elevated: #1c2128;
+      --bg-hover: #21262d;
+      --border: #30363d;
+      --border-subtle: #21262d;
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent: #c9a227;
+      --accent-dim: #8a7020;
+      --green: #3fb950;
+      --green-dim: #238636;
+      --blue: #58a6ff;
+      --orange: #d29922;
+      --red: #f85149;
+      --purple: #a371f7;
+      --mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Liberation Mono', monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --radius: 4px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--bg-deep);
+    }
+
+    .logo h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: block;
+      font-weight: 400;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .header-stat {
+      text-align: right;
+    }
+
+    .header-stat .label {
+      color: var(--text-muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-stat .value {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .main {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 57px);
+    }
+
+    .sidebar {
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .content {
+      padding: 20px 24px;
+      overflow-y: auto;
+    }
+
+    /* Section headers */
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    /* Intake form */
+    .intake-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: var(--sans);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg-deep);
+    }
+
+    .btn-primary:hover { background: #dbb42e; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+    /* Enrichment result */
+    .enrichment-result {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: none;
+    }
+
+    .enrichment-result.visible { display: block; }
+
+    .enrichment-result h3 {
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .enrichment-result.error h3 { color: var(--red); }
+
+    .enrichment-source {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .enrichment-warn {
+      font-size: 10px;
+      color: var(--orange);
+      margin-top: 8px;
+    }
+
+    .enrichment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .enrichment-item .key {
+      color: var(--text-muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .enrichment-item .val {
+      font-family: var(--mono);
+      color: var(--text-primary);
+    }
+
+    .enrichment-full {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .flag-dev {
+      color: var(--orange);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .loading-bar {
+      height: 2px;
+      background: var(--border);
+      border-radius: 1px;
+      overflow: hidden;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .loading-bar.active { display: block; }
+
+    .loading-bar::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 30%;
+      background: var(--accent);
+      animation: load 1.2s ease-in-out infinite;
+    }
+
+    @keyframes load {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(400%); }
+    }
+
+    /* Pipeline table */
+    .pipeline-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 2px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2px;
+    }
+
+    .view-toggle button {
+      padding: 4px 10px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .view-toggle button.active {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .pipeline-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .pipeline-table th {
+      text-align: left;
+      padding: 8px 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .pipeline-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .pipeline-table tr {
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .pipeline-table tbody tr:hover { background: var(--bg-hover); }
+
+    .mono { font-family: var(--mono); }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-enriched { background: rgba(63,185,80,0.15); color: var(--green); }
+    .status-pending { background: rgba(210,153,34,0.15); color: var(--orange); }
+    .status-new { background: rgba(88,166,255,0.15); color: var(--blue); }
+
+    .route-select {
+      padding: 4px 6px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .route-select.route-develop { border-color: var(--purple); color: var(--purple); }
+    .route-select.route-sell { border-color: var(--green); color: var(--green); }
+    .route-select.route-retail { border-color: var(--blue); color: var(--blue); }
+
+    /* Card view */
+    .pipeline-cards {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .pipeline-cards.active { display: grid; }
+    .pipeline-table-wrap.hidden { display: none; }
+
+    .deal-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .deal-card:hover { border-color: var(--accent-dim); }
+
+    .deal-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .deal-card-address {
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .deal-card-county {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .deal-card-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .deal-card-metric .label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .deal-card-metric .value {
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    /* Silo routing */
+    .silos {
+      margin-top: 28px;
+    }
+
+    .silo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .silo-lane {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .silo-lane.lane-develop { border-top: 3px solid var(--purple); }
+    .silo-lane.lane-sell { border-top: 3px solid var(--green); }
+    .silo-lane.lane-retail { border-top: 3px solid var(--blue); }
+
+    .silo-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .silo-header h3 {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .silo-stats {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .silo-stats .count { color: var(--text-primary); font-weight: 600; }
+
+    .silo-body {
+      padding: 8px;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 280px;
+    }
+
+    .silo-deal {
+      padding: 8px 10px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .silo-deal:hover { background: var(--bg-hover); }
+
+    .silo-deal-addr {
+      font-size: 11px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .silo-deal-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .silo-empty {
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 200;
+      display: none;
+      align-items: stretch;
+      justify-content: flex-end;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-panel {
+      width: 520px;
+      max-width: 95vw;
+      background: var(--bg-panel);
+      border-left: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+      animation: slideIn 0.2s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: sticky;
+      top: 0;
+      background: var(--bg-panel);
+      z-index: 1;
+    }
+
+    .modal-header h2 {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .modal-header .sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: var(--text-primary); }
+
+    .modal-body { padding: 20px; }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-section h4 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .detail-item .key {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .detail-item .val {
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .tax-table {
+      width: 100%;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .tax-table th, .tax-table td {
+      padding: 4px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tax-table th { color: var(--text-muted); font-weight: 500; }
+    .tax-table td { font-family: var(--mono); }
+
+    .notes-field {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 12px;
+      resize: vertical;
+    }
+
+    .notes-field:focus { outline: none; border-color: var(--accent); }
+
+    .contact-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .contact-row input[type="text"],
+    .contact-row input[type="date"] {
+      flex: 1;
+      padding: 6px 8px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 12px;
+    }
+
+    .reminder-flag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    .reminder-flag input { accent-color: var(--accent); }
+
+    .reminder-flag.overdue { color: var(--orange); }
+    .reminder-flag.overdue::before {
+      content: '⚠';
+      margin-right: 2px;
+    }
+
+    /* Margin math */
+    .margin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .margin-card {
+      background: var(--bg-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .margin-card.best {
+      border-color: var(--accent);
+      background: rgba(201,162,39,0.08);
+    }
+
+    .margin-card .scenario {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .margin-card .amount {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .margin-card .per-acre {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .margin-card .net {
+      font-family: var(--mono);
+      font-size: 11px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .margin-card .net.positive { color: var(--green); }
+    .margin-card .net.negative { color: var(--red); }
+
+    .margin-summary {
+      margin-top: 12px;
+      padding: 10px;
+      background: var(--bg-deep);
+      border-radius: var(--radius);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .margin-summary strong { color: var(--accent); }
+
+    /* Utility bar */
+    .utility-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      background: var(--bg-elevated);
+      border-radius: 2px;
+      font-size: 10px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .utility-tag.available { color: var(--green); border: 1px solid var(--green-dim); }
+    .utility-tag.partial { color: var(--orange); border: 1px solid rgba(210,153,34,0.4); }
+    .utility-tag.none { color: var(--red); border: 1px solid rgba(248,81,73,0.4); }
+
+    .community-list { margin-top: 8px; }
+    .community-item {
+      padding: 8px 10px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 6px;
+      font-size: 11px;
+    }
+    .community-item .name { font-weight: 600; color: var(--text-primary); }
+    .community-item .meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .community-excluded {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .pipeline-steps {
+      margin-top: 10px;
+      display: none;
+    }
+    .pipeline-steps.active { display: block; }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 3px 0;
+    }
+    .pipeline-step .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .pipeline-step.running .dot { background: var(--accent); animation: pulse 1s infinite; }
+    .pipeline-step.done .dot { background: var(--green); }
+    .pipeline-step.error .dot { background: var(--red); }
+    .pipeline-step.skip .dot { background: var(--text-muted); }
+    .pipeline-step.warn .dot { background: var(--orange); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .enrich-report { margin-top: 4px; }
+    .report-layer {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+    .report-layer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--bg-deep);
+      font-size: 10px;
+    }
+    .report-layer-header .name { font-weight: 600; color: var(--text-secondary); }
+    .tier-badge {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .tier-free { background: rgba(63,185,80,0.15); color: var(--green); }
+    .tier-paid { background: rgba(201,162,39,0.15); color: var(--accent); }
+    .tier-moat { background: rgba(163,113,247,0.15); color: var(--purple); }
+    .tier-internal { background: rgba(88,166,255,0.15); color: var(--blue); }
+    .report-layer-body {
+      padding: 8px 10px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .report-layer-body .val { font-family: var(--mono); color: var(--text-primary); }
+    .report-status { font-size: 9px; color: var(--text-muted); }
+    .report-status.ok { color: var(--green); }
+    .report-status.warn { color: var(--orange); }
+
+    /* Automation 1 — Intake Enrichment report card */
+    .a1-report {
+      margin-top: 8px;
+      font-size: 11px;
+    }
+    .a1-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .a1-header .title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+    .a1-header .meta {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+    }
+    .a1-summary {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .a1-summary-pill {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .a1-summary-pill.live { background: rgba(63,185,80,0.15); color: var(--green); }
+    .a1-summary-pill.mock { background: rgba(88,166,255,0.12); color: var(--blue); }
+    .a1-summary-pill.manual { background: rgba(210,153,34,0.15); color: var(--orange); }
+
+    .a1-section {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .a1-section.prominent {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 1px rgba(210,153,34,0.2);
+    }
+    .a1-section.prominent .a1-section-head {
+      background: rgba(210,153,34,0.1);
+      border-bottom-color: rgba(210,153,34,0.25);
+    }
+    .a1-section.prominent .a1-section-head .label {
+      color: var(--orange);
+    }
+    .a1-section-head {
+      padding: 6px 10px;
+      background: var(--bg-deep);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .a1-section-head .label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+    .a1-section-head .bottleneck {
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 2px;
+      background: rgba(210,153,34,0.2);
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .a1-field {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 8px;
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: start;
+    }
+    .a1-field:last-child { border-bottom: none; }
+    .a1-field-label {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .a1-field-value {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-primary);
+      line-height: 1.4;
+      grid-column: 1;
+    }
+    .a1-field-value.private-data {
+      color: var(--purple);
+    }
+    .a1-field-meta {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+    .a1-source-tag {
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 2px;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      letter-spacing: 0.03em;
+    }
+    .a1-status {
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .a1-status.live { background: rgba(63,185,80,0.18); color: var(--green); }
+    .a1-status.mock { background: rgba(88,166,255,0.15); color: var(--blue); }
+    .a1-status.manual { background: rgba(210,153,34,0.18); color: var(--orange); }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <div class="logo-mark">B2B</div>
+      <div>
+        <h1>Barn to Bank</h1>
+        <span>Land Origination &amp; Triage</span>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="header-stat">
+        <div class="label">Active Deals</div>
+        <div class="value" id="hdr-deals">0</div>
+      </div>
+      <div class="header-stat">
+        <div class="label">Total Acres</div>
+        <div class="value" id="hdr-acres">0</div>
+      </div>
+      <div class="header-stat">
+        <div class="label">Pipeline Value</div>
+        <div class="value" id="hdr-value">$0</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- INTAKE -->
+    <aside class="sidebar">
+      <div class="section-title">Intake — The Net</div>
+      <form class="intake-form" id="intake-form">
+        <div class="form-group">
+          <label for="intake-type">Lookup Type</label>
+          <select id="intake-type">
+            <option value="address">Property Address</option>
+            <option value="parcel">Parcel / APN Number</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="intake-query" id="intake-label">Address</label>
+          <input type="text" id="intake-query" placeholder="e.g. 6200 Old Pearsall Rd, San Antonio TX" required>
+        </div>
+        <div class="form-group">
+          <label for="intake-county">County</label>
+          <select id="intake-county">
+            <option value="Williamson">Williamson</option>
+            <option value="Bastrop">Bastrop</option>
+            <option value="Fort Bend">Fort Bend</option>
+            <option value="Hays">Hays</option>
+            <option value="Bexar">Bexar</option>
+            <option value="Guadalupe">Guadalupe</option>
+            <option value="Travis">Travis</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="intake-submit">Run Automation 1</button>
+        <div class="loading-bar" id="intake-loading"></div>
+        <div class="pipeline-steps" id="pipeline-steps"></div>
+      </form>
+
+      <div class="enrichment-result" id="enrichment-result">
+        <h3 id="enrichment-title">✓ Automation 1 Complete</h3>
+        <div class="enrichment-source" id="enrichment-source"></div>
+        <div class="enrichment-grid" id="enrichment-grid"></div>
+        <div class="enrichment-warn" id="enrichment-warn"></div>
+        <button type="button" class="btn btn-ghost" style="margin-top:12px;width:100%" id="add-to-pipeline">Add to Pipeline</button>
+      </div>
+    </aside>
+
+    <!-- DASHBOARD -->
+    <section class="content">
+      <div class="pipeline-toolbar">
+        <div class="section-title" style="margin:0;flex:1">Deal Pipeline</div>
+        <div class="view-toggle">
+          <button type="button" class="active" data-view="table">Table</button>
+          <button type="button" data-view="cards">Cards</button>
+        </div>
+      </div>
+
+      <div class="pipeline-table-wrap" id="pipeline-table-wrap">
+        <table class="pipeline-table">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>County</th>
+              <th>Acres</th>
+              <th>$/Acre</th>
+              <th>Status</th>
+              <th>Route</th>
+            </tr>
+          </thead>
+          <tbody id="pipeline-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="pipeline-cards" id="pipeline-cards"></div>
+
+      <!-- SILO ROUTING -->
+      <div class="silos">
+        <div class="section-title">Three-Silo Routing</div>
+        <div class="silo-grid" id="silo-grid">
+          <div class="silo-lane lane-develop" data-route="DEVELOP">
+            <div class="silo-header">
+              <h3>Development &amp; Entitlement</h3>
+              <div class="silo-stats"><span class="count" id="silo-dev-count">0</span> deals · <span id="silo-dev-acres">0</span> ac</div>
+            </div>
+            <div class="silo-body" id="silo-dev-body"></div>
+          </div>
+          <div class="silo-lane lane-sell" data-route="SELL">
+            <div class="silo-header">
+              <h3>Direct Sale</h3>
+              <div class="silo-stats"><span class="count" id="silo-sell-count">0</span> deals · <span id="silo-sell-acres">0</span> ac</div>
+            </div>
+            <div class="silo-body" id="silo-sell-body"></div>
+          </div>
+          <div class="silo-lane lane-retail" data-route="RETAIL">
+            <div class="silo-header">
+              <h3>Retail Brokerage</h3>
+              <div class="silo-stats"><span class="count" id="silo-retail-count">0</span> deals · <span id="silo-retail-acres">0</span> ac</div>
+            </div>
+            <div class="silo-body" id="silo-retail-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- DEAL DETAIL MODAL -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-panel" id="modal-panel">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-address"></h2>
+          <div class="sub" id="modal-sub"></div>
+        </div>
+        <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // DATA_SOURCES — Automation 1: Intake Enrichment
+    // =========================================================================
+    //
+    //  INTAKE (address / parcel #)
+    //       ↓
+    //  Automation 1: Intake Enrichment (simulated multi-source → Deal Record)
+    //       ↓
+    //  Deal Pipeline / Three-Silo Routing
+    //
+    // =========================================================================
+    const DATA_SOURCES = {
+      // Set true to upgrade MOCK fields to LIVE where Tier 1/2 APIs succeed
+      USE_LIVE_APIS: true,
+      SIMULATE_DELAY_MS: 350,
+
+      // ── TIER 1: Free public APIs ─────────────────────────────────────────
+      // No keys required. Flood zones, CCN boundaries, municipal limits.
+      TIER_1: {
+        femaNfhl: {
+          endpoint: 'https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28',
+          apiKey: '', // public ArcGIS — no key
+          provides: 'FEMA floodplain zones (FLD_ZONE, SFHA, BFE)',
+        },
+        pucWaterCcn: {
+          endpoint: 'https://services1.arcgis.com/L0MLvN0Ay0iEjnCT/ArcGIS/rest/services/Water_PUC_CCN/FeatureServer/10001',
+          apiKey: '',
+          provides: 'Texas PUC water CCN holder polygons',
+        },
+        pucSewerCcn: {
+          endpoint: 'https://services1.arcgis.com/L0MLvN0Ay0iEjnCT/ArcGIS/rest/services/Wastewater___PUC_CCN/FeatureServer/11001',
+          apiKey: '',
+          provides: 'Texas PUC wastewater CCN holder polygons',
+        },
+        censusGeocoder: {
+          endpoint: 'https://geocoding.geo.census.gov/geocoder/',
+          apiKey: '',
+          provides: 'Incorporated place, county FIPS, ETJ inference',
+        },
+      },
+
+      // ── TIER 2: Paid / scraped ───────────────────────────────────────────
+      // Parcel attributes, ownership, tax — requires subscription or CAD scrape.
+      TIER_2: {
+        regrid: {
+          apiKey: '', // REGRID_API_KEY — premium parcel + zoning + deed
+          baseUrl: 'https://app.regrid.com/api/v2/parcels/',
+          provides: 'Acreage, zoning, owner of record, deed history, boundaries',
+        },
+        attom: {
+          apiKey: '', // ATTOM_API_KEY — assessment & tax history
+          endpoint: 'https://api.gateway.attomdata.com/propertyapi/v1.0.0/',
+          provides: 'Multi-year assessed values and tax amounts',
+        },
+        landId: {
+          apiKey: '', // LANDID_API_KEY — future map overlays
+          provides: 'Parcel map overlays, easements',
+        },
+        countyCad: {
+          provides: 'Situs, parcel ID, assessed land value from county REST layers',
+        },
+      },
+
+      // ── TIER 3: Proprietary / manual ─────────────────────────────────────
+      // Texas non-disclosure — comps require HIS / broker ingest.
+      TIER_3: {
+        privateComps: {
+          provides: 'Comparable land sales — PRIVATE DATA, manual/proprietary ingest',
+        },
+        spatialEngine: {
+          provides: 'Utility line distances, SF community radius, commercial proximity',
+        },
+        manualIngest: {
+          provides: 'LOIs, verbal builder offers, broker notes',
+        },
+      },
+
+      // Legacy aliases — existing layer functions reference these
+      REGRID_API_KEY: '',
+      ATTOM_API_KEY: '',
+      LANDID_API_KEY: '',
+      ENRICHMENT_PIPELINE: {
+        femaNfhl: {
+          url: 'https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28',
+          outFields: 'FLD_ZONE,ZONE_SUBTY,SFHA_TF,STATIC_BFE',
+        },
+        pucWaterCcn: {
+          url: 'https://services1.arcgis.com/L0MLvN0Ay0iEjnCT/ArcGIS/rest/services/Water_PUC_CCN/FeatureServer/10001',
+          outFields: 'CCN_NO,UTILITY,CCN_TYPE,DBA_NAME,COUNTY,STATUS',
+          bufferMeters: 3218,
+        },
+        pucSewerCcn: {
+          url: 'https://services1.arcgis.com/L0MLvN0Ay0iEjnCT/ArcGIS/rest/services/Wastewater___PUC_CCN/FeatureServer/11001',
+          outFields: 'CCN_NO,UTILITY,CCN_TYPE,DBA_NAME,COUNTY,STATUS',
+          bufferMeters: 3218,
+        },
+        municipalUtilities: {
+          'San Antonio': { water: 'SAWS (City of San Antonio)', sewer: 'SAWS' },
+          'Sugar Land': { water: 'City of Sugar Land WC', sewer: 'City of Sugar Land' },
+          'Georgetown': { water: 'City of Georgetown', sewer: 'City of Georgetown' },
+          'Round Rock': { water: 'City of Round Rock', sewer: 'City of Round Rock' },
+          'Austin': { water: 'Austin Water', sewer: 'Austin Water' },
+          'Taylor': { water: 'City of Taylor', sewer: 'City of Taylor' },
+        },
+      },
+      COUNTY_GIS: {
+        Williamson: {
+          url: 'https://gis.wilco.org/arcgis/rest/services/public/county_wcad_parcels/MapServer/0',
+          situsField: 'SitusAddress',
+          parcelFields: ['PropertyNumber', 'PARCELID', 'LOWPARCELID'],
+          fields: {
+            parcelId: 'PropertyNumber', owner: 'OWNERNME1', acres: 'Acres',
+            situs: 'SitusAddress', assessed: 'TotalAssessedValue', landValue: 'TotalLandMktValue',
+            zoning: 'CLASSDSCRP', landUse: 'USEDSCRP', water: 'WATERSERV', sewer: 'SEWERSERV',
+            streetNum: 'SStreetNumber', streetName: 'SStreetName', city: 'Scity',
+          },
+        },
+        'Fort Bend': {
+          url: 'https://gisweb.fbcad.org/arcgis/rest/services/Hosted/FBCAD_Public_Data/FeatureServer/0',
+          situsField: 'situs',
+          parcelFields: ['propnumber', 'quickrefid'],
+          fields: {
+            parcelId: 'propnumber', owner: 'ownername', acres: 'landsizeac',
+            situs: 'situs', assessed: 'totalvalue', landValue: 'landvalue',
+            zoning: 'land_type', landUse: 'building_class',
+            streetNum: 'situssno', streetName: 'situssnm',
+          },
+        },
+        Bexar: {
+          url: 'https://maps.bexar.org/arcgis/rest/services/Parcels/MapServer/0',
+          situsField: 'Situs',
+          parcelFields: ['PropID'],
+          fields: {
+            parcelId: 'PropID', owner: 'Owner', acres: 'Acres',
+            situs: 'Situs', assessed: 'LandVal', landValue: 'LandVal',
+            landUse: 'PropUse',
+          },
+        },
+        // Counties below need REGRID_API_KEY until a public REST layer is confirmed
+        Bastrop:    null,
+        Hays:       null,
+        Guadalupe:  null,
+        Travis:     null,
+      },
+      REGRID_PATHS: {
+        Williamson: '/us/tx/williamson-county',
+        Bastrop: '/us/tx/bastrop-county',
+        'Fort Bend': '/us/tx/fort-bend-county',
+        Hays: '/us/tx/hays-county',
+        Bexar: '/us/tx/bexar-county',
+        Guadalupe: '/us/tx/guadalupe-county',
+        Travis: '/us/tx/travis-county',
+      },
+      // Radius scan for new-build FOR-SALE SF communities (excludes Waterloo BTR)
+      COMMUNITY_RADIUS: {
+        miles: 3,
+        maxResults: 5,
+        // Only Waterloo-branded BTR is surfaced in the exclusion footnote; other BTR is silently omitted
+        waterlooBtrBuilders: ['Waterloo', 'Waterloo Homes', 'Waterloo Associates', 'Waterloo Homes by Brohn'],
+      },
+    };
+
+    // New-build communities index — swap for live feed (builder permits, Zonda, etc.)
+    // productType: 'sf_for_sale' | 'btr'  — only sf_for_sale surfaces in radius results
+    const NEW_BUILD_COMMUNITIES = [
+      { name: 'Sendero Ranch', builder: 'DR Horton', county: 'Williamson', lat: 30.589, lng: -97.452, productType: 'sf_for_sale', status: '2/3 complete', lotsRemaining: 487 },
+      { name: 'Wilco Junction', builder: 'Waterloo Homes', county: 'Williamson', lat: 30.576, lng: -97.418, productType: 'btr', status: 'Leasing Phase 1', lotsRemaining: 220 },
+      { name: 'Liberty Hills', builder: 'Waterloo Homes by Brohn', county: 'Williamson', lat: 30.562, lng: -97.395, productType: 'btr', status: 'MorningStar BTR — pre-leasing', lotsRemaining: 180 },
+      { name: 'Colony Park', builder: 'Meritage Homes', county: 'Bastrop', lat: 30.018, lng: -97.148, productType: 'sf_for_sale', status: 'Phase 2 breaking ground Q3 2026', lotsRemaining: 156 },
+      { name: 'MorningStar Elgin', builder: 'Waterloo Homes', county: 'Bastrop', lat: 30.352, lng: -97.378, productType: 'btr', status: 'Build-to-rent', lotsRemaining: 310 },
+      { name: 'Imperial Landing', builder: 'Lennar', county: 'Fort Bend', lat: 29.618, lng: -95.642, productType: 'sf_for_sale', status: '90% sold out; new section 2027', lotsRemaining: 42 },
+      { name: 'Headwaters', builder: 'Toll Brothers', county: 'Hays', lat: 30.168, lng: -98.005, productType: 'sf_for_sale', status: '60% complete', lotsRemaining: 214 },
+      { name: 'Avilla Rio Oaks', builder: 'NexMetro', county: 'Hays', lat: 30.142, lng: -97.982, productType: 'btr', status: 'BTR courtyard homes', lotsRemaining: 95 },
+      { name: 'Mission del Lago', builder: 'KB Home', county: 'Bexar', lat: 29.305, lng: -98.568, productType: 'sf_for_sale', status: 'Phase 4 selling', lotsRemaining: 88, absorptionPerMo: 18 },
+      { name: 'Southcross Farms', builder: 'Lennar', county: 'Bexar', lat: 29.302, lng: -98.578, productType: 'sf_for_sale', status: 'Phase 2 active sales', lotsRemaining: 64 },
+      { name: 'Millers Pond', builder: 'Waterloo Homes', county: 'Bexar', lat: 29.325, lng: -98.582, productType: 'btr', status: 'BTR — adjacent to Pearsall corridor', lotsRemaining: 140 },
+      { name: 'Legacy Ranch', builder: 'Pulte', county: 'Williamson', lat: 30.595, lng: -97.362, productType: 'sf_for_sale', status: 'Phase 1 plat filed', lotsRemaining: 320 },
+      { name: 'Sienna', builder: 'Johnson Development', county: 'Fort Bend', lat: 29.505, lng: -95.508, productType: 'sf_for_sale', status: 'Active master-planned', lotsRemaining: 1200 },
+    ];
+
+    // Private comps — HIS / manual ingest (the moat). Keyed by county + submarket.
+    const PRIVATE_COMPS_DB = [
+      { county: 'Williamson', submarket: 'Taylor / East Wilco', acres: 140, pricePerAcre: 19200, buyer: 'DR Horton', date: '2026-03', notes: 'Off-market, Sendero adjacency' },
+      { county: 'Williamson', submarket: 'Taylor / East Wilco', acres: 85, pricePerAcre: 17800, buyer: 'Lennar', date: '2025-11', notes: 'Estate sale, no MLS' },
+      { county: 'Bastrop', submarket: 'Smithville corridor', acres: 62, pricePerAcre: 31500, buyer: 'Meritage', date: '2026-01', notes: 'Builder bulk, Colony Park proximity' },
+      { county: 'Fort Bend', submarket: 'Sugar Land', acres: 22, pricePerAcre: 98000, buyer: 'Toll Brothers', date: '2025-09', notes: 'Infill, utility stubbed' },
+      { county: 'Hays', submarket: 'Dripping Springs ETJ', acres: 200, pricePerAcre: 15800, buyer: 'Toll Brothers', date: '2026-02', notes: 'Phased close, Headwaters comp' },
+      { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 90, pricePerAcre: 38500, buyer: 'KB Home', date: '2026-04', notes: 'Verbal LOI, Mission del Lago spillover' },
+      { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 16, pricePerAcre: 105000, buyer: 'Private investor', date: '2025-12', notes: 'Commercial pad adjacent' },
+    ];
+
+    // Spatial engine reference nodes (swap for live utility / commercial GIS)
+    const SPATIAL_NODES = {
+      electric: [
+        { name: 'CPS Energy substation', county: 'Bexar', lat: 29.310, lng: -98.590, type: 'electric' },
+        { name: 'Bluebonnet EC line', county: 'Williamson', lat: 30.565, lng: -97.405, type: 'electric' },
+        { name: 'Pedernales EC', county: 'Hays', lat: 30.130, lng: -98.020, type: 'electric' },
+      ],
+      commercial: [
+        { name: 'H-E-B Plus corridor', county: 'Bexar', lat: 29.330, lng: -98.560, type: 'commercial' },
+        { name: 'H-E-B Georgetown', county: 'Williamson', lat: 30.640, lng: -97.680, type: 'commercial' },
+        { name: 'Bastrop retail node', county: 'Bastrop', lat: 30.010, lng: -97.170, type: 'commercial' },
+      ],
+    };
+
+    const AUTOMATION_1_STEPS = [
+      { id: 'jurisdiction', label: 'Jurisdiction & boundaries', tier: 1 },
+      { id: 'parcel', label: 'Parcel / CAD lookup', tier: 2 },
+      { id: 'environmental', label: 'FEMA NFHL floodplain', tier: 1 },
+      { id: 'utilities', label: 'PUC CCN + utility distances', tier: 1 },
+      { id: 'proximity', label: 'Spatial proximity', tier: 3 },
+      { id: 'market', label: 'Private comps (HIS)', tier: 3 },
+    ];
+
+    // Realistic Texas mock profiles — used when USE_LIVE_APIS is false or lookup misses
+    const MOCK_ENRICHMENT_BY_COUNTY = {
+      Williamson: {
+        jurisdiction: 'ETJ — City of Taylor (unincorporated)',
+        floodZone: 'Zone X (minimal flood hazard)',
+        waterCcn: 'Manville Water Supply Corp (CCN 10231)',
+        sewerCcn: 'No wastewater CCN within 2 mi — on-site septic anticipated',
+        distWaterMi: 1.2, distSewerMi: 2.8, distPowerMi: 0.3,
+        providers: 'Bluebonnet Electric Co-op · Manville WSC',
+        deedNotes: 'Warranty deed recorded 2019-04-12; no mineral reservation',
+        nearestSf: 'DR Horton — Sendero Ranch',
+        nearestSfMi: 1.4,
+        nearestCommercial: 'H-E-B Georgetown',
+        nearestCommercialMi: 8.2,
+      },
+      Bastrop: {
+        jurisdiction: 'County-only (unincorporated)',
+        floodZone: 'Zone AE (100-yr floodplain on SE corner)',
+        waterCcn: 'Bastrop County WCID #2 (CCN 10456)',
+        sewerCcn: 'No CCN — LCRA wastewater study area',
+        distWaterMi: 0.1, distSewerMi: 4.5, distPowerMi: 0.0,
+        providers: 'Bluebonnet EC · Bastrop County WCID #2',
+        deedNotes: 'Family LLC transfer 2021; ag exemption active',
+        nearestSf: 'Meritage — Colony Park',
+        nearestSfMi: 2.1,
+        nearestCommercial: 'Bastrop retail node (H-E-B)',
+        nearestCommercialMi: 3.4,
+      },
+      'Fort Bend': {
+        jurisdiction: 'City limits — Sugar Land',
+        floodZone: 'Zone X',
+        waterCcn: 'City of Sugar Land WC (municipal)',
+        sewerCcn: 'City of Sugar Land (municipal)',
+        distWaterMi: 0.05, distSewerMi: 0.08, distPowerMi: 0.0,
+        providers: 'CenterPoint Energy · City of Sugar Land',
+        deedNotes: 'Patel Holdings LP acquired 2020; no liens',
+        nearestSf: 'Johnson Development — Sienna',
+        nearestSfMi: 4.8,
+        nearestCommercial: 'Sugar Land Town Square',
+        nearestCommercialMi: 1.2,
+      },
+      Hays: {
+        jurisdiction: 'ETJ — Dripping Springs (unincorporated)',
+        floodZone: 'Zone X',
+        waterCcn: 'Aqua Texas MUD (CCN 11890)',
+        sewerCcn: 'No central sewer CCN — ETJ 4.2 mi',
+        distWaterMi: 2.4, distSewerMi: 4.2, distPowerMi: 0.8,
+        providers: 'Pedernales EC · Aqua Texas MUD',
+        deedNotes: 'Partnership deed; 40 ac conservation easement SW',
+        nearestSf: 'Toll Brothers — Headwaters',
+        nearestSfMi: 3.6,
+        nearestCommercial: 'Dripping Springs retail corridor',
+        nearestCommercialMi: 5.1,
+      },
+      Bexar: {
+        jurisdiction: 'City limits — San Antonio (extraterritorial overlap)',
+        floodZone: 'Zone AE (12 ac eastern portion)',
+        waterCcn: 'SAWS — San Antonio Water System (CCN 10001)',
+        sewerCcn: 'SAWS wastewater (CCN 11001)',
+        distWaterMi: 0.04, distSewerMi: 0.5, distPowerMi: 0.0,
+        providers: 'CPS Energy · SAWS',
+        deedNotes: 'Irrevocable trust; Garcia family since 1987',
+        nearestSf: 'KB Home — Mission del Lago',
+        nearestSfMi: 0.9,
+        nearestCommercial: 'H-E-B Plus corridor',
+        nearestCommercialMi: 1.8,
+      },
+      Guadalupe: {
+        jurisdiction: 'ETJ — Seguin (unincorporated)',
+        floodZone: 'Zone X',
+        waterCcn: 'Guadalupe-Blanco River Authority (CCN 10567)',
+        sewerCcn: 'GBRA wastewater CCN — extension required',
+        distWaterMi: 1.8, distSewerMi: 3.2, distPowerMi: 0.6,
+        providers: 'Guadalupe EC · GBRA',
+        deedNotes: 'Ranch tract; mineral rights severed 1998',
+        nearestSf: 'New Braunfels corridor SF (Seguin spillover)',
+        nearestSfMi: 6.5,
+        nearestCommercial: 'Seguin commercial node',
+        nearestCommercialMi: 4.2,
+      },
+      Travis: {
+        jurisdiction: 'ETJ — Austin (unincorporated)',
+        floodZone: 'Zone X',
+        waterCcn: 'Austin Water CCN (extension study area)',
+        sewerCcn: 'No sewer CCN — Travis Co. MUD 18 proposed',
+        distWaterMi: 2.1, distSewerMi: 3.8, distPowerMi: 0.4,
+        providers: 'Pedernales EC · Austin Water (future)',
+        deedNotes: 'Fee simple; survey dated 2024',
+        nearestSf: 'Lennar — Easton Park corridor',
+        nearestSfMi: 5.2,
+        nearestCommercial: 'Austin metro commercial',
+        nearestCommercialMi: 3.9,
+      },
+    };
+
+    // =========================================================================
+    // State (in-memory only — no localStorage)
+    // =========================================================================
+    let deals = [];
+    let pendingEnrichment = null;
+    let activeDealId = null;
+    let viewMode = 'table';
+
+    const ROUTES = {
+      DEVELOP: { label: 'Develop / Entitle', class: 'route-develop' },
+      SELL:    { label: 'Sell (Flip)',       class: 'route-sell' },
+      RETAIL:  { label: 'Retail',            class: 'route-retail' },
+    };
+
+    // =========================================================================
+    // Seed data — realistic Texas land deals
+    // =========================================================================
+    function seedDeals() {
+      return [
+        {
+          id: 'deal-001',
+          address: '4820 County Rd 404',
+          city: 'Taylor',
+          county: 'Williamson',
+          parcelId: 'R-12345-678',
+          acreage: 142.5,
+          zoning: 'AG / Rural Residential',
+          askingPerAcre: 18500,
+          enrichmentStatus: 'enriched',
+          route: 'DEVELOP',
+          owner: 'Henderson Family Trust',
+          taxHistory: [
+            { year: 2025, assessed: 2187500, taxes: 48210 },
+            { year: 2024, assessed: 2050000, taxes: 45100 },
+            { year: 2023, assessed: 1925000, taxes: 42380 },
+          ],
+          utilities: [
+            { type: 'Electric', status: 'available', detail: 'Bluebonnet EC — 0.3mi S on CR 404' },
+            { type: 'Water', status: 'partial', detail: 'Municipal — 1.2mi E, extension required' },
+            { type: 'Sewer', status: 'none', detail: 'Septic required; no MUD within 3mi' },
+          ],
+          lat: 30.570, lng: -97.409,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          sellerName: 'Robert Henderson',
+          lastContact: '2026-05-18',
+          callReminder: true,
+          notes: 'Seller motivated — estate settlement. Preliminary plat discussion with city planner 4/2026. Needs rezone to PD for density.',
+          margin: { entitledValuePerAcre: 42000, flipValuePerAcre: 28000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-002',
+          address: '3100 FM 2571',
+          city: 'Smithville',
+          county: 'Bastrop',
+          parcelId: 'B-00987-432',
+          acreage: 58.2,
+          zoning: 'A-1 Agricultural',
+          askingPerAcre: 22000,
+          enrichmentStatus: 'enriched',
+          route: 'SELL',
+          owner: 'McAllister Cattle Co LLC',
+          taxHistory: [
+            { year: 2025, assessed: 1124000, taxes: 24890 },
+            { year: 2024, assessed: 1058000, taxes: 23420 },
+            { year: 2023, assessed: 998000, taxes: 22090 },
+          ],
+          utilities: [
+            { type: 'Electric', status: 'available', detail: 'Bastrop Coop — on property' },
+            { type: 'Water', status: 'available', detail: 'Bastrop County WCID #2 — line at FM frontage' },
+            { type: 'Sewer', status: 'none', detail: 'On-site treatment; LCRA wastewater study pending' },
+          ],
+          lat: 30.005, lng: -97.159,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          sellerName: 'James McAllister',
+          lastContact: '2026-04-02',
+          callReminder: true,
+          notes: 'Builder LOI from Meritage at $32k/acre contingent on plat approval. McAllister wants cash close by August.',
+          margin: { entitledValuePerAcre: 38000, flipValuePerAcre: 32000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-003',
+          address: '8900 University Blvd',
+          city: 'Sugar Land',
+          county: 'Fort Bend',
+          parcelId: 'FB-55432-109',
+          acreage: 24.8,
+          zoning: 'SF-1 Single Family',
+          askingPerAcre: 95000,
+          enrichmentStatus: 'enriched',
+          route: 'RETAIL',
+          owner: 'Patel Holdings LP',
+          taxHistory: [
+            { year: 2025, assessed: 2236000, taxes: 52100 },
+            { year: 2024, assessed: 2108000, taxes: 49120 },
+            { year: 2023, assessed: 1985000, taxes: 46250 },
+          ],
+          utilities: [
+            { type: 'Electric', status: 'available', detail: 'CenterPoint — on site' },
+            { type: 'Water', status: 'available', detail: 'City of Sugar Land — 12" main at University Blvd' },
+            { type: 'Sewer', status: 'available', detail: 'City of Sugar Land — stub at property line' },
+          ],
+          lat: 29.625, lng: -95.635,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          sellerName: 'Raj Patel',
+          lastContact: '2026-06-01',
+          callReminder: false,
+          notes: 'Fully entitled 48-lot subdivision potential. Seller prefers retail listing through KW. Commission split discussed.',
+          margin: { entitledValuePerAcre: 125000, flipValuePerAcre: 110000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-004',
+          address: '12400 RM 150',
+          city: 'Driftwood',
+          county: 'Hays',
+          parcelId: 'H-77821-334',
+          acreage: 215.0,
+          zoning: 'RR Rural Residential',
+          askingPerAcre: 14500,
+          enrichmentStatus: 'enriched',
+          route: 'DEVELOP',
+          owner: 'Bar W Ranch Partnership',
+          taxHistory: [
+            { year: 2025, assessed: 2847500, taxes: 62840 },
+            { year: 2024, assessed: 2680000, taxes: 59120 },
+            { year: 2023, assessed: 2520000, taxes: 55580 },
+          ],
+          utilities: [
+            { type: 'Electric', status: 'available', detail: 'Pedernales EC — 0.8mi N on RM 150' },
+            { type: 'Water', status: 'partial', detail: 'Aqua Texas MUD — 2.4mi; well rights confirmed' },
+            { type: 'Sewer', status: 'none', detail: 'No central sewer; ETJ of Dripping Springs 4.2mi' },
+          ],
+          lat: 30.135, lng: -98.025,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          sellerName: 'William &amp; Susan Barrow',
+          lastContact: '2026-03-22',
+          callReminder: true,
+          notes: 'Large tract — phased entitlement strategy. Dripping Springs ISD impact fees estimated $4.2M. Conservation easement on 40ac SW corner.',
+          margin: { entitledValuePerAcre: 35000, flipValuePerAcre: 22000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-005',
+          address: '6200 Old Pearsall Rd',
+          city: 'San Antonio',
+          county: 'Bexar',
+          parcelId: 'BX-33109-887',
+          acreage: 87.3,
+          zoning: 'R-4 Residential',
+          askingPerAcre: 31000,
+          enrichmentStatus: 'enriched',
+          route: 'SELL',
+          owner: 'Garcia Family Irrevocable Trust',
+          taxHistory: [
+            { year: 2025, assessed: 2456300, taxes: 54200 },
+            { year: 2024, assessed: 2310000, taxes: 50980 },
+            { year: 2023, assessed: 2175000, taxes: 47990 },
+          ],
+          utilities: [
+            { type: 'Electric', status: 'available', detail: 'CPS Energy — pole line on Old Pearsall' },
+            { type: 'Water', status: 'available', detail: 'SAWS — 8" main 200ft from frontage' },
+            { type: 'Sewer', status: 'partial', detail: 'SAWS trunk 0.5mi; extension agreement draft' },
+          ],
+          lat: 29.318, lng: -98.585,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          sellerName: 'Maria Garcia',
+          lastContact: '2026-05-30',
+          callReminder: false,
+          notes: 'KB Home verbal at $42k/acre. Garcia trust needs 1031 exchange — timeline flexible to Q4. Floodplain study on 12ac eastern portion.',
+          margin: { entitledValuePerAcre: 52000, flipValuePerAcre: 42000, retailCommissionPct: 3 },
+        },
+      ];
+    }
+
+    // =========================================================================
+    // Live enrichment — county GIS + optional Regrid / ATTOM
+    // =========================================================================
+
+    function escapeSql(val) {
+      return String(val).replace(/'/g, "''");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function parseQuery(query, type) {
+      if (type === 'parcel') {
+        return { type: 'parcel', parcelId: query.trim(), city: null, streetNum: null, streetRest: '', tokens: [], raw: query };
+      }
+      const cleaned = query.replace(/,?\s*TX\s*\d{5}(-\d{4})?/gi, '').trim();
+      const parts = cleaned.split(',').map(s => s.trim()).filter(Boolean);
+      const city = parts.length > 1 ? parts[parts.length - 1] : null;
+      const streetPart = parts[0];
+      const numMatch = streetPart.match(/^(\d+)\s+(.+)$/);
+      const streetNum = numMatch ? numMatch[1] : null;
+      const streetRest = numMatch ? numMatch[2] : streetPart;
+      const tokens = streetRest.toUpperCase().split(/[\s]+/).filter(t => t.length > 1);
+      return { type: 'address', parcelId: null, city, streetNum, streetRest, tokens, raw: query };
+    }
+
+    function expandStreetVariants(street) {
+      const base = street.toUpperCase().replace(/\s+/g, ' ').trim();
+      const variants = new Set([base]);
+      const pairs = [
+        [/COUNTY\s*ROAD/g, 'COUNTY RD'], [/COUNTY\s*RD/g, 'CR'],
+        [/\bCR\b/g, 'COUNTY RD'], [/FARM\s*TO\s*MARKET/g, 'FM'],
+        [/RANCH\s*ROAD/g, 'RM'], [/HIGHWAY/g, 'HWY'],
+      ];
+      pairs.forEach(([re, rep]) => {
+        if (re.test(base)) variants.add(base.replace(re, rep));
+      });
+      return [...variants];
+    }
+
+    function buildWhereClauses(parsed, cfg) {
+      const clauses = [];
+      const esc = escapeSql;
+      const situs = cfg.situsField;
+      const f = cfg.fields;
+
+      if (parsed.type === 'parcel') {
+        cfg.parcelFields.forEach(field => {
+          clauses.push(`${field}='${esc(parsed.parcelId)}'`);
+          clauses.push(`UPPER(${field}) LIKE UPPER('%${esc(parsed.parcelId)}%')`);
+        });
+        return [...new Set(clauses)];
+      }
+
+      const variants = expandStreetVariants(parsed.streetRest);
+      const skipWords = /^(RD|DR|ST|LN|CT|BLVD|FM|CR|RM|HWY|WAY|TRL|CIR|ROAD|DRIVE|STREET|LANE|COUNTY|OLD|NEW|N|S|E|W|NE|NW|SE|SW)$/i;
+      const coreToken = parsed.tokens.filter(t => !skipWords.test(t)).sort((a, b) => b.length - a.length)[0];
+
+      if (parsed.streetNum && f.streetNum && f.streetName && coreToken) {
+        clauses.push(`${f.streetNum}='${esc(parsed.streetNum)}' AND UPPER(${f.streetName}) LIKE '%${esc(coreToken)}%'`);
+      }
+
+      variants.forEach(v => {
+        const compact = v.replace(/\s+/g, ' ');
+        if (parsed.streetNum) {
+          clauses.push(`UPPER(${situs}) LIKE '%${esc(parsed.streetNum)}%${esc(compact.replace(/\s+/g, '%'))}%'`);
+          clauses.push(`UPPER(${situs}) LIKE '%${esc(parsed.streetNum)}%${esc(compact)}%'`);
+        }
+        clauses.push(`UPPER(${situs}) LIKE '%${esc(compact)}%'`);
+      });
+
+      return [...new Set(clauses)];
+    }
+
+    function scoreParcelMatch(attrs, parsed, cfg) {
+      const situs = String(attrs[cfg.situsField] || '').toUpperCase();
+      let score = 0;
+      if (parsed.streetNum && situs.includes(parsed.streetNum)) score += 50;
+      parsed.tokens.forEach(t => {
+        if (t.length > 2 && situs.includes(t)) score += 12;
+      });
+      if (parsed.city && situs.includes(parsed.city.toUpperCase())) score += 30;
+      return score;
+    }
+
+    function arcgisQuery(layerUrl, params) {
+      return new Promise((resolve, reject) => {
+        const cb = 'agis_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+        const qs = new URLSearchParams({ ...params, f: 'json', callback: cb });
+        const script = document.createElement('script');
+        const timer = setTimeout(() => cleanup(new Error('County GIS request timed out')), 20000);
+
+        window[cb] = (data) => {
+          cleanup();
+          if (data.error) reject(new Error(data.error.message || 'County GIS query failed'));
+          else resolve(data);
+        };
+        script.onerror = () => cleanup(new Error('County GIS network error'));
+
+        function cleanup(err) {
+          clearTimeout(timer);
+          delete window[cb];
+          script.remove();
+          if (err) reject(err);
+        }
+
+        script.src = `${layerUrl}/query?${qs}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    function getOutFields(cfg) {
+      return [...new Set([
+        ...Object.values(cfg.fields).filter(Boolean),
+        ...cfg.parcelFields,
+        cfg.situsField,
+      ])].join(',');
+    }
+
+    function buildTaxHistory(assessed, attomHistory) {
+      if (attomHistory && attomHistory.length) return attomHistory;
+      const year = new Date().getFullYear();
+      return [{
+        year,
+        assessed: Math.round(assessed) || 0,
+        taxes: null,
+        estimated: false,
+        note: 'Assessed value from county CAD — add ATTOM_API_KEY for tax amounts',
+      }];
+    }
+
+    function buildUtilities(attrs) {
+      const util = (fieldVal, label) => {
+        if (!fieldVal) return null;
+        const v = String(fieldVal).toLowerCase();
+        let status = 'partial';
+        if (/yes|y|true|avail|public|city|municipal/.test(v)) status = 'available';
+        else if (/no|n|false|none|well|septic/.test(v)) status = 'none';
+        return { type: label, status, detail: String(fieldVal) };
+      };
+
+      const items = [
+        util(attrs.WATERSERV || attrs.water || attrs.waterserv, 'Water'),
+        util(attrs.SEWERSERV || attrs.sewer || attrs.sewerserv, 'Sewer'),
+      ].filter(Boolean);
+
+      if (!items.length) {
+        return [
+          { type: 'Electric', status: 'partial', detail: 'Verify with local co-op / utility district' },
+          { type: 'Water', status: 'partial', detail: 'Not in county GIS — verify on site' },
+          { type: 'Sewer', status: 'partial', detail: 'Not in county GIS — verify on site' },
+        ];
+      }
+      items.unshift({ type: 'Electric', status: 'partial', detail: 'Verify with local co-op / utility district' });
+      return items;
+    }
+
+    function computeMarginsFromLand(acres, landValue) {
+      const perAcre = acres > 0 ? landValue / acres : 0;
+      return {
+        entitledValuePerAcre: Math.round(perAcre * 1.85) || 0,
+        flipValuePerAcre: Math.round(perAcre * 1.35) || 0,
+        retailCommissionPct: 3,
+      };
+    }
+
+    function parseSitusCity(situs, fallback) {
+      const m = String(situs).match(/,\s*([^,]+?)\s*,?\s*TX/i);
+      return m ? m[1].trim() : fallback;
+    }
+
+    function parseSitusStreet(situs) {
+      return String(situs).split(',')[0].trim() || situs;
+    }
+
+    function mapCountyParcelToDeal(attrs, county, cfg, parsed) {
+      const f = cfg.fields;
+      const get = (key) => attrs[f[key]] ?? null;
+
+      const situs = get('situs') || '';
+      const acres = parseFloat(get('acres')) || 0;
+      const assessed = parseFloat(get('assessed')) || 0;
+      const landVal = parseFloat(get('landValue')) || assessed;
+      const city = get('city') || parseSitusCity(situs, parsed.city || extractCity(parsed.raw, county));
+      const street = parseSitusStreet(situs) || (parsed.type === 'address' ? parsed.raw.split(',')[0].trim() : `Parcel ${parsed.parcelId}`);
+      const zoning = get('zoning') || get('landUse') || 'See county records';
+      const owner = get('owner') || 'See county records';
+      const parcelId = String(get('parcelId') || '');
+
+      return {
+        address: street,
+        city,
+        county,
+        parcelId,
+        acreage: acres,
+        zoning,
+        askingPerAcre: acres > 0 ? Math.round(landVal / acres) : 0,
+        enrichmentStatus: 'enriched',
+        route: 'DEVELOP',
+        owner,
+        taxHistory: buildTaxHistory(assessed, null),
+        utilities: buildUtilities(attrs),
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lat: null,
+        lng: null,
+        sellerName: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes: '',
+        dataSource: `${county} County CAD`,
+        margin: computeMarginsFromLand(acres, landVal),
+      };
+    }
+
+    async function lookupCountyGIS(county, parsed) {
+      const cfg = DATA_SOURCES.COUNTY_GIS[county];
+      if (!cfg) return null;
+
+      const clauses = buildWhereClauses(parsed, cfg);
+      const outFields = getOutFields(cfg);
+      let best = null;
+      let bestScore = -1;
+
+      for (const where of clauses) {
+        try {
+          const data = await arcgisQuery(cfg.url, {
+            where,
+            outFields,
+            returnGeometry: 'false',
+            resultRecordCount: '25',
+          });
+          (data.features || []).forEach(f => {
+            const score = scoreParcelMatch(f.attributes, parsed, cfg);
+            if (score > bestScore) {
+              bestScore = score;
+              best = { attributes: f.attributes, cfg, score };
+            }
+          });
+          if (best && bestScore >= 50) break;
+        } catch (e) {
+          console.warn('ArcGIS clause failed:', where, e);
+        }
+      }
+
+      if (!best || bestScore < 12) return null;
+
+      const deal = mapCountyParcelToDeal(best.attributes, county, best.cfg, parsed);
+      const geom = await fetchParcelGeometry(county, deal.parcelId, best.cfg);
+      if (geom?.centroid) {
+        deal.lat = geom.centroid.lat;
+        deal.lng = geom.centroid.lng;
+        deal.parcelBoundary = geom.boundary;
+      }
+      return deal;
+    }
+
+    async function fetchParcelGeometry(county, parcelId, cfg) {
+      const field = cfg.fields.parcelId;
+      if (!field || !parcelId) return null;
+      try {
+        const data = await arcgisQuery(cfg.url, {
+          where: `${field}='${escapeSql(parcelId)}'`,
+          outFields: field,
+          returnGeometry: 'true',
+          resultRecordCount: '1',
+        });
+        const geom = data.features?.[0]?.geometry;
+        if (!geom) return null;
+        return { centroid: geometryToCentroid(geom), boundary: geom.rings ? geom.rings[0] : null };
+      } catch (e) {
+        console.warn('Parcel geometry lookup failed:', e);
+        return null;
+      }
+    }
+
+    async function fetchParcelCentroid(county, parcelId, cfg) {
+      const g = await fetchParcelGeometry(county, parcelId, cfg);
+      return g?.centroid || null;
+    }
+
+    function arcgisPointQuery(layerUrl, lat, lng, opts = {}) {
+      const params = {
+        geometry: `${lng},${lat}`,
+        geometryType: 'esriGeometryPoint',
+        inSR: '4326',
+        spatialRel: opts.spatialRel || 'esriSpatialRelIntersects',
+        outFields: opts.outFields || '*',
+        returnGeometry: 'false',
+        resultRecordCount: String(opts.limit || 5),
+      };
+      if (opts.distance) {
+        params.distance = String(opts.distance);
+        params.units = 'esriSRUnit_Meter';
+      }
+      return arcgisQuery(layerUrl, params);
+    }
+
+    async function fetchRegridParcel(query, county, type) {
+      const token = DATA_SOURCES.REGRID_API_KEY;
+      if (!token) return null;
+
+      const path = DATA_SOURCES.REGRID_PATHS[county] || '';
+      const endpoint = type === 'parcel' ? 'apn' : 'address';
+      const params = new URLSearchParams({
+        query,
+        token,
+        limit: '5',
+        return_zoning: 'true',
+      });
+      if (path) params.set('path', path);
+
+      const res = await fetch(`https://app.regrid.com/api/v2/parcels/${endpoint}?${params}`);
+      if (!res.ok) throw new Error(`Regrid API error (${res.status})`);
+
+      const data = await res.json();
+      const features = data.parcels?.features || data.features || [];
+      if (!features.length) return null;
+
+      const props = features[0].properties || {};
+      const fields = props.fields || props;
+      const acres = parseFloat(fields.ll_gisacre || fields.gisacre || fields.acres) || 0;
+      const landVal = parseFloat(fields.landval || fields.land_value) || 0;
+      const parval = parseFloat(fields.parval || fields.total_value) || landVal;
+      const city = fields.scity || fields.mail_city || extractCity(query, county);
+
+      return {
+        address: fields.address || fields.situs || (type === 'address' ? query.split(',')[0].trim() : `Parcel ${query}`),
+        city,
+        county,
+        parcelId: String(fields.parcelnumb || fields.parcel_id || fields.apn || props.path || ''),
+        acreage: acres,
+        zoning: fields.zoning || fields.zoning_code || fields.usedesc || 'See county records',
+        askingPerAcre: acres > 0 ? Math.round((landVal || parval) / acres) : 0,
+        enrichmentStatus: 'enriched',
+        route: 'DEVELOP',
+        owner: fields.owner || fields.ownername || 'See county records',
+        taxHistory: buildTaxHistory(parval || landVal, null),
+        utilities: buildUtilities(fields),
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lat: parseFloat(fields.lat || fields.ll_lat) || null,
+        lng: parseFloat(fields.lon || fields.ll_lon) || null,
+        sellerName: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes: '',
+        dataSource: 'Regrid API',
+        margin: computeMarginsFromLand(acres, landVal || parval),
+      };
+    }
+
+    async function fetchAttomTaxHistory(address, city) {
+      const key = DATA_SOURCES.ATTOM_API_KEY;
+      if (!key) return null;
+
+      const address1 = address.split(',')[0].trim();
+      const address2 = `${city}, TX`;
+      const url = `https://api.gateway.attomdata.com/propertyapi/v1.0.0/assessmenthistory/detail?address1=${encodeURIComponent(address1)}&address2=${encodeURIComponent(address2)}`;
+
+      const res = await fetch(url, {
+        headers: { apikey: key, Accept: 'application/json' },
+      });
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      const history = data.property?.[0]?.assessmenthistory || [];
+      if (!history.length) return null;
+
+      return history.slice(0, 3).map(h => ({
+        year: parseInt(h.taxyear || h.year, 10),
+        assessed: parseFloat(h.assessed?.assdttlvalue || h.market?.mktttlvalue) || 0,
+        taxes: parseFloat(h.tax?.taxamt) || null,
+        estimated: !h.tax?.taxamt,
+      })).filter(t => t.year);
+    }
+
+    // =========================================================================
+    // Automation 1: Intake Enrichment
+    // =========================================================================
+
+    function delay(ms) {
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    function a1Field(label, value, source, status) {
+      return { label, value: String(value ?? '—'), source, status };
+    }
+
+    function mockProfileFor(county) {
+      return MOCK_ENRICHMENT_BY_COUNTY[county] || MOCK_ENRICHMENT_BY_COUNTY.Williamson;
+    }
+
+    function matchKnownIntake(query, type, county) {
+      const q = query.toLowerCase().trim();
+      const seeds = seedDeals();
+      return seeds.find(d => {
+        if (d.county !== county) return false;
+        if (type === 'parcel') return d.parcelId.toLowerCase() === q || d.parcelId.toLowerCase().includes(q);
+        return d.address.toLowerCase().includes(q.split(',')[0].trim().toLowerCase())
+          || q.includes(d.address.toLowerCase());
+      }) || null;
+    }
+
+    function buildMockDealFromProfile(query, type, county, parsed) {
+      const known = matchKnownIntake(query, type, county);
+      if (known) {
+        return {
+          address: known.address,
+          city: known.city,
+          county: known.county,
+          parcelId: known.parcelId,
+          acreage: known.acreage,
+          zoning: known.zoning,
+          askingPerAcre: known.askingPerAcre,
+          enrichmentStatus: 'enriched',
+          route: 'DEVELOP',
+          owner: known.owner,
+          taxHistory: known.taxHistory,
+          utilities: known.utilities,
+          nearbyCommunities: [],
+          nearbyDevExcluded: [],
+          nearbyDev: '',
+          lat: known.lat,
+          lng: known.lng,
+          sellerName: '',
+          lastContact: new Date().toISOString().split('T')[0],
+          callReminder: true,
+          notes: '',
+          dataSource: 'Automation 1 (mock profile — known parcel)',
+          margin: known.margin,
+        };
+      }
+
+      const mock = mockProfileFor(county);
+      const city = parsed.city || extractCity(query, county);
+      const street = parsed.type === 'address'
+        ? parsed.raw.split(',')[0].trim()
+        : `Parcel ${parsed.parcelId || query}`;
+      const parcelId = parsed.type === 'parcel'
+        ? parsed.parcelId
+        : `${county.slice(0, 2).toUpperCase()}-${Math.floor(10000 + Math.random() * 89999)}`;
+      const acreage = 25 + Math.floor(Math.random() * 175);
+      const askingPerAcre = county === 'Fort Bend' ? 75000 + Math.floor(Math.random() * 25000)
+        : county === 'Bexar' ? 28000 + Math.floor(Math.random() * 12000)
+        : 14000 + Math.floor(Math.random() * 10000);
+
+      return {
+        address: street,
+        city,
+        county,
+        parcelId,
+        acreage,
+        zoning: county === 'Williamson' ? 'AG / Rural Residential' : 'A-1 Agricultural',
+        askingPerAcre,
+        enrichmentStatus: 'enriched',
+        route: 'DEVELOP',
+        owner: 'Owner of record — verify via CAD',
+        taxHistory: buildTaxHistory(acreage * askingPerAcre * 0.85, null),
+        utilities: [
+          { type: 'Electric', status: 'partial', detail: `${mock.providers.split('·')[0].trim()} — ${mock.distPowerMi} mi` },
+          { type: 'Water', status: mock.distWaterMi < 0.5 ? 'available' : 'partial', detail: `${mock.waterCcn.split('(')[0].trim()} — ${mock.distWaterMi} mi` },
+          { type: 'Sewer', status: mock.distSewerMi < 1 ? 'available' : 'none', detail: `${mock.sewerCcn.split('—')[0].trim()} — ${mock.distSewerMi} mi` },
+        ],
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lat: null,
+        lng: null,
+        sellerName: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes: '',
+        dataSource: 'Automation 1 (simulated)',
+        margin: computeMarginsFromLand(acreage, acreage * askingPerAcre),
+        _mockProfile: mock,
+      };
+    }
+
+    function formatMarketComps(deal) {
+      const comps = PRIVATE_COMPS_DB.filter(c => c.county === deal.county);
+      if (!comps.length) {
+        return {
+          text: 'No comps ingested — NEEDS MANUAL INPUT (TX non-disclosure)',
+          status: 'NEEDS MANUAL INPUT',
+        };
+      }
+      const top = comps.slice(0, 3);
+      const avg = Math.round(comps.reduce((s, c) => s + c.pricePerAcre, 0) / comps.length);
+      const lines = top.map(c =>
+        `${c.acres} ac @ ${fmt(c.pricePerAcre)}/ac (${c.buyer}, ${c.date}) — ${c.notes}`
+      );
+      return {
+        text: `${top.length} comps · avg ${fmt(avg)}/ac — ${lines.join('; ')}`,
+        status: 'MOCK',
+        avg,
+        comps: top,
+      };
+    }
+
+    function buildAutomation1DealRecord(deal, query, type, county, live = {}) {
+      const mock = deal._mockProfile || mockProfileFor(county);
+      const jurisdictionLive = live.jurisdiction;
+      const femaLive = live.fema;
+      const pucLive = live.puc;
+      const parcelLive = live.parcel;
+
+      const jurisdictionStatus = jurisdictionLive?.data
+        ? (jurisdictionLive.data.inCorpLimit
+          ? `City limits — ${jurisdictionLive.data.city}`
+          : jurisdictionLive.data.etj
+            ? `ETJ — ${jurisdictionLive.data.etj}`
+            : 'County-only (unincorporated)')
+        : mock.jurisdiction;
+
+      const countyName = jurisdictionLive?.data?.county || `${county} County`;
+      const floodZone = femaLive?.data
+        ? `Zone ${femaLive.data.zone}${femaLive.data.inSpecialFloodHazardArea ? ' (SFHA)' : ''}`
+        : mock.floodZone;
+
+      const waterCcn = pucLive?.data?.water
+        ? `${pucLive.data.water.utility}${pucLive.data.water.ccn ? ` (CCN ${pucLive.data.water.ccn})` : ''}`
+        : mock.waterCcn;
+      const sewerCcn = pucLive?.data?.sewer
+        ? `${pucLive.data.sewer.utility}${pucLive.data.sewer.ccn ? ` (CCN ${pucLive.data.sewer.ccn})` : ''}`
+        : mock.sewerCcn;
+
+      const market = formatMarketComps(deal);
+      const sfDev = deal.nearbyCommunities?.[0];
+      const sfLabel = sfDev
+        ? `${sfDev.builder} — ${sfDev.name} (${sfDev.distanceMi} mi ${sfDev.direction})`
+        : `${mock.nearestSf} (${mock.nearestSfMi} mi)`;
+
+      const commercial = live.spatial?.data?.commercial?.[0];
+      const commercialLabel = commercial
+        ? `${commercial.name} (${commercial.distanceMi} mi ${commercial.direction})`
+        : `${mock.nearestCommercial} (${mock.nearestCommercialMi} mi)`;
+
+      const electric = live.spatial?.data?.electric?.[0];
+      const distPower = electric
+        ? `${electric.distanceMi} mi ${electric.direction}`
+        : `${mock.distPowerMi} mi`;
+
+      const sections = {
+        jurisdiction: {
+          label: 'Jurisdiction & Boundaries',
+          labelDisplay: 'JURISDICTION & BOUNDARIES',
+          fields: [
+            a1Field('City limits / ETJ / county-only', jurisdictionStatus, 'Census', jurisdictionLive ? 'LIVE' : 'MOCK'),
+            a1Field('County name', countyName, 'Census', jurisdictionLive ? 'LIVE' : 'MOCK'),
+          ],
+        },
+        parcel: {
+          label: 'Parcel',
+          labelDisplay: 'PARCEL',
+          fields: [
+            a1Field('Parcel / property ID', deal.parcelId, parcelLive ? (deal.dataSource || 'County CAD') : 'Regrid', parcelLive ? 'LIVE' : 'MOCK'),
+            a1Field('Acreage', `${fmtNum(deal.acreage)} ac`, parcelLive ? 'County CAD' : 'Regrid', parcelLive ? 'LIVE' : 'MOCK'),
+            a1Field('Current zoning', deal.zoning, 'Regrid', parcelLive && DATA_SOURCES.REGRID_API_KEY ? 'LIVE' : 'MOCK'),
+            a1Field('Owner of record', deal.owner, 'County CAD', parcelLive ? 'LIVE' : 'MOCK'),
+            a1Field('Deed / ownership notes', mock.deedNotes, 'Regrid', DATA_SOURCES.REGRID_API_KEY ? 'MOCK' : 'NEEDS MANUAL INPUT'),
+          ],
+        },
+        environmental: {
+          label: 'Environmental',
+          labelDisplay: 'ENVIRONMENTAL',
+          fields: [
+            a1Field('FEMA floodplain zone', floodZone, 'FEMA', femaLive ? 'LIVE' : 'MOCK'),
+          ],
+        },
+        utilities: {
+          label: 'Utilities',
+          labelDisplay: 'UTILITIES',
+          prominent: true,
+          fields: [
+            a1Field('Water CCN holder', waterCcn, 'PUC CCN', pucLive ? 'LIVE' : 'MOCK'),
+            a1Field('Sewer CCN holder', sewerCcn, 'PUC CCN', pucLive ? 'LIVE' : 'MOCK'),
+            a1Field('Distance to nearest water line', `${mock.distWaterMi} mi`, 'Spatial', 'MOCK'),
+            a1Field('Distance to nearest sewer line', `${mock.distSewerMi} mi`, 'Spatial', 'MOCK'),
+            a1Field('Distance to nearest power', distPower, 'Spatial', live.spatial ? 'MOCK' : 'MOCK'),
+            a1Field('Utility providers serving area', mock.providers, 'PUC CCN', 'MOCK'),
+          ],
+        },
+        proximity: {
+          label: 'Proximity (spatial)',
+          labelDisplay: 'PROXIMITY (spatial)',
+          fields: [
+            a1Field('Nearest single-family development', sfLabel, 'Spatial', sfDev ? 'MOCK' : 'MOCK'),
+            a1Field('Nearest commercial zone', commercialLabel, 'Spatial', 'MOCK'),
+          ],
+        },
+        market: {
+          label: 'Market',
+          labelDisplay: 'MARKET',
+          fields: [
+            a1Field('Comparable land sales — PRIVATE DATA · manual/proprietary input', market.text, 'PRIVATE', market.status),
+          ],
+        },
+      };
+
+      const allFields = Object.values(sections).flatMap(s => s.fields);
+      const summary = {
+        live: allFields.filter(f => f.status === 'LIVE').length,
+        mock: allFields.filter(f => f.status === 'MOCK').length,
+        manual: allFields.filter(f => f.status === 'NEEDS MANUAL INPUT').length,
+      };
+
+      return {
+        automation: 'Automation 1: Intake Enrichment',
+        generatedAt: new Date().toISOString(),
+        query: { text: query, type, county },
+        sections,
+        summary,
+      };
+    }
+
+    function renderAutomation1ReportCard(dealRecord) {
+      if (!dealRecord) return '';
+      const statusClass = (s) => {
+        if (s === 'LIVE') return 'live';
+        if (s === 'NEEDS MANUAL INPUT') return 'manual';
+        return 'mock';
+      };
+
+      let html = `<div class="a1-report">`;
+      html += `<div class="a1-header">
+        <span class="title">${escapeHtml(dealRecord.automation)}</span>
+        <span class="meta">${new Date(dealRecord.generatedAt).toLocaleString()}</span>
+      </div>`;
+      html += `<div class="a1-summary">
+        <span class="a1-summary-pill live">${dealRecord.summary.live} live</span>
+        <span class="a1-summary-pill mock">${dealRecord.summary.mock} mock</span>
+        <span class="a1-summary-pill manual">${dealRecord.summary.manual} manual</span>
+      </div>`;
+
+      Object.values(dealRecord.sections).forEach(section => {
+        const prom = section.prominent ? ' prominent' : '';
+        html += `<div class="a1-section${prom}">`;
+        html += `<div class="a1-section-head">
+          <span class="label">${escapeHtml(section.labelDisplay || section.label)}</span>
+          ${section.prominent ? '<span class="bottleneck">Entitlement bottleneck</span>' : ''}
+        </div>`;
+        section.fields.forEach(f => {
+          const privateCls = f.label.includes('PRIVATE') ? ' private-data' : '';
+          html += `<div class="a1-field">
+            <div class="a1-field-label">${escapeHtml(f.label)}</div>
+            <div class="a1-field-value${privateCls}">${escapeHtml(f.value)}</div>
+            <div class="a1-field-meta">
+              <span class="a1-source-tag">${escapeHtml(f.source)}</span>
+              <span class="a1-status ${statusClass(f.status)}">${escapeHtml(f.status)}</span>
+            </div>
+          </div>`;
+        });
+        html += `</div>`;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    function applyDealRecordToDeal(deal, dealRecord) {
+      deal.dealRecord = dealRecord;
+      deal.enrichmentStatus = 'enriched';
+      deal.dataSource = deal.dataSource || 'Automation 1: Intake Enrichment';
+
+      const u = dealRecord.sections.utilities.fields;
+      const water = u.find(f => f.label.includes('Water CCN'));
+      const sewer = u.find(f => f.label.includes('Sewer CCN'));
+      if (water || sewer) {
+        deal.utilities = [
+          { type: 'Electric', status: 'partial', detail: u.find(f => f.label.includes('power'))?.value || '—' },
+          { type: 'Water', status: water?.value.includes('No') ? 'none' : 'partial', detail: water?.value || '—' },
+          { type: 'Sewer', status: sewer?.value.includes('No') ? 'none' : 'partial', detail: sewer?.value || '—' },
+        ];
+      }
+
+      const env = dealRecord.sections.environmental.fields[0];
+      if (env) {
+        deal.floodplain = {
+          zone: env.value.replace(/^Zone\s*/i, '').split(' ')[0],
+          inSpecialFloodHazardArea: /SFHA|AE|A\b/.test(env.value),
+        };
+      }
+
+      const juris = dealRecord.sections.jurisdiction.fields[0];
+      if (juris) {
+        deal.jurisdiction = { summary: juris.value, county: dealRecord.sections.jurisdiction.fields[1]?.value };
+      }
+
+      const market = dealRecord.sections.market.fields[0];
+      if (market?.value && deal.margin && formatMarketComps(deal).avg) {
+        deal.margin.flipValuePerAcre = formatMarketComps(deal).avg;
+      }
+    }
+
+    function initPipelineUI() {
+      const el = document.getElementById('pipeline-steps');
+      el.classList.add('active');
+      el.innerHTML = AUTOMATION_1_STEPS.map(s => `
+        <div class="pipeline-step" id="pipe-${s.id}">
+          <span class="dot"></span><span>T${s.tier} · ${s.label}</span>
+        </div>
+      `).join('');
+    }
+
+    function setPipelineStep(id, state) {
+      const el = document.getElementById(`pipe-${id}`);
+      if (!el) return;
+      el.className = `pipeline-step ${state}`;
+    }
+
+    function resetPipelineUI() {
+      document.getElementById('pipeline-steps').classList.remove('active');
+      document.getElementById('pipeline-steps').innerHTML = '';
+    }
+
+    function tierBadgeClass(tier) {
+      return `tier-badge tier-${tier}`;
+    }
+
+    async function layerFemaNfhl(lat, lng) {
+      const cfg = DATA_SOURCES.ENRICHMENT_PIPELINE.femaNfhl;
+      try {
+        const data = await arcgisPointQuery(cfg.url, lat, lng, { outFields: cfg.outFields, limit: 1 });
+        const a = data.features?.[0]?.attributes;
+        if (!a) return { status: 'warn', message: 'No NFHL coverage at parcel', data: null };
+        const inSfha = a.SFHA_TF === 'T';
+        return {
+          status: 'ok',
+          data: {
+            zone: a.FLD_ZONE || 'Unknown',
+            subtype: a.ZONE_SUBTY,
+            inSpecialFloodHazardArea: inSfha,
+            baseFloodElevation: a.STATIC_BFE > 0 ? a.STATIC_BFE : null,
+          },
+        };
+      } catch (e) {
+        return { status: 'error', message: e.message, data: null };
+      }
+    }
+
+    async function layerPucCcn(lat, lng, city) {
+      const pipe = DATA_SOURCES.ENRICHMENT_PIPELINE;
+      const result = { water: null, sewer: null, source: 'PUC CCN' };
+
+      const queryCcn = async (layerCfg, type) => {
+        try {
+          const data = await arcgisPointQuery(layerCfg.url, lat, lng, {
+            outFields: layerCfg.outFields,
+            distance: layerCfg.bufferMeters,
+            limit: 1,
+          });
+          const a = data.features?.[0]?.attributes;
+          if (!a) return null;
+          return {
+            ccn: a.CCN_NO,
+            utility: a.UTILITY || a.DBA_NAME,
+            type: a.CCN_TYPE,
+            county: a.COUNTY,
+            status: a.STATUS,
+          };
+        } catch (e) {
+          console.warn(`PUC ${type} CCN:`, e);
+          return null;
+        }
+      };
+
+      result.water = await queryCcn(pipe.pucWaterCcn, 'water');
+      result.sewer = await queryCcn(pipe.pucSewerCcn, 'sewer');
+
+      if (!result.water && !result.sewer && city && pipe.municipalUtilities[city]) {
+        result.source = 'Municipal inference';
+        result.water = { utility: pipe.municipalUtilities[city].water, type: 'Municipal' };
+        result.sewer = { utility: pipe.municipalUtilities[city].sewer, type: 'Municipal' };
+      }
+
+      if (!result.water && !result.sewer) {
+        return { status: 'warn', message: 'No CCN or municipal match — verify well/septic', data: result };
+      }
+      return { status: 'ok', data: result };
+    }
+
+    async function layerJurisdiction(lat, lng) {
+      try {
+        const url = `https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x=${lng}&y=${lat}&benchmark=Public_AR_Current&vintage=Current_Current&format=json`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const geo = data.result?.geographies || {};
+        const place = geo['Incorporated Places']?.[0];
+        const county = geo.Counties?.[0];
+        const cousub = geo['County Subdivisions']?.[0];
+
+        return {
+          status: 'ok',
+          data: {
+            city: place?.NAME || null,
+            cityGeoid: place?.GEOID || null,
+            county: county?.NAME ? `${county.NAME} County` : null,
+            countyFips: county?.GEOID || null,
+            etj: cousub?.NAME || null,
+            inCorpLimit: !!place,
+          },
+        };
+      } catch (e) {
+        return { status: 'error', message: e.message, data: null };
+      }
+    }
+
+    async function layerRegridPremium(query, county, type, deal) {
+      if (!DATA_SOURCES.REGRID_API_KEY) {
+        return { status: 'skip', message: 'REGRID_API_KEY not set', data: null };
+      }
+      try {
+        const regridDeal = await fetchRegridParcel(query, county, type);
+        if (!regridDeal) return { status: 'warn', message: 'No Regrid match', data: null };
+        return {
+          status: 'ok',
+          data: {
+            owner: regridDeal.owner,
+            acreage: regridDeal.acreage,
+            zoning: regridDeal.zoning,
+            parcelId: regridDeal.parcelId,
+            deedNote: 'Deed history available via Regrid premium',
+          },
+          merge: regridDeal,
+        };
+      } catch (e) {
+        return { status: 'error', message: e.message, data: null };
+      }
+    }
+
+    function nearestSpatialNodes(lat, lng, county) {
+      const nearest = (nodes) => nodes
+        .filter(n => !county || n.county === county)
+        .map(n => ({
+          ...n,
+          distanceMi: Math.round(haversineMiles(lat, lng, n.lat, n.lng) * 10) / 10,
+          direction: bearingToCardinal(lat, lng, n.lat, n.lng),
+        }))
+        .sort((a, b) => a.distanceMi - b.distanceMi);
+
+      return {
+        electric: nearest(SPATIAL_NODES.electric).slice(0, 2),
+        commercial: nearest(SPATIAL_NODES.commercial).slice(0, 2),
+      };
+    }
+
+    async function layerSpatialEngine(deal) {
+      await applyNearbyCommunities(deal);
+      const coords = deal.lat != null ? { lat: deal.lat, lng: deal.lng } : await getDealCoordinates(deal);
+      if (!coords) return { status: 'warn', message: 'No coordinates for spatial calc', data: null };
+
+      const nodes = nearestSpatialNodes(coords.lat, coords.lng, deal.county);
+      return {
+        status: 'ok',
+        data: {
+          sfCommunities: deal.nearbyCommunities || [],
+          sfExcludedBtr: deal.nearbyDevExcluded || [],
+          radiusMi: DATA_SOURCES.COMMUNITY_RADIUS.miles,
+          electric: nodes.electric,
+          commercial: nodes.commercial,
+        },
+      };
+    }
+
+    function layerPrivateComps(deal) {
+      const comps = PRIVATE_COMPS_DB.filter(c => c.county === deal.county);
+      if (!comps.length) {
+        return { status: 'warn', message: 'No private comps ingested for county', data: { comps: [] } };
+      }
+      const avg = Math.round(comps.reduce((s, c) => s + c.pricePerAcre, 0) / comps.length);
+      return {
+        status: 'ok',
+        data: { comps, avgPricePerAcre: avg, source: 'HIS / manual ingest' },
+      };
+    }
+
+    function utilitiesFromPuc(pucData, existing) {
+      const items = [];
+      if (pucData?.water) {
+        items.push({
+          type: 'Water',
+          status: 'available',
+          detail: `${pucData.water.utility}${pucData.water.ccn ? ` (CCN ${pucData.water.ccn})` : ''}`,
+        });
+      }
+      if (pucData?.sewer) {
+        const sewerAvail = pucData.sewer.type === 'Municipal' || pucData.sewer.ccn;
+        items.push({
+          type: 'Sewer',
+          status: sewerAvail ? 'available' : 'partial',
+          detail: `${pucData.sewer.utility}${pucData.sewer.ccn ? ` (CCN ${pucData.sewer.ccn})` : ''}`,
+        });
+      }
+      const electric = existing?.find(u => u.type === 'Electric') || {
+        type: 'Electric', status: 'partial', detail: 'See spatial engine distances',
+      };
+      return [electric, ...items].filter((v, i, a) => a.findIndex(x => x.type === v.type) === i);
+    }
+
+    function applyEnrichmentToDeal(deal, report) {
+      deal.enrichmentReport = report;
+      deal.enrichmentStatus = 'enriched';
+
+      if (report.layers.fema?.data) {
+        deal.floodplain = report.layers.fema.data;
+      }
+      if (report.layers.jurisdiction?.data) {
+        deal.jurisdiction = report.layers.jurisdiction.data;
+      }
+      if (report.layers.puc?.data) {
+        deal.utilities = utilitiesFromPuc(report.layers.puc.data, deal.utilities);
+      }
+      if (report.layers.spatial?.data?.electric?.[0]) {
+        const e = report.layers.spatial.data.electric[0];
+        const elec = deal.utilities.find(u => u.type === 'Electric');
+        if (elec) elec.detail = `${e.name} — ${e.distanceMi} mi ${e.direction}`;
+      }
+      if (report.layers.comps?.data?.avgPricePerAcre && deal.margin) {
+        deal.margin.flipValuePerAcre = report.layers.comps.data.avgPricePerAcre;
+      }
+    }
+
+    function renderEnrichmentReportHtml(report) {
+      if (!report) return '';
+      const layerOrder = ['parcel', 'fema', 'puc', 'jurisdiction', 'regrid', 'spatial', 'comps'];
+      const labels = {
+        parcel: 'Parcel centroid + boundary',
+        fema: 'FEMA NFHL',
+        puc: 'PUC CCN water / sewer',
+        jurisdiction: 'City / ETJ / county',
+        regrid: 'Regrid premium',
+        spatial: 'Spatial engine',
+        comps: 'Private comps (HIS)',
+      };
+      const tiers = {
+        parcel: 'free', fema: 'free', puc: 'free', jurisdiction: 'free',
+        regrid: 'paid', spatial: 'internal', comps: 'moat',
+      };
+
+      let html = '<div class="enrich-report">';
+      layerOrder.forEach(key => {
+        const layer = report.layers[key];
+        if (!layer) return;
+        const statusCls = layer.status === 'ok' ? 'ok' : layer.status === 'skip' ? '' : 'warn';
+        html += `
+          <div class="report-layer">
+            <div class="report-layer-header">
+              <span class="name">${labels[key]}</span>
+              <span class="${tierBadgeClass(tiers[key])}">${tiers[key]}</span>
+            </div>
+            <div class="report-layer-body">${renderLayerBody(key, layer)}</div>
+            <div class="report-layer-body report-status ${statusCls}">${layer.status.toUpperCase()}${layer.message ? ` — ${escapeHtml(layer.message)}` : ''}</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function renderLayerBody(key, layer) {
+      const d = layer.data;
+      if (!d) return '<span class="val">—</span>';
+      switch (key) {
+        case 'parcel':
+          return `<span class="val">${escapeHtml(d.source)}</span> · ${escapeHtml(d.parcelId)} · <span class="val">${fmtNum(d.acreage)} ac</span> · centroid ${d.lat?.toFixed(5)}, ${d.lng?.toFixed(5)}${d.hasBoundary ? ' · boundary ✓' : ''}`;
+        case 'fema':
+          return `Zone <span class="val">${escapeHtml(d.zone)}</span>${d.inSpecialFloodHazardArea ? ' · <span class="val" style="color:var(--orange)">SFHA</span>' : ''}${d.baseFloodElevation ? ` · BFE ${d.baseFloodElevation} ft` : ''}`;
+        case 'puc':
+          return [
+            d.water ? `Water: <span class="val">${escapeHtml(d.water.utility || '—')}</span>` : '',
+            d.sewer ? `Sewer: <span class="val">${escapeHtml(d.sewer.utility || '—')}</span>` : '',
+            `(${escapeHtml(d.source)})`,
+          ].filter(Boolean).join(' · ');
+        case 'jurisdiction':
+          return [
+            d.city ? `City: <span class="val">${escapeHtml(d.city)}</span>` : '',
+            d.county ? `County: <span class="val">${escapeHtml(d.county)}</span>` : '',
+            d.etj ? `ETJ: <span class="val">${escapeHtml(d.etj)}</span>` : '',
+            d.inCorpLimit ? 'In corp limits' : 'Unincorporated',
+          ].filter(Boolean).join(' · ');
+        case 'regrid':
+          return `Owner <span class="val">${escapeHtml(d.owner)}</span> · Zoning <span class="val">${escapeHtml(d.zoning)}</span>`;
+        case 'spatial':
+          return [
+            d.sfCommunities?.length ? `SF: <span class="val">${d.sfCommunities.length}</span> within ${d.radiusMi}mi` : 'No SF in radius',
+            d.electric?.[0] ? `Electric: <span class="val">${escapeHtml(d.electric[0].name)}</span> ${d.electric[0].distanceMi}mi ${d.electric[0].direction}` : '',
+            d.commercial?.[0] ? `Commercial: <span class="val">${escapeHtml(d.commercial[0].name)}</span> ${d.commercial[0].distanceMi}mi` : '',
+          ].filter(Boolean).join(' · ');
+        case 'comps':
+          return d.comps?.length
+            ? `<span class="val">${d.comps.length}</span> comps · avg <span class="val">${fmt(d.avgPricePerAcre)}/ac</span> (${escapeHtml(d.source)})`
+            : 'No comps ingested';
+        default:
+          return '';
+      }
+    }
+
+    async function automation1IntakeEnrichment(query, type, county) {
+      initPipelineUI();
+      const parsed = parseQuery(query, type);
+      const live = {};
+      const stepDelay = DATA_SOURCES.SIMULATE_DELAY_MS || 300;
+      let deal = null;
+      let parcelLive = false;
+
+      setPipelineStep('parcel', 'running');
+      if (DATA_SOURCES.USE_LIVE_APIS) {
+        deal = await lookupCountyGIS(county, parsed);
+        if (!deal && DATA_SOURCES.REGRID_API_KEY) {
+          deal = await fetchRegridParcel(query, county, type);
+        }
+        if (deal) {
+          parcelLive = true;
+          deal.dataSource = deal.dataSource || `${county} County CAD`;
+          if (!deal.lat || !deal.lng) await getDealCoordinates(deal);
+        }
+      }
+      if (!deal) {
+        deal = buildMockDealFromProfile(query, type, county, parsed);
+      }
+      setPipelineStep('parcel', 'done');
+      if (parcelLive) live.parcel = true;
+
+      if (!deal.lat || !deal.lng) await getDealCoordinates(deal);
+      const lat = deal.lat;
+      const lng = deal.lng;
+
+      setPipelineStep('jurisdiction', 'running');
+      await delay(stepDelay);
+      if (DATA_SOURCES.USE_LIVE_APIS && lat && lng) {
+        const juris = await layerJurisdiction(lat, lng);
+        if (juris.status === 'ok') live.jurisdiction = juris;
+      }
+      setPipelineStep('jurisdiction', live.jurisdiction ? 'done' : 'done');
+
+      setPipelineStep('environmental', 'running');
+      await delay(stepDelay);
+      if (DATA_SOURCES.USE_LIVE_APIS && lat && lng) {
+        const fema = await layerFemaNfhl(lat, lng);
+        if (fema.status === 'ok') live.fema = fema;
+      }
+      setPipelineStep('environmental', live.fema ? 'done' : 'done');
+
+      setPipelineStep('utilities', 'running');
+      await delay(stepDelay);
+      if (DATA_SOURCES.USE_LIVE_APIS && lat && lng) {
+        const puc = await layerPucCcn(lat, lng, deal.city);
+        if (puc.status === 'ok') live.puc = puc;
+      }
+      setPipelineStep('utilities', live.puc ? 'done' : 'done');
+
+      setPipelineStep('proximity', 'running');
+      await delay(stepDelay);
+      live.spatial = await layerSpatialEngine(deal);
+      setPipelineStep('proximity', 'done');
+
+      setPipelineStep('market', 'running');
+      await delay(stepDelay);
+      setPipelineStep('market', layerPrivateComps(deal).status === 'ok' ? 'done' : 'warn');
+
+      if (DATA_SOURCES.USE_LIVE_APIS && DATA_SOURCES.ATTOM_API_KEY && deal.address) {
+        try {
+          const tax = await fetchAttomTaxHistory(deal.address, deal.city);
+          if (tax) deal.taxHistory = tax;
+        } catch (e) { console.warn('ATTOM skipped:', e); }
+      }
+
+      const dealRecord = buildAutomation1DealRecord(deal, query, type, county, live);
+      applyDealRecordToDeal(deal, dealRecord);
+      resetPipelineUI();
+      return deal;
+    }
+
+    async function enrichProperty(query, type, county) {
+      return automation1IntakeEnrichment(query, type, county);
+    }
+
+    async function buildSeedDealRecord(deal) {
+      deal._mockProfile = mockProfileFor(deal.county);
+      await applyNearbyCommunities(deal);
+      const live = {};
+      if (DATA_SOURCES.USE_LIVE_APIS && deal.lat && deal.lng) {
+        const fema = await layerFemaNfhl(deal.lat, deal.lng);
+        if (fema.status === 'ok') live.fema = fema;
+        const puc = await layerPucCcn(deal.lat, deal.lng, deal.city);
+        if (puc.status === 'ok') live.puc = puc;
+        const juris = await layerJurisdiction(deal.lat, deal.lng);
+        if (juris.status === 'ok') live.jurisdiction = juris;
+      }
+      live.spatial = await layerSpatialEngine(deal);
+      const dealRecord = buildAutomation1DealRecord(
+        deal,
+        `${deal.address}, ${deal.city} TX`,
+        'address',
+        deal.county,
+        live,
+      );
+      applyDealRecordToDeal(deal, dealRecord);
+    }
+
+    // =========================================================================
+    // Nearby new-build SF community radius (excludes Waterloo BTR)
+    // =========================================================================
+
+    function geometryToCentroid(geometry) {
+      if (!geometry) return null;
+      if (geometry.x != null && geometry.y != null) {
+        return { lat: geometry.y, lng: geometry.x };
+      }
+      const ring = geometry.rings?.[0];
+      if (!ring?.length) return null;
+      let sumX = 0;
+      let sumY = 0;
+      ring.forEach(([x, y]) => { sumX += x; sumY += y; });
+      return { lat: sumY / ring.length, lng: sumX / ring.length };
+    }
+
+    function haversineMiles(lat1, lng1, lat2, lng2) {
+      const R = 3958.8;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2
+        + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function bearingToCardinal(lat1, lng1, lat2, lng2) {
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const y = Math.sin(dLng) * Math.cos(lat2 * Math.PI / 180);
+      const x = Math.cos(lat1 * Math.PI / 180) * Math.sin(lat2 * Math.PI / 180)
+        - Math.sin(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.cos(dLng);
+      const deg = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+      const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      return dirs[Math.round(deg / 45) % 8];
+    }
+
+    function isWaterlooBtr(community) {
+      if (community.productType !== 'btr' && community.productType !== 'build_to_rent') return false;
+      const cfg = DATA_SOURCES.COMMUNITY_RADIUS;
+      const builder = (community.builder || '').toLowerCase();
+      const name = (community.name || '').toLowerCase();
+      return cfg.waterlooBtrBuilders.some(b => {
+        const key = b.toLowerCase();
+        return builder.includes(key) || name.includes('waterloo');
+      });
+    }
+
+    async function geocodeParcel(deal) {
+      const q = `${deal.address}, ${deal.city}, TX`;
+      try {
+        const url = `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${encodeURIComponent(q)}&benchmark=Public_AR_Current&format=json`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const match = data.result?.addressMatches?.[0];
+        if (!match) return null;
+        return { lat: match.coordinates.y, lng: match.coordinates.x };
+      } catch (e) {
+        console.warn('Geocode failed:', e);
+        return null;
+      }
+    }
+
+    async function getDealCoordinates(deal) {
+      if (deal.lat != null && deal.lng != null) return { lat: deal.lat, lng: deal.lng };
+      const geo = await geocodeParcel(deal);
+      if (geo) {
+        deal.lat = geo.lat;
+        deal.lng = geo.lng;
+      }
+      return geo;
+    }
+
+    function findNearbySfCommunities(lat, lng, county) {
+      const cfg = DATA_SOURCES.COMMUNITY_RADIUS;
+      const included = [];
+      const excluded = [];
+
+      NEW_BUILD_COMMUNITIES.forEach(c => {
+        const dist = haversineMiles(lat, lng, c.lat, c.lng);
+        if (dist > cfg.miles) return;
+
+        const entry = {
+          ...c,
+          distanceMi: Math.round(dist * 10) / 10,
+          direction: bearingToCardinal(lat, lng, c.lat, c.lng),
+        };
+
+        if (c.productType === 'sf_for_sale') included.push(entry);
+        else if (isWaterlooBtr(c)) excluded.push(entry);
+      });
+
+      included.sort((a, b) => a.distanceMi - b.distanceMi);
+      excluded.sort((a, b) => a.distanceMi - b.distanceMi);
+
+      return {
+        communities: included.slice(0, cfg.maxResults),
+        excluded: excluded.slice(0, cfg.maxResults),
+      };
+    }
+
+    function formatNearbyDevSummary(communities) {
+      if (!communities.length) return '';
+      return communities.map(c => {
+        const lots = c.lotsRemaining != null ? ` (${c.lotsRemaining} lots)` : '';
+        const abs = c.absorptionPerMo ? `; ${c.absorptionPerMo} lots/mo` : '';
+        return `${c.builder} — ${c.name} ${c.status}, ${c.distanceMi}mi ${c.direction}${lots}${abs}`;
+      }).join('; ');
+    }
+
+    function renderNearbyCommunitiesHtml(deal) {
+      const cfg = DATA_SOURCES.COMMUNITY_RADIUS;
+      const communities = deal.nearbyCommunities || [];
+      const excluded = deal.nearbyDevExcluded || [];
+
+      if (!communities.length && !excluded.length) {
+        return `<div style="font-size:11px;color:var(--text-muted);margin-top:8px">No new-build for-sale SF communities within ${cfg.miles} mi.</div>`;
+      }
+
+      let html = `<div class="key" style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Nearby New Build SF (${cfg.miles} mi radius)</div>`;
+      html += '<div class="community-list">';
+      if (communities.length) {
+        html += communities.map(c => `
+          <div class="community-item">
+            <div class="name">${escapeHtml(c.builder)} — ${escapeHtml(c.name)}</div>
+            <div class="meta">${c.distanceMi} mi ${c.direction} · ${escapeHtml(c.status)}${c.lotsRemaining != null ? ` · ${c.lotsRemaining} lots` : ''}${c.absorptionPerMo ? ` · ${c.absorptionPerMo}/mo absorption` : ''}</div>
+          </div>
+        `).join('');
+      } else {
+        html += `<div style="font-size:11px;color:var(--text-muted)">No qualifying for-sale SF communities in radius.</div>`;
+      }
+      html += '</div>';
+
+      if (excluded.length) {
+        html += `<div class="community-excluded">${excluded.length} Waterloo BTR communit${excluded.length === 1 ? 'y' : 'ies'} excluded: ${excluded.map(c => `${escapeHtml(c.name)} (${c.distanceMi} mi ${c.direction})`).join(', ')}</div>`;
+      }
+
+      return html;
+    }
+
+    async function applyNearbyCommunities(deal) {
+      const coords = await getDealCoordinates(deal);
+      if (!coords) {
+        deal.nearbyCommunities = [];
+        deal.nearbyDevExcluded = [];
+        deal.nearbyDev = '';
+        return;
+      }
+
+      const { communities, excluded } = findNearbySfCommunities(coords.lat, coords.lng, deal.county);
+      deal.nearbyCommunities = communities;
+      deal.nearbyDevExcluded = excluded;
+      deal.nearbyDev = formatNearbyDevSummary(communities);
+    }
+
+    function extractCity(query, county) {
+      const cities = {
+        Williamson: 'Taylor', Bastrop: 'Smithville', 'Fort Bend': 'Sugar Land',
+        Hays: 'Driftwood', Bexar: 'San Antonio', Guadalupe: 'Seguin', Travis: 'Austin',
+      };
+      const match = query.match(/,\s*([^,]+)\s*TX/i);
+      return match ? match[1].trim() : (cities[county] || 'Unknown');
+    }
+
+    // =========================================================================
+    // Formatting helpers
+    // =========================================================================
+    function fmt(n) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+    }
+
+    function fmtNum(n, dec = 1) {
+      return n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+
+    function fullAddress(deal) {
+      return `${deal.address}, ${deal.city} TX`;
+    }
+
+    function statusClass(status) {
+      if (status === 'enriched') return 'status-enriched';
+      if (status === 'pending') return 'status-pending';
+      return 'status-new';
+    }
+
+    function statusLabel(status) {
+      if (status === 'enriched') return 'Enriched';
+      if (status === 'pending') return 'Pending';
+      return 'New';
+    }
+
+    function utilityClass(status) {
+      return `utility-tag ${status}`;
+    }
+
+    function daysSince(dateStr) {
+      const d = new Date(dateStr);
+      const now = new Date();
+      return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+    }
+
+    function isContactOverdue(deal) {
+      return deal.callReminder && daysSince(deal.lastContact) > 35;
+    }
+
+    // =========================================================================
+    // Margin calculations
+    // =========================================================================
+    function calcMargins(deal) {
+      const cost = deal.acreage * deal.askingPerAcre;
+      const entitled = deal.acreage * deal.margin.entitledValuePerAcre;
+      const flip = deal.acreage * deal.margin.flipValuePerAcre;
+      const retailGross = deal.acreage * deal.margin.entitledValuePerAcre;
+      const retailComm = retailGross * (deal.margin.retailCommissionPct / 100);
+
+      return {
+        cost,
+        scenarios: [
+          { key: 'entitled', label: 'Entitled Value', gross: entitled, net: entitled - cost },
+          { key: 'flip', label: 'Flip to Builder', gross: flip, net: flip - cost },
+          { key: 'retail', label: 'Retail Commission', gross: retailComm, net: retailComm },
+        ],
+      };
+    }
+
+    // =========================================================================
+    // Render functions
+    // =========================================================================
+    function renderAll() {
+      renderHeader();
+      renderPipeline();
+      renderSilos();
+    }
+
+    function renderHeader() {
+      const totalAcres = deals.reduce((s, d) => s + d.acreage, 0);
+      const totalValue = deals.reduce((s, d) => s + d.acreage * d.askingPerAcre, 0);
+      document.getElementById('hdr-deals').textContent = deals.length;
+      document.getElementById('hdr-acres').textContent = fmtNum(totalAcres, 1);
+      document.getElementById('hdr-value').textContent = fmt(totalValue);
+    }
+
+    function renderPipeline() {
+      const tbody = document.getElementById('pipeline-tbody');
+      const cards = document.getElementById('pipeline-cards');
+
+      tbody.innerHTML = deals.map(d => `
+        <tr data-id="${d.id}">
+          <td>
+            <div style="font-weight:500">${d.address}</div>
+            <div style="font-size:10px;color:var(--text-muted)">${d.city}, TX</div>
+          </td>
+          <td>${d.county}</td>
+          <td class="mono">${fmtNum(d.acreage)}</td>
+          <td class="mono">${fmt(d.askingPerAcre)}</td>
+          <td><span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span></td>
+          <td>
+            <select class="route-select ${ROUTES[d.route].class}" data-route-select="${d.id}" onclick="event.stopPropagation()">
+              ${Object.entries(ROUTES).map(([k, v]) =>
+                `<option value="${k}" ${d.route === k ? 'selected' : ''}>${v.label}</option>`
+              ).join('')}
+            </select>
+          </td>
+        </tr>
+      `).join('');
+
+      cards.innerHTML = deals.map(d => `
+        <div class="deal-card" data-id="${d.id}">
+          <div class="deal-card-header">
+            <div>
+              <div class="deal-card-address">${d.address}</div>
+              <div class="deal-card-county">${d.city}, ${d.county} Co.</div>
+            </div>
+            <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+          </div>
+          <div class="deal-card-metrics">
+            <div class="deal-card-metric">
+              <div class="label">Acres</div>
+              <div class="value">${fmtNum(d.acreage)}</div>
+            </div>
+            <div class="deal-card-metric">
+              <div class="label">$/Acre</div>
+              <div class="value">${fmt(d.askingPerAcre)}</div>
+            </div>
+          </div>
+          <select class="route-select ${ROUTES[d.route].class}" data-route-select="${d.id}" onclick="event.stopPropagation()" style="width:100%">
+            ${Object.entries(ROUTES).map(([k, v]) =>
+              `<option value="${k}" ${d.route === k ? 'selected' : ''}>${v.label}</option>`
+            ).join('')}
+          </select>
+        </div>
+      `).join('');
+
+      bindPipelineEvents();
+    }
+
+    function renderSilos() {
+      const lanes = { DEVELOP: [], SELL: [], RETAIL: [] };
+      deals.forEach(d => lanes[d.route].push(d));
+
+      const map = {
+        DEVELOP: { count: 'silo-dev-count', acres: 'silo-dev-acres', body: 'silo-dev-body' },
+        SELL:    { count: 'silo-sell-count', acres: 'silo-sell-acres', body: 'silo-sell-body' },
+        RETAIL:  { count: 'silo-retail-count', acres: 'silo-retail-acres', body: 'silo-retail-body' },
+      };
+
+      Object.entries(lanes).forEach(([route, items]) => {
+        const cfg = map[route];
+        const totalAcres = items.reduce((s, d) => s + d.acreage, 0);
+        document.getElementById(cfg.count).textContent = items.length;
+        document.getElementById(cfg.acres).textContent = fmtNum(totalAcres, 1);
+
+        const body = document.getElementById(cfg.body);
+        if (items.length === 0) {
+          body.innerHTML = '<div class="silo-empty">No deals in this lane</div>';
+        } else {
+          body.innerHTML = items.map(d => `
+            <div class="silo-deal" data-id="${d.id}">
+              <div class="silo-deal-addr">${d.address}</div>
+              <div class="silo-deal-meta">
+                <span>${fmtNum(d.acreage)} ac</span>
+                <span>${fmt(d.askingPerAcre)}/ac</span>
+              </div>
+            </div>
+          `).join('');
+        }
+      });
+
+      document.querySelectorAll('.silo-deal').forEach(el => {
+        el.addEventListener('click', () => openModal(el.dataset.id));
+      });
+    }
+
+    function renderModal(deal) {
+      const margins = calcMargins(deal);
+      const bestNet = Math.max(...margins.scenarios.map(s => s.net));
+
+      document.getElementById('modal-address').textContent = fullAddress(deal);
+      document.getElementById('modal-sub').textContent = `${deal.parcelId} · ${deal.county} County · ${fmtNum(deal.acreage)} acres`;
+
+      document.getElementById('modal-body').innerHTML = `
+        <div class="modal-section">
+          <h4>Enriched Property Data</h4>
+          <div class="detail-grid">
+            <div class="detail-item"><div class="key">Parcel ID</div><div class="val">${deal.parcelId}</div></div>
+            <div class="detail-item"><div class="key">Owner of Record</div><div class="val">${deal.owner}</div></div>
+            <div class="detail-item"><div class="key">Zoning</div><div class="val">${deal.zoning}</div></div>
+            <div class="detail-item"><div class="key">Asking Price</div><div class="val">${fmt(deal.askingPerAcre)}/ac (${fmt(deal.acreage * deal.askingPerAcre)} total)</div></div>
+          </div>
+          <div style="margin-top:12px">
+            <div class="key" style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Tax History</div>
+            <table class="tax-table">
+              <thead><tr><th>Year</th><th>Assessed</th><th>Taxes Paid</th></tr></thead>
+              <tbody>
+                ${deal.taxHistory.map(t => `
+                  <tr><td>${t.year}</td><td>${fmt(t.assessed)}</td><td>${t.taxes != null ? fmt(t.taxes) : '—'}</td></tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:12px">
+            <div class="key" style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Utilities / Infrastructure</div>
+            ${deal.utilities.map(u => `
+              <span class="${utilityClass(u.status)}" title="${u.detail}">${u.type}: ${u.status}</span>
+            `).join('')}
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:6px">
+              ${deal.utilities.map(u => `${u.type} — ${u.detail}`).join('<br>')}
+            </div>
+          </div>
+          ${deal.floodplain ? `<div style="margin-top:10px;font-size:11px">Flood: <span style="font-family:var(--mono)">${escapeHtml(deal.floodplain.zone)}</span>${deal.floodplain.inSpecialFloodHazardArea ? ' <span style="color:var(--orange)">SFHA</span>' : ''}</div>` : ''}
+        </div>
+
+        <div class="modal-section">
+          <h4>Automation 1: Intake Enrichment</h4>
+          ${renderAutomation1ReportCard(deal.dealRecord)}
+          <div style="margin-top:12px">${renderNearbyCommunitiesHtml(deal)}</div>
+        </div>
+
+        <div class="modal-section">
+          <h4>Relationship / Contact</h4>
+          <div class="contact-row">
+            <input type="text" id="modal-seller" placeholder="Seller name" value="${deal.sellerName}">
+          </div>
+          <div class="contact-row">
+            <label style="font-size:11px;color:var(--text-muted);white-space:nowrap">Last Contact</label>
+            <input type="date" id="modal-last-contact" value="${deal.lastContact}">
+          </div>
+          <label class="reminder-flag ${isContactOverdue(deal) ? 'overdue' : ''}">
+            <input type="checkbox" id="modal-reminder" ${deal.callReminder ? 'checked' : ''}>
+            Call every 30–45 days
+            ${isContactOverdue(deal) ? ` — overdue (${daysSince(deal.lastContact)} days)` : ''}
+          </label>
+        </div>
+
+        <div class="modal-section">
+          <h4>Notes</h4>
+          <textarea class="notes-field" id="modal-notes" placeholder="Deal notes, next steps, comps...">${deal.notes}</textarea>
+        </div>
+
+        <div class="modal-section">
+          <h4>Margin Analysis</h4>
+          <div class="margin-grid">
+            ${margins.scenarios.map(s => `
+              <div class="margin-card ${s.net === bestNet ? 'best' : ''}">
+                <div class="scenario">${s.label}</div>
+                <div class="amount">${fmt(s.gross)}</div>
+                <div class="per-acre">${fmt(s.gross / deal.acreage)}/ac gross</div>
+                <div class="net ${s.net >= 0 ? 'positive' : 'negative'}">
+                  ${s.key === 'retail' ? 'Commission' : 'Net'}: ${fmt(s.net)}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="margin-summary">
+            <span>Acquisition cost: <strong>${fmt(margins.cost)}</strong></span>
+            <span>Best path: <strong>${margins.scenarios.find(s => s.net === bestNet).label}</strong></span>
+          </div>
+        </div>
+      `;
+
+      bindModalEvents(deal);
+    }
+
+    // =========================================================================
+    // Event bindings
+    // =========================================================================
+    function bindPipelineEvents() {
+      document.querySelectorAll('#pipeline-tbody tr, .deal-card').forEach(el => {
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('[data-route-select]')) return;
+          openModal(el.dataset.id);
+        });
+      });
+
+      document.querySelectorAll('[data-route-select]').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+          e.stopPropagation();
+          const id = sel.dataset.routeSelect;
+          const deal = deals.find(d => d.id === id);
+          if (deal) {
+            deal.route = sel.value;
+            sel.className = `route-select ${ROUTES[deal.route].class}`;
+            renderAll();
+          }
+        });
+      });
+    }
+
+    function bindModalEvents(deal) {
+      const save = () => {
+        deal.sellerName = document.getElementById('modal-seller').value;
+        deal.lastContact = document.getElementById('modal-last-contact').value;
+        deal.callReminder = document.getElementById('modal-reminder').checked;
+        deal.notes = document.getElementById('modal-notes').value;
+      };
+
+      ['modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', save);
+        if (el && el.tagName === 'TEXTAREA') el.addEventListener('input', save);
+      });
+    }
+
+    function openModal(id) {
+      activeDealId = id;
+      const deal = deals.find(d => d.id === id);
+      if (!deal) return;
+      renderModal(deal);
+      document.getElementById('modal-overlay').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      activeDealId = null;
+    }
+
+    function formatTaxLine(t) {
+      const taxPart = t.taxes != null ? `${fmt(t.taxes)} taxes` : 'tax amount unavailable';
+      const est = t.estimated ? ' (est.)' : '';
+      return `${t.year}: ${fmt(t.assessed)} assessed / ${taxPart}${est}`;
+    }
+
+    function showEnrichment(data) {
+      const el = document.getElementById('enrichment-result');
+      const grid = document.getElementById('enrichment-grid');
+      document.getElementById('enrichment-title').textContent = '✓ Automation 1 Complete';
+      const sum = data.dealRecord?.summary;
+      document.getElementById('enrichment-source').textContent = data.dataSource
+        ? `${data.dealRecord?.automation || 'Automation 1'} → ${data.dataSource}${sum ? ` · ${sum.live} live / ${sum.mock} mock` : ''}`
+        : '';
+      document.getElementById('enrichment-warn').textContent = data.taxHistory[0]?.note || '';
+      el.classList.remove('error');
+      document.getElementById('add-to-pipeline').style.display = '';
+
+      grid.innerHTML = `
+        <div class="enrichment-grid" style="margin-bottom:10px">
+          <div class="enrichment-item"><div class="key">Parcel</div><div class="val">${escapeHtml(data.parcelId)}</div></div>
+          <div class="enrichment-item"><div class="key">Acres</div><div class="val">${fmtNum(data.acreage)}</div></div>
+          <div class="enrichment-item"><div class="key">Owner</div><div class="val">${escapeHtml(data.owner)}</div></div>
+          <div class="enrichment-item"><div class="key">$/Acre</div><div class="val">${fmt(data.askingPerAcre)}</div></div>
+        </div>
+        ${renderAutomation1ReportCard(data.dealRecord)}
+        <div class="enrichment-full" style="margin-top:8px">${renderNearbyCommunitiesHtml(data)}</div>
+      `;
+      el.classList.add('visible');
+    }
+
+    function showEnrichmentError(message) {
+      resetPipelineUI();
+      const el = document.getElementById('enrichment-result');
+      document.getElementById('enrichment-title').textContent = '✗ Lookup Failed';
+      document.getElementById('enrichment-source').textContent = '';
+      document.getElementById('enrichment-warn').textContent = '';
+      document.getElementById('enrichment-grid').innerHTML = `<div class="enrichment-full" style="color:var(--red);font-size:11px;line-height:1.5">${escapeHtml(message)}</div>`;
+      document.getElementById('add-to-pipeline').style.display = 'none';
+      el.classList.add('visible', 'error');
+      pendingEnrichment = null;
+    }
+
+    // =========================================================================
+    // Init
+    // =========================================================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      deals = seedDeals();
+      await Promise.all(deals.map(d => buildSeedDealRecord(d)));
+      renderAll();
+
+      // Intake type toggle
+      document.getElementById('intake-type').addEventListener('change', (e) => {
+        const label = document.getElementById('intake-label');
+        const input = document.getElementById('intake-query');
+        if (e.target.value === 'parcel') {
+          label.textContent = 'Parcel / APN';
+          input.placeholder = 'e.g. R-12345-678';
+        } else {
+          label.textContent = 'Address';
+          input.placeholder = 'e.g. 6200 Old Pearsall Rd, San Antonio TX';
+        }
+      });
+
+      // Intake form
+      document.getElementById('intake-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const query = document.getElementById('intake-query').value.trim();
+        const type = document.getElementById('intake-type').value;
+        const county = document.getElementById('intake-county').value;
+        const btn = document.getElementById('intake-submit');
+        const loader = document.getElementById('intake-loading');
+
+        btn.disabled = true;
+        loader.classList.add('active');
+        document.getElementById('enrichment-result').classList.remove('visible');
+
+        try {
+          pendingEnrichment = await enrichProperty(query, type, county);
+          showEnrichment(pendingEnrichment);
+        } catch (err) {
+          showEnrichmentError(err.message || 'Enrichment lookup failed.');
+        } finally {
+          btn.disabled = false;
+          loader.classList.remove('active');
+        }
+      });
+
+      // Add to pipeline
+      document.getElementById('add-to-pipeline').addEventListener('click', () => {
+        if (!pendingEnrichment) return;
+        const newDeal = {
+          ...pendingEnrichment,
+          id: 'deal-' + Date.now(),
+        };
+        deals.unshift(newDeal);
+        pendingEnrichment = null;
+        document.getElementById('enrichment-result').classList.remove('visible');
+        document.getElementById('intake-query').value = '';
+        renderAll();
+      });
+
+      // View toggle
+      document.querySelectorAll('.view-toggle button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          viewMode = btn.dataset.view;
+          document.querySelectorAll('.view-toggle button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('pipeline-table-wrap').classList.toggle('hidden', viewMode === 'cards');
+          document.getElementById('pipeline-cards').classList.toggle('active', viewMode === 'cards');
+        });
+      });
+
+      // Modal close
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('modal-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modal-overlay')) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+    });
+  </script>
+</body>
+</html>
