@@ -7,6 +7,7 @@
     "connect-landid": "node scripts/landid-connect.mjs",
     "connect-landid-mcp": "node scripts/mcp-landid-connect.mjs",
     "provision-supabase-mcp": "node scripts/mcp-supabase-provision.mjs",
+    "generate-docs": "node scripts/generate-docs.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,5 +24,8 @@
   "homepage": "https://github.com/jberg2323/barn-to-bank#readme",
   "dependencies": {
     "playwright": "^1.60.0"
+  },
+  "devDependencies": {
+    "docx": "^9.7.1"
   }
 }
