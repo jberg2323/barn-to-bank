@@ -2666,6 +2666,7 @@
     <div class="header-right">
       <div class="header-actions">
         <a href="/" class="btn-share-link" title="Back to public marketing site" style="text-decoration:none;display:inline-flex;align-items:center;">Public Site</a>
+        <button type="button" class="btn-share-link" id="auth-sign-out" title="Sign out of origination platform">Sign Out</button>
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
           <span class="hide-mobile">Copy App Link</span><span class="show-mobile">Share</span>
         </button>
@@ -7717,6 +7718,12 @@
       initMobileNav();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
+      document.getElementById('auth-sign-out')?.addEventListener('click', async () => {
+        try {
+          await fetch('/api/auth', { method: 'DELETE', credentials: 'same-origin' });
+        } catch { /* ignore */ }
+        window.location.href = '/app/login';
+      });
       document.getElementById('website-leads-refresh')?.addEventListener('click', async () => {
         const btn = document.getElementById('website-leads-refresh');
         if (btn) { btn.disabled = true; btn.textContent = '…'; }
