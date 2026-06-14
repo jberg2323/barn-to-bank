@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "connect-landid": "node scripts/landid-connect.mjs",
+    "connect-landid-mcp": "node scripts/mcp-landid-connect.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
