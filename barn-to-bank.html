@@ -6,48 +6,57 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Barn to Bank — Land Deal Origination</title>
-  <meta name="theme-color" content="#0f0e0c">
+  <title>Barn to Bank — Texas Land Origination</title>
+  <meta name="description" content="Barn to Bank — intake, enrich, and route Texas land deals from farm to funded. Automation 1 enrichment, pipeline, and three-silo routing.">
+  <meta name="theme-color" content="#0c0b09">
+  <meta property="og:title" content="Barn to Bank — Texas Land Origination">
+  <meta property="og:description" content="Intake, enrich, and route land deals — develop, sell, or retail.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a1714'/%3E%3Cpath d='M6 22V12l10-6 10 6v10' stroke='%23d4b56a' stroke-width='1.5' fill='none' stroke-linejoin='round'/%3E%3Cpath d='M12 22v-6h8v6' stroke='%23d4b56a' stroke-width='1.5' fill='none'/%3E%3Cpath d='M6 22h20' stroke='%236d9a72' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M18 10l4-3 4 5' stroke='%23ecd08a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #0f0e0c;
-      --bg-panel: #171512;
-      --bg-elevated: #1f1c18;
-      --bg-hover: #28241f;
-      --bg-card: #1a1714;
-      --border: rgba(201, 169, 98, 0.14);
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --border-strong: rgba(201, 169, 98, 0.28);
-      --text-primary: #f4f0e8;
-      --text-secondary: #b8aea0;
-      --text-muted: #7a7268;
+      --bg-deep: #0c0b09;
+      --bg-panel: #14120f;
+      --bg-elevated: #1c1915;
+      --bg-hover: #26221c;
+      --bg-card: #171411;
+      --border: rgba(212, 181, 106, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.055);
+      --border-strong: rgba(212, 181, 106, 0.32);
+      --text-primary: #f6f2ea;
+      --text-secondary: #c4b8a8;
+      --text-muted: #8a8074;
       --accent: #d4b56a;
-      --accent-bright: #ecd08a;
-      --accent-dim: #9a7d3c;
-      --accent-glow: rgba(212, 181, 106, 0.22);
-      --land: #6d9a72;
-      --land-dim: #4a6b4e;
-      --green: #6fcf85;
-      --green-dim: #3d8f52;
-      --blue: #6eb5ff;
-      --orange: #e8a84a;
-      --red: #f07068;
-      --purple: #b48cff;
-      --develop: #b48cff;
-      --sell: #6fcf85;
-      --retail: #6eb5ff;
+      --accent-bright: #f0dc9a;
+      --accent-dim: #a68440;
+      --accent-glow: rgba(212, 181, 106, 0.24);
+      --accent-soft: rgba(212, 181, 106, 0.08);
+      --land: #72a878;
+      --land-dim: #4d7352;
+      --green: #72d48a;
+      --green-dim: #3f9a56;
+      --blue: #78bcff;
+      --orange: #eca85a;
+      --red: #f47a72;
+      --purple: #c09aff;
+      --develop: #c09aff;
+      --sell: #72d48a;
+      --retail: #78bcff;
       --mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
       --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
       --radius: 10px;
       --radius-sm: 7px;
-      --radius-lg: 14px;
-      --shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
-      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.28);
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --shadow: 0 20px 56px rgba(0, 0, 0, 0.5);
+      --shadow-sm: 0 4px 24px rgba(0, 0, 0, 0.32);
+      --shadow-glow: 0 0 40px rgba(212, 181, 106, 0.08);
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -71,26 +80,63 @@
       pointer-events: none;
       z-index: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(212, 181, 106, 0.09), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 95% 0%, rgba(109, 154, 114, 0.07), transparent 50%),
-        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(154, 125, 60, 0.05), transparent 60%);
+        radial-gradient(ellipse 90% 55% at 5% -15%, rgba(212, 181, 106, 0.11), transparent 58%),
+        radial-gradient(ellipse 65% 45% at 98% 5%, rgba(114, 168, 120, 0.08), transparent 52%),
+        radial-gradient(ellipse 55% 35% at 50% 105%, rgba(166, 132, 64, 0.06), transparent 62%);
     }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    ::selection {
+      background: rgba(212, 181, 106, 0.28);
+      color: var(--text-primary);
+    }
+
+    *:focus-visible {
+      outline: 2px solid var(--accent-dim);
+      outline-offset: 2px;
+    }
+
+    *:focus:not(:focus-visible) { outline: none; }
 
     .header, .mobile-nav, .main { position: relative; z-index: 1; }
 
     .show-mobile { display: none; }
-    .brand-serif { font-family: var(--serif); font-weight: 600; font-style: italic; }
+    .brand-serif {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 55%, var(--land) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sans {
+      font-family: var(--sans);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
 
     /* Header */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 28px;
-      background: rgba(23, 21, 18, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      padding: 12px 28px;
+      background: rgba(20, 18, 15, 0.88);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
       border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.03);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -103,57 +149,96 @@
     }
 
     .logo-mark {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(145deg, #2a241c 0%, #1a1714 100%);
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(155deg, #2e281e 0%, #1a1714 55%, #14120f 100%);
       border: 1px solid var(--border-strong);
-      border-radius: 12px;
+      border-radius: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.06);
+      box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.07), var(--shadow-glow);
+      position: relative;
+      overflow: hidden;
     }
 
-    .logo-mark svg { width: 24px; height: 24px; }
+    .logo-mark::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(240,220,154,0.12), transparent 55%);
+      pointer-events: none;
+    }
+
+    .logo-mark svg { width: 26px; height: 26px; position: relative; z-index: 1; }
 
     .logo h1 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
       letter-spacing: -0.03em;
-      line-height: 1.15;
+      line-height: 1.1;
       color: var(--text-primary);
     }
 
     .logo .tagline {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-weight: 500;
-      letter-spacing: 0.02em;
-      margin-top: 2px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .logo .tagline::before {
+      content: '';
+      width: 14px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-dim), transparent);
     }
 
     .header-stats {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       font-family: var(--mono);
       font-size: 12px;
     }
 
     .header-stat {
       text-align: left;
-      padding: 8px 14px;
-      background: var(--bg-elevated);
+      padding: 8px 14px 8px 12px;
+      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      min-width: 88px;
+      min-width: 92px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s var(--ease), transform 0.25s var(--ease-spring);
+    }
+
+    .header-stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent-bright), transparent);
+      opacity: 0.7;
+    }
+
+    .header-stat:hover {
+      border-color: var(--border);
+      transform: translateY(-1px);
     }
 
     .header-stat .label {
       color: var(--text-muted);
       font-size: 9px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       font-family: var(--sans);
       font-weight: 600;
     }
@@ -161,9 +246,10 @@
     .header-stat .value {
       color: var(--accent-bright);
       font-weight: 600;
-      font-size: 14px;
-      margin-top: 2px;
+      font-size: 15px;
+      margin-top: 3px;
       display: block;
+      font-variant-numeric: tabular-nums;
     }
 
     /* Layout */
@@ -187,37 +273,69 @@
     }
 
     .page-hero {
-      margin-bottom: 22px;
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .page-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .page-hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--land);
+      box-shadow: 0 0 8px rgba(114, 168, 120, 0.5);
     }
 
     .page-hero h2 {
       font-family: var(--serif);
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       color: var(--text-primary);
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .page-hero p {
-      margin-top: 6px;
-      font-size: 13px;
+      margin-top: 8px;
+      font-size: 14px;
       color: var(--text-secondary);
-      max-width: 520px;
+      max-width: 540px;
+      line-height: 1.6;
     }
 
     .panel-card {
-      background: var(--bg-card);
+      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 18px;
       margin-bottom: 14px;
       box-shadow: var(--shadow-sm);
+      transition: border-color 0.25s var(--ease);
     }
+
+    .panel-card:hover { border-color: var(--border); }
 
     .panel-card-accent {
       border-color: var(--border);
-      background: linear-gradient(165deg, rgba(212,181,106,0.06) 0%, var(--bg-card) 45%);
+      background: linear-gradient(165deg, rgba(212,181,106,0.09) 0%, rgba(114,168,120,0.04) 35%, var(--bg-card) 70%);
+      box-shadow: var(--shadow-sm), var(--shadow-glow);
     }
 
     /* Section headers */
@@ -483,26 +601,49 @@
       transition: background 0.15s var(--ease);
     }
 
-    .pipeline-table tbody tr:hover { background: var(--bg-hover); }
+    .pipeline-table tbody tr:hover {
+      background: linear-gradient(90deg, var(--accent-soft) 0%, var(--bg-hover) 12%);
+    }
     .pipeline-table tbody tr:last-child td { border-bottom: none; }
 
     .empty-state {
       text-align: center;
-      padding: 48px 24px;
-      background: var(--bg-card);
+      padding: 56px 28px;
+      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
       border: 1px dashed var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-xl);
+      position: relative;
+      overflow: hidden;
     }
 
-    .empty-state-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      opacity: 0.5;
+    .empty-state::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, var(--accent-soft), transparent 70%);
+      pointer-events: none;
     }
+
+    .empty-state > * { position: relative; z-index: 1; }
+
+    .empty-state-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--accent);
+    }
+
+    .empty-state-icon svg { width: 28px; height: 28px; }
 
     .empty-state h3 {
       font-family: var(--serif);
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
       margin-bottom: 8px;
       color: var(--text-primary);
@@ -511,9 +652,22 @@
     .empty-state p {
       font-size: 13px;
       color: var(--text-muted);
-      max-width: 320px;
+      max-width: 340px;
       margin: 0 auto;
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+
+    .empty-state-cta {
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
     }
 
     .mono { font-family: var(--mono); }
@@ -560,20 +714,46 @@
     .pipeline-table-wrap.hidden { display: none; }
 
     .deal-card {
-      background: var(--bg-card);
+      background: linear-gradient(165deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 18px 18px 16px 20px;
       cursor: pointer;
-      transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+      transition: border-color 0.25s var(--ease), transform 0.25s var(--ease-spring), box-shadow 0.25s var(--ease);
       box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      animation: cardIn 0.4s var(--ease) both;
+    }
+
+    .deal-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--text-muted);
+      opacity: 0.35;
+      transition: opacity 0.25s, width 0.25s var(--ease);
+    }
+
+    .deal-card.route-develop::before { background: var(--develop); opacity: 1; }
+    .deal-card.route-sell::before { background: var(--sell); opacity: 1; }
+    .deal-card.route-retail::before { background: var(--retail); opacity: 1; }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .deal-card:hover {
       border-color: var(--border-strong);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.38);
     }
+
+    .deal-card:hover::before { width: 4px; }
 
     .deal-card-header {
       display: flex;
@@ -609,7 +789,14 @@
 
     .deal-card-metric .value {
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .deal-card-metric .value.accent {
+      color: var(--accent-bright);
     }
 
     /* Silo routing */
@@ -645,13 +832,38 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--bg-elevated);
+      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-card) 100%);
+      gap: 10px;
     }
+
+    .silo-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .silo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .lane-develop .silo-icon { background: rgba(192,154,255,0.12); border-color: rgba(192,154,255,0.25); }
+    .lane-sell .silo-icon { background: rgba(114,212,138,0.12); border-color: rgba(114,212,138,0.25); }
+    .lane-retail .silo-icon { background: rgba(120,188,255,0.12); border-color: rgba(120,188,255,0.25); }
 
     .silo-header h3 {
       font-size: 12px;
       font-weight: 700;
       letter-spacing: -0.01em;
+      line-height: 1.25;
     }
 
     .silo-stats {
@@ -699,10 +911,18 @@
     }
 
     .silo-empty {
-      padding: 20px;
+      padding: 28px 16px;
       text-align: center;
       color: var(--text-muted);
       font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .silo-empty-icon {
+      font-size: 20px;
+      opacity: 0.45;
+      margin-bottom: 8px;
+      display: block;
     }
 
     /* Modal */
@@ -1327,41 +1547,79 @@
 
     .partner-welcome {
       margin-bottom: 16px;
-      padding: 16px;
-      background: linear-gradient(145deg, rgba(212,181,106,0.08) 0%, rgba(109,154,114,0.06) 100%);
+      padding: 18px;
+      background: linear-gradient(155deg, rgba(212,181,106,0.1) 0%, rgba(114,168,120,0.06) 50%, var(--bg-card) 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       font-size: 12px;
       line-height: 1.6;
       color: var(--text-secondary);
+      box-shadow: var(--shadow-glow);
     }
     .partner-welcome.hidden { display: none; }
     .partner-welcome strong {
       font-family: var(--serif);
       color: var(--accent-bright);
       display: block;
-      margin-bottom: 8px;
-      font-size: 15px;
+      margin-bottom: 4px;
+      font-size: 16px;
       font-weight: 600;
+      letter-spacing: -0.02em;
     }
-    .partner-welcome ol {
-      margin: 8px 0 0 16px;
-      padding: 0;
-    }
-    .partner-welcome li { margin-bottom: 4px; }
-    .partner-welcome-dismiss {
-      margin-top: 10px;
-      width: 100%;
-      padding: 5px 8px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+    .partner-welcome-sub {
+      font-size: 11px;
       color: var(--text-muted);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .partner-welcome-steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .partner-welcome-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .partner-welcome-steps .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      color: var(--accent);
       font-size: 10px;
+      font-weight: 700;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .partner-welcome-dismiss {
+      margin-top: 14px;
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
       font-family: var(--sans);
+      transition: all 0.2s var(--ease);
     }
-    .partner-welcome-dismiss:hover { color: var(--text-primary); border-color: var(--text-muted); }
+    .partner-welcome-dismiss:hover {
+      color: var(--text-primary);
+      border-color: var(--border);
+      background: var(--bg-elevated);
+    }
 
     /* Mobile bottom navigation */
     .mobile-nav {
@@ -1400,6 +1658,29 @@
     .mobile-nav button.active {
       color: var(--accent-bright);
       border-bottom-color: var(--accent);
+      background: var(--accent-soft);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .sidebar::-webkit-scrollbar,
+    .content::-webkit-scrollbar,
+    .silo-body::-webkit-scrollbar,
+    .modal-panel::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb,
+    .content::-webkit-scrollbar-thumb,
+    .silo-body::-webkit-scrollbar-thumb,
+    .modal-panel::-webkit-scrollbar-thumb {
+      background: rgba(212, 181, 106, 0.2);
+      border-radius: 3px;
+    }
+    .sidebar::-webkit-scrollbar-thumb:hover,
+    .content::-webkit-scrollbar-thumb:hover,
+    .silo-body::-webkit-scrollbar-thumb:hover,
+    .modal-panel::-webkit-scrollbar-thumb:hover {
+      background: rgba(212, 181, 106, 0.35);
     }
 
     .pipeline-table-wrap {
@@ -1636,16 +1917,25 @@
   <header class="header">
     <div class="logo">
       <div class="logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 18V10l8-5 8 5v8" stroke="#d4b56a" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M9 18v-5h6v5" stroke="#d4b56a" stroke-width="1.5"/>
-          <path d="M4 18h16" stroke="#6d9a72" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M14 8l3-2 3 4" stroke="#ecd08a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="barn-gold" x1="4" y1="8" x2="24" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f0dc9a"/><stop offset="1" stop-color="#d4b56a"/>
+            </linearGradient>
+            <linearGradient id="field-green" x1="2" y1="22" x2="26" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4d7352"/><stop offset="1" stop-color="#72a878"/>
+            </linearGradient>
+          </defs>
+          <path d="M3 20V11l11-6.5L25 11v9" stroke="url(#barn-gold)" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M10 20v-5.5h8V20" stroke="url(#barn-gold)" stroke-width="1.6"/>
+          <path d="M3 20h22" stroke="url(#field-green)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M16 9.5l3.5-2.5 4.5 4.5" stroke="#f0dc9a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 20c2-1.5 5-2 9-2s7 .5 9 2" stroke="url(#field-green)" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
         </svg>
       </div>
       <div class="logo-text">
-        <h1><span class="brand-serif">Barn to</span> Bank</h1>
-        <span class="tagline">Land origination · intake to close</span>
+        <h1><span class="brand-serif">Barn to</span> <span class="brand-sans">Bank</span></h1>
+        <span class="tagline">Texas land · farm to funded</span>
       </div>
     </div>
     <div class="header-right">
@@ -1687,15 +1977,15 @@
     <!-- INTAKE -->
     <aside class="sidebar">
       <div class="partner-welcome" id="partner-welcome">
-        <strong>Welcome — quick start</strong>
-        Run land intake, enrichment, and triage from any device. No install.
-        <ol>
-          <li>Pick a <strong>county</strong> and enter an <strong>address</strong> or parcel #</li>
-          <li>Sign in to <strong>id.land</strong> below for full parcel data</li>
-          <li><strong>Run Automation 1</strong> → review → <strong>Add to Pipeline</strong></li>
-          <li><strong>Feature Request</strong> for ideas or customizations</li>
+        <strong>Welcome to Barn to Bank</strong>
+        <span class="partner-welcome-sub">Intake, enrich, and route deals — no install required.</span>
+        <ol class="partner-welcome-steps">
+          <li><span class="step-num">1</span><span>Pick a <strong>county</strong> and enter an <strong>address</strong> or parcel #</span></li>
+          <li><span class="step-num">2</span><span>Sign in to <strong>id.land</strong> below for full parcel data</span></li>
+          <li><span class="step-num">3</span><span><strong>Run Automation 1</strong> → review → <strong>Add to Pipeline</strong></span></li>
+          <li><span class="step-num">4</span><span>Use <strong>Feature Request</strong> for ideas or customizations</span></li>
         </ol>
-        <button type="button" class="partner-welcome-dismiss" id="partner-welcome-dismiss">Got it</button>
+        <button type="button" class="partner-welcome-dismiss" id="partner-welcome-dismiss">Got it — let’s go</button>
       </div>
       <div class="panel-card panel-card-accent">
       <div class="section-title">Intake — The Net</div>
@@ -1763,8 +2053,9 @@
     <!-- DASHBOARD -->
     <section class="content">
       <div class="page-hero">
-        <h2>Deal Pipeline</h2>
-        <p>Enriched land opportunities — route each deal through develop, sell, or retail.</p>
+        <div class="page-hero-eyebrow">Pipeline</div>
+        <h2>Your land opportunities</h2>
+        <p>Every enriched deal in one view — triage into develop, direct sale, or retail brokerage.</p>
       </div>
       <div class="pipeline-toolbar">
         <div class="section-title" style="margin:0;flex:1">Active Deals</div>
@@ -1798,21 +2089,30 @@
         <div class="silo-grid" id="silo-grid">
           <div class="silo-lane lane-develop" data-route="DEVELOP">
             <div class="silo-header">
-              <h3>Development &amp; Entitlement</h3>
+              <div class="silo-header-left">
+                <span class="silo-icon" aria-hidden="true">🏗</span>
+                <h3>Development &amp; Entitlement</h3>
+              </div>
               <div class="silo-stats"><span class="count" id="silo-dev-count">0</span> deals · <span id="silo-dev-acres">0</span> ac</div>
             </div>
             <div class="silo-body" id="silo-dev-body"></div>
           </div>
           <div class="silo-lane lane-sell" data-route="SELL">
             <div class="silo-header">
-              <h3>Direct Sale</h3>
+              <div class="silo-header-left">
+                <span class="silo-icon" aria-hidden="true">🤝</span>
+                <h3>Direct Sale</h3>
+              </div>
               <div class="silo-stats"><span class="count" id="silo-sell-count">0</span> deals · <span id="silo-sell-acres">0</span> ac</div>
             </div>
             <div class="silo-body" id="silo-sell-body"></div>
           </div>
           <div class="silo-lane lane-retail" data-route="RETAIL">
             <div class="silo-header">
-              <h3>Retail Brokerage</h3>
+              <div class="silo-header-left">
+                <span class="silo-icon" aria-hidden="true">📍</span>
+                <h3>Retail Brokerage</h3>
+              </div>
               <div class="silo-stats"><span class="count" id="silo-retail-count">0</span> deals · <span id="silo-retail-acres">0</span> ac</div>
             </div>
             <div class="silo-body" id="silo-retail-body"></div>
@@ -4150,12 +4450,15 @@
       document.getElementById('hdr-value').textContent = fmt(totalValue);
     }
 
+    const EMPTY_PIPELINE_SVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 18V10l8-5 8 5v8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 18v-5h6v5" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="7" r="2" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/></svg>`;
+
     function emptyPipelineHtml() {
       return `
         <div class="empty-state">
-          <div class="empty-state-icon">◎</div>
-          <h3>No deals yet</h3>
-          <p>Run <strong>Automation 1</strong> on a property in Intake, then add it to your pipeline.</p>
+          <div class="empty-state-icon">${EMPTY_PIPELINE_SVG}</div>
+          <h3>Your pipeline is empty</h3>
+          <p>Run <strong>Automation 1</strong> on a property in Intake, review the enrichment, then add it here.</p>
+          <div class="empty-state-cta">← Start in Intake</div>
         </div>`;
     }
 
@@ -4207,8 +4510,8 @@
         </tr>
       `).join('');
 
-      cards.innerHTML = deals.map(d => `
-        <div class="deal-card" data-id="${d.id}">
+      cards.innerHTML = deals.map((d, i) => `
+        <div class="deal-card ${ROUTES[d.route].class}" data-id="${d.id}" style="animation-delay:${i * 0.05}s">
           <div class="deal-card-header">
             <div>
               <div class="deal-card-address">${d.address}</div>
@@ -4219,7 +4522,7 @@
           <div class="deal-card-metrics">
             <div class="deal-card-metric">
               <div class="label">Acres</div>
-              <div class="value">${fmtNum(d.acreage)}</div>
+              <div class="value accent">${fmtNum(d.acreage)}</div>
             </div>
             <div class="deal-card-metric">
               <div class="label">$/Acre</div>
@@ -4255,7 +4558,8 @@
 
         const body = document.getElementById(cfg.body);
         if (items.length === 0) {
-          body.innerHTML = '<div class="silo-empty">Drag deals here by changing route</div>';
+          const hints = { DEVELOP: 'Assign deals to Develop via the route dropdown', SELL: 'Assign deals to Direct Sale via the route dropdown', RETAIL: 'Assign deals to Retail via the route dropdown' };
+          body.innerHTML = `<div class="silo-empty"><span class="silo-empty-icon">↓</span>${hints[route]}</div>`;
         } else {
           body.innerHTML = items.map(d => `
             <div class="silo-deal" data-id="${d.id}">
