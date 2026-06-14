@@ -1009,6 +1009,23 @@
     .a1-status.live { background: rgba(63,185,80,0.18); color: var(--green); }
     .a1-status.mock { background: rgba(88,166,255,0.15); color: var(--blue); }
     .a1-status.manual { background: rgba(210,153,34,0.18); color: var(--orange); }
+
+    .landid-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 6px 10px;
+      background: rgba(88,166,255,0.1);
+      border: 1px solid rgba(88,166,255,0.35);
+      border-radius: var(--radius);
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .landid-link:hover { background: rgba(88,166,255,0.18); }
+    .landid-link.muted { opacity: 0.7; border-style: dashed; }
   </style>
 </head>
 <body>
@@ -1207,8 +1224,16 @@
           provides: 'Multi-year assessed values and tax amounts',
         },
         landId: {
-          apiKey: '', // LANDID_API_KEY — future map overlays
-          provides: 'Parcel map overlays, easements',
+          accessToken: '', // LANDID_ACCESS_TOKEN — Bearer token from id.land account (full parcel + comps)
+          gateway: 'https://gateway.id.land',
+          restBase: 'https://gateway.id.land/api',
+          discoverUrl: 'https://id.land/discover',
+          provides: 'Nationwide parcel search (address/APN/location), owner, acreage, land use, comparable sales, boundaries',
+          endpoints: {
+            graphqlSearch: '/search/query',
+            restByLocation: '/parcels/v2/by_location.json',
+            restByApn: '/parcels/v2/by_apn.json',
+          },
         },
         countyCad: {
           provides: 'Situs, parcel ID, assessed land value from county REST layers',
@@ -1232,7 +1257,8 @@
       // Legacy aliases — existing layer functions reference these
       REGRID_API_KEY: '',
       ATTOM_API_KEY: '',
-      LANDID_API_KEY: '',
+      LANDID_ACCESS_TOKEN: '', // Paste Bearer token from id.land (Network tab → Authorization header)
+      LANDID_API_KEY: '',      // Alias for LANDID_ACCESS_TOKEN
       ENRICHMENT_PIPELINE: {
         femaNfhl: {
           url: 'https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28',
@@ -1290,7 +1316,7 @@
             landUse: 'PropUse',
           },
         },
-        // Counties below need REGRID_API_KEY until a public REST layer is confirmed
+        // Counties below: id.land (with token) or REGRID_API_KEY until public CAD REST is confirmed
         Bastrop:    null,
         Hays:       null,
         Guadalupe:  null,
@@ -1359,7 +1385,7 @@
 
     const AUTOMATION_1_STEPS = [
       { id: 'jurisdiction', label: 'Jurisdiction & boundaries', tier: 1 },
-      { id: 'parcel', label: 'Parcel / CAD lookup', tier: 2 },
+      { id: 'parcel', label: 'Parcel — County CAD / id.land', tier: 2 },
       { id: 'environmental', label: 'FEMA NFHL floodplain', tier: 1 },
       { id: 'utilities', label: 'PUC CCN + utility distances', tier: 1 },
       { id: 'proximity', label: 'Spatial proximity', tier: 3 },
@@ -2026,6 +2052,327 @@
     }
 
     // =========================================================================
+    // id.land (Land id®) — Tier 2 parcel + comps integration
+    // =========================================================================
+
+    const LAND_ID_PARCEL_FIELDS = `
+      id kind title
+      ... on GenericSearchItem {
+        acres address apn apnFormatted ownerName ownerAddress countyName stateCode cityName
+        deedType legal legalBlock landUses assessedValue assessedYear taxAmount taxYear
+        salePrice salePricePerAcre saleDate location { lat lon } geojson
+      }
+    `;
+
+    const LAND_ID_GQL = {
+      byAddress: `query LandIdByAddress($address: String!, $stateCode: String!) {
+        search(filter: { address: $address, stateCode: $stateCode, kinds: [PARCEL], useAI: false }, limit: 5, offset: 0) {
+          total hits { ${LAND_ID_PARCEL_FIELDS} }
+        }
+      }`,
+      byApn: `query LandIdByApn($apn: String!, $stateCode: String!, $countyName: String) {
+        search(filter: { apn: $apn, stateCode: $stateCode, countyName: $countyName, kinds: [PARCEL], useAI: false }, limit: 5, offset: 0) {
+          total hits { ${LAND_ID_PARCEL_FIELDS} }
+        }
+      }`,
+      byLocation: `query LandIdByLocation($lat: Float!, $lon: Float!) {
+        search(filter: { intersects: [{ lat: $lat, lon: $lon }], kinds: [PARCEL], useAI: false }, limit: 1, offset: 0) {
+          hits { ${LAND_ID_PARCEL_FIELDS} }
+        }
+      }`,
+      comparableSales: `query LandIdComparableSales($subjectPoints: [NewPoint!]!, $limit: Int!) {
+        search(filter: { subjectPoints: $subjectPoints, kinds: [PARCEL], useAI: false }, limit: $limit, offset: 0) {
+          total
+          hits {
+            id title address acres saleDate salePrice salePricePerAcre ownerName
+            location { lat lon }
+            ... on GenericSearchItem { countyName stateCode }
+          }
+        }
+      }`,
+    };
+
+    function landIdToken() {
+      return DATA_SOURCES.LANDID_ACCESS_TOKEN || DATA_SOURCES.LANDID_API_KEY
+        || DATA_SOURCES.TIER_2.landId.accessToken || '';
+    }
+
+    function landIdDiscoverUrl(lat, lng, parcelId) {
+      const base = DATA_SOURCES.TIER_2.landId.discoverUrl || 'https://id.land/discover';
+      if (lat != null && lng != null) {
+        const qs = new URLSearchParams({ lat: String(lat), lng: String(lng) });
+        if (parcelId) qs.set('parcel_id', parcelId);
+        return `${base}?${qs}`;
+      }
+      return base;
+    }
+
+    function parseLandIdCoordinates(str) {
+      if (!str) return null;
+      const m = String(str).match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+      return m ? { lat: parseFloat(m[1]), lng: parseFloat(m[2]) } : null;
+    }
+
+    function formatLandUses(landUses) {
+      if (!landUses) return null;
+      if (Array.isArray(landUses)) return landUses.filter(Boolean).join(', ');
+      return String(landUses);
+    }
+
+    function mapLandIdHitToDeal(hit, county, opts = {}) {
+      const landUses = formatLandUses(hit.landUses);
+      const acres = parseFloat(hit.acres) || 0;
+      const assessed = parseFloat(hit.assessedValue) || 0;
+      const salePpa = parseFloat(hit.salePricePerAcre) || 0;
+      const lat = hit.location?.lat ?? opts.lat ?? null;
+      const lng = hit.location?.lon ?? opts.lng ?? null;
+      const resolvedCounty = (hit.countyName || county || '').replace(/\s+County$/i, '').trim() || county;
+      const street = hit.address ? hit.address.split(',')[0].trim() : (hit.title || 'Parcel');
+      const city = hit.cityName || extractCity(hit.address || '', resolvedCounty);
+      const parcelId = hit.apnFormatted || hit.apn || hit.id || '';
+      const owner = hit.ownerName || 'See id.land';
+      const askingPerAcre = salePpa || (acres > 0 && assessed ? Math.round(assessed / acres) : 0);
+
+      return {
+        address: street,
+        city,
+        county: resolvedCounty,
+        parcelId: String(parcelId),
+        acreage: acres,
+        zoning: landUses || 'See id.land',
+        askingPerAcre,
+        enrichmentStatus: 'enriched',
+        route: 'DEVELOP',
+        owner,
+        taxHistory: buildTaxHistory(assessed || (acres * askingPerAcre), null),
+        utilities: buildUtilities({}),
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lat,
+        lng,
+        sellerName: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes: '',
+        dataSource: opts.blurred ? 'id.land (preview — add token for full data)' : 'id.land',
+        margin: computeMarginsFromLand(acres, assessed || acres * askingPerAcre),
+        landIdParcelId: hit.id || hit.parcel_id || null,
+        landIdUrl: landIdDiscoverUrl(lat, lng, hit.id || hit.parcel_id),
+        landIdBlurred: !!opts.blurred,
+        landIdAuthenticated: !!opts.authenticated,
+        landIdDeedNotes: [hit.legal, hit.deedType, hit.legalBlock].filter(Boolean).join(' · ') || '',
+      };
+    }
+
+    async function landIdGraphql(operationName, query, variables) {
+      const token = landIdToken();
+      if (!token) return { error: 'no_token' };
+
+      const url = `${DATA_SOURCES.TIER_2.landId.gateway}${DATA_SOURCES.TIER_2.landId.endpoints.graphqlSearch}`;
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ operationName, query, variables }),
+        });
+        const data = await res.json();
+        if (!res.ok || data.errors?.length) {
+          return { error: data.errors?.[0]?.message || `id.land GraphQL ${res.status}`, data };
+        }
+        return { data: data.data, authenticated: true };
+      } catch (e) {
+        return { error: e.message };
+      }
+    }
+
+    async function landIdRest(path, params) {
+      const token = landIdToken();
+      const qs = new URLSearchParams(params);
+      const url = `${DATA_SOURCES.TIER_2.landId.restBase}${path}?${qs}`;
+      try {
+        const headers = { Accept: 'application/json' };
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch(url, { headers });
+        if (!res.ok) return { error: `id.land REST ${res.status}` };
+        return await res.json();
+      } catch (e) {
+        return { error: e.message };
+      }
+    }
+
+    async function fetchLandIdParcelGraphql(query, type, county) {
+      const token = landIdToken();
+      if (!token) return null;
+
+      let result;
+      if (type === 'parcel') {
+        result = await landIdGraphql('LandIdByApn', LAND_ID_GQL.byApn, {
+          apn: query.trim(),
+          stateCode: 'TX',
+          countyName: county ? `${county} County` : null,
+        });
+      } else {
+        const address = query.includes('TX') ? query.trim() : `${query.trim()}, TX`;
+        result = await landIdGraphql('LandIdByAddress', LAND_ID_GQL.byAddress, {
+          address,
+          stateCode: 'TX',
+        });
+      }
+
+      if (result.error || !result.data?.search?.hits?.length) return null;
+      const hit = result.data.search.hits[0];
+      return mapLandIdHitToDeal(hit, county, { authenticated: true, blurred: false });
+    }
+
+    async function fetchLandIdParcelByLocation(lat, lng, county) {
+      const token = landIdToken();
+      if (token) {
+        const result = await landIdGraphql('LandIdByLocation', LAND_ID_GQL.byLocation, { lat, lon: lng });
+        if (result.data?.search?.hits?.length) {
+          return mapLandIdHitToDeal(result.data.search.hits[0], county, { authenticated: true, blurred: false, lat, lng });
+        }
+      }
+
+      const rest = await landIdRest(DATA_SOURCES.TIER_2.landId.endpoints.restByLocation, { lat, lng });
+      if (rest.error || !rest.parcels?.length) return null;
+
+      const p = rest.parcels[0];
+      const coords = parseLandIdCoordinates(p.coordinates) || { lat, lng };
+      const hit = {
+        id: p.parcel_id,
+        parcel_id: p.parcel_id,
+        acres: parseFloat(p.acreage) || 0,
+        apn: p.formatted_apn || p.apn,
+        address: p.parcel_address,
+        ownerName: /XXXX/i.test(p.owner_name || '') ? 'Blurred — add LANDID_ACCESS_TOKEN' : p.owner_name,
+        countyName: county,
+        cityName: extractCity(p.parcel_address || '', county),
+        location: { lat: coords.lat, lon: coords.lng },
+      };
+      return mapLandIdHitToDeal(hit, county, {
+        authenticated: !!token,
+        blurred: !!rest.blurred,
+        lat: coords.lat,
+        lng: coords.lng,
+      });
+    }
+
+    async function fetchLandIdParcel(query, type, county, parsed) {
+      const gqlDeal = await fetchLandIdParcelGraphql(query, type, county);
+      if (gqlDeal) return gqlDeal;
+
+      if (type === 'parcel') {
+        const rest = await landIdRest(DATA_SOURCES.TIER_2.landId.endpoints.restByApn, {
+          apn: query.trim(),
+          state: 'TX',
+          county,
+        });
+        if (!rest.error && rest.parcels?.length) {
+          const p = rest.parcels[0];
+          const coords = parseLandIdCoordinates(p.coordinates);
+          const hit = {
+            id: p.parcel_id,
+            parcel_id: p.parcel_id,
+            acres: parseFloat(p.acreage) || 0,
+            apn: p.formatted_apn || p.apn,
+            address: p.parcel_address,
+            ownerName: /XXXX/i.test(p.owner_name || '') ? 'Blurred — add LANDID_ACCESS_TOKEN' : p.owner_name,
+            countyName: county,
+            cityName: extractCity(p.parcel_address || '', county),
+            location: coords ? { lat: coords.lat, lon: coords.lng } : null,
+          };
+          return mapLandIdHitToDeal(hit, county, {
+            authenticated: !!landIdToken(),
+            blurred: !!rest.blurred,
+            lat: coords?.lat,
+            lng: coords?.lng,
+          });
+        }
+      }
+
+      const geo = parsed?.type === 'address'
+        ? await geocodeParcel({ address: parsed.raw.split(',')[0].trim(), city: parsed.city || extractCity(query, county) })
+        : null;
+      if (geo) return fetchLandIdParcelByLocation(geo.lat, geo.lng, county);
+      return null;
+    }
+
+    async function fetchLandIdComparableSales(lat, lng, limit = 5) {
+      const token = landIdToken();
+      if (!token || lat == null || lng == null) return null;
+
+      const result = await landIdGraphql('LandIdComparableSales', LAND_ID_GQL.comparableSales, {
+        subjectPoints: [{ lat, lon: lng }],
+        limit,
+      });
+      const hits = result.data?.search?.hits || [];
+      if (!hits.length) return null;
+
+      const comps = hits
+        .filter(h => h.salePricePerAcre > 0 || h.salePrice > 0)
+        .map(h => ({
+          county: (h.countyName || '').replace(/\s+County$/i, ''),
+          acres: parseFloat(h.acres) || 0,
+          pricePerAcre: Math.round(parseFloat(h.salePricePerAcre) || (h.acres > 0 ? h.salePrice / h.acres : 0)),
+          buyer: h.ownerName || '—',
+          date: h.saleDate ? String(h.saleDate).slice(0, 7) : '—',
+          notes: h.address || h.title || 'id.land comparable',
+          source: 'id.land',
+        }))
+        .filter(c => c.pricePerAcre > 0);
+
+      if (!comps.length) return null;
+      const avg = Math.round(comps.reduce((s, c) => s + c.pricePerAcre, 0) / comps.length);
+      return { comps, avgPricePerAcre: avg, source: 'id.land (comparable sales)' };
+    }
+
+    function mergeLandIdIntoDeal(deal, landIdDeal) {
+      if (!landIdDeal) return deal;
+      const preferLandId = landIdDeal.landIdAuthenticated && !landIdDeal.landIdBlurred;
+
+      if (preferLandId || !deal.parcelId) deal.parcelId = landIdDeal.parcelId || deal.parcelId;
+      if (preferLandId || !deal.acreage) deal.acreage = landIdDeal.acreage || deal.acreage;
+      if (preferLandId || deal.owner === 'See county records' || /verify|blurred/i.test(deal.owner)) {
+        deal.owner = landIdDeal.owner || deal.owner;
+      }
+      if (preferLandId || !deal.zoning || deal.zoning === 'See county records') {
+        deal.zoning = landIdDeal.zoning || deal.zoning;
+      }
+      if (!deal.lat && landIdDeal.lat) deal.lat = landIdDeal.lat;
+      if (!deal.lng && landIdDeal.lng) deal.lng = landIdDeal.lng;
+      if (landIdDeal.landIdDeedNotes) deal.landIdDeedNotes = landIdDeal.landIdDeedNotes;
+
+      deal.landIdParcelId = landIdDeal.landIdParcelId || deal.landIdParcelId;
+      deal.landIdUrl = landIdDeal.landIdUrl || deal.landIdUrl;
+      deal.landIdBlurred = landIdDeal.landIdBlurred;
+      deal.landIdAuthenticated = landIdDeal.landIdAuthenticated;
+
+      if (deal.dataSource?.includes('id.land')) {
+        // already attributed
+      } else if (preferLandId && !deal.dataSource?.includes('County')) {
+        deal.dataSource = landIdDeal.dataSource;
+      } else {
+        deal.dataSource = `${deal.dataSource || 'County CAD'} + id.land`;
+      }
+      return deal;
+    }
+
+    function renderLandIdLinkHtml(deal) {
+      if (!deal.landIdUrl && deal.lat == null) return '';
+      const url = deal.landIdUrl || landIdDiscoverUrl(deal.lat, deal.lng, deal.landIdParcelId);
+      const muted = deal.landIdBlurred ? ' muted' : '';
+      const label = deal.landIdAuthenticated && !deal.landIdBlurred
+        ? 'Open parcel in id.land'
+        : 'Open in id.land (add token for full parcel data)';
+      return `<a class="landid-link${muted}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`;
+    }
+
+    // =========================================================================
     // Automation 1: Intake Enrichment
     // =========================================================================
 
@@ -2128,6 +2475,21 @@
     }
 
     function formatMarketComps(deal) {
+      if (deal.landIdComps?.comps?.length) {
+        const { comps, avgPricePerAcre } = deal.landIdComps;
+        const top = comps.slice(0, 3);
+        const lines = top.map(c =>
+          `${c.acres} ac @ ${fmt(c.pricePerAcre)}/ac (${c.buyer}, ${c.date}) — ${c.notes}`
+        );
+        return {
+          text: `${top.length} comps via id.land · avg ${fmt(avgPricePerAcre)}/ac — ${lines.join('; ')}`,
+          status: 'LIVE',
+          avg: avgPricePerAcre,
+          comps: top,
+          source: 'id.land',
+        };
+      }
+
       const comps = PRIVATE_COMPS_DB.filter(c => c.county === deal.county);
       if (!comps.length) {
         return {
@@ -2145,6 +2507,7 @@
         status: 'MOCK',
         avg,
         comps: top,
+        source: 'PRIVATE',
       };
     }
 
@@ -2154,6 +2517,12 @@
       const femaLive = live.fema;
       const pucLive = live.puc;
       const parcelLive = live.parcel;
+      const landIdLive = deal.landIdAuthenticated && !deal.landIdBlurred;
+      const landIdPartial = deal.dataSource?.includes('id.land');
+      const parcelSourceTag = landIdLive ? 'id.land' : (parcelLive ? 'County CAD' : (landIdPartial ? 'id.land' : 'Regrid'));
+      const parcelStatus = landIdLive ? 'LIVE' : (parcelLive ? 'LIVE' : (landIdPartial ? 'MOCK' : 'MOCK'));
+      const deedNotes = deal.landIdDeedNotes || mock.deedNotes;
+      const deedStatus = landIdLive && deal.landIdDeedNotes ? 'LIVE' : (DATA_SOURCES.REGRID_API_KEY ? 'MOCK' : 'NEEDS MANUAL INPUT');
 
       const jurisdictionStatus = jurisdictionLive?.data
         ? (jurisdictionLive.data.inCorpLimit
@@ -2204,11 +2573,11 @@
           label: 'Parcel',
           labelDisplay: 'PARCEL',
           fields: [
-            a1Field('Parcel / property ID', deal.parcelId, parcelLive ? (deal.dataSource || 'County CAD') : 'Regrid', parcelLive ? 'LIVE' : 'MOCK'),
-            a1Field('Acreage', `${fmtNum(deal.acreage)} ac`, parcelLive ? 'County CAD' : 'Regrid', parcelLive ? 'LIVE' : 'MOCK'),
-            a1Field('Current zoning', deal.zoning, 'Regrid', parcelLive && DATA_SOURCES.REGRID_API_KEY ? 'LIVE' : 'MOCK'),
-            a1Field('Owner of record', deal.owner, 'County CAD', parcelLive ? 'LIVE' : 'MOCK'),
-            a1Field('Deed / ownership notes', mock.deedNotes, 'Regrid', DATA_SOURCES.REGRID_API_KEY ? 'MOCK' : 'NEEDS MANUAL INPUT'),
+            a1Field('Parcel / property ID', deal.parcelId, parcelSourceTag, parcelStatus),
+            a1Field('Acreage', `${fmtNum(deal.acreage)} ac`, parcelSourceTag, parcelStatus),
+            a1Field('Current zoning', deal.zoning, landIdLive ? 'id.land' : 'Regrid', landIdLive ? 'LIVE' : 'MOCK'),
+            a1Field('Owner of record', deal.owner, parcelSourceTag, landIdLive ? 'LIVE' : (landIdPartial && deal.landIdBlurred ? 'NEEDS MANUAL INPUT' : parcelStatus)),
+            a1Field('Deed / ownership notes', deedNotes, landIdLive ? 'id.land' : 'Regrid', deedStatus),
           ],
         },
         environmental: {
@@ -2243,7 +2612,7 @@
           label: 'Market',
           labelDisplay: 'MARKET',
           fields: [
-            a1Field('Comparable land sales — PRIVATE DATA · manual/proprietary input', market.text, 'PRIVATE', market.status),
+            a1Field('Comparable land sales — PRIVATE DATA · manual/proprietary input', market.text, market.source || 'PRIVATE', market.status),
           ],
         },
       };
@@ -2656,14 +3025,31 @@
       setPipelineStep('parcel', 'running');
       if (DATA_SOURCES.USE_LIVE_APIS) {
         deal = await lookupCountyGIS(county, parsed);
-        if (!deal && DATA_SOURCES.REGRID_API_KEY) {
-          deal = await fetchRegridParcel(query, county, type);
-        }
         if (deal) {
           parcelLive = true;
           deal.dataSource = deal.dataSource || `${county} County CAD`;
-          if (!deal.lat || !deal.lng) await getDealCoordinates(deal);
         }
+
+        const landIdDeal = await fetchLandIdParcel(query, type, county, parsed);
+        if (landIdDeal) {
+          live.landId = { authenticated: landIdDeal.landIdAuthenticated, blurred: landIdDeal.landIdBlurred };
+          if (deal) {
+            mergeLandIdIntoDeal(deal, landIdDeal);
+          } else {
+            deal = landIdDeal;
+            parcelLive = landIdDeal.landIdAuthenticated && !landIdDeal.landIdBlurred;
+          }
+        }
+
+        if (!deal && DATA_SOURCES.REGRID_API_KEY) {
+          deal = await fetchRegridParcel(query, county, type);
+          if (deal) {
+            parcelLive = true;
+            deal.dataSource = deal.dataSource || 'Regrid API';
+          }
+        }
+
+        if (deal && (!deal.lat || !deal.lng)) await getDealCoordinates(deal);
       }
       if (!deal) {
         deal = buildMockDealFromProfile(query, type, county, parsed);
@@ -2706,7 +3092,11 @@
 
       setPipelineStep('market', 'running');
       await delay(stepDelay);
-      setPipelineStep('market', layerPrivateComps(deal).status === 'ok' ? 'done' : 'warn');
+      if (DATA_SOURCES.USE_LIVE_APIS && deal.lat != null && deal.lng != null) {
+        const idComps = await fetchLandIdComparableSales(deal.lat, deal.lng);
+        if (idComps) deal.landIdComps = idComps;
+      }
+      setPipelineStep('market', (deal.landIdComps || layerPrivateComps(deal).status === 'ok') ? 'done' : 'warn');
 
       if (DATA_SOURCES.USE_LIVE_APIS && DATA_SOURCES.ATTOM_API_KEY && deal.address) {
         try {
@@ -3122,6 +3512,7 @@
         <div class="modal-section">
           <h4>Automation 1: Intake Enrichment</h4>
           ${renderAutomation1ReportCard(deal.dealRecord)}
+          ${renderLandIdLinkHtml(deal)}
           <div style="margin-top:12px">${renderNearbyCommunitiesHtml(deal)}</div>
         </div>
 
@@ -3249,6 +3640,7 @@
           <div class="enrichment-item"><div class="key">$/Acre</div><div class="val">${fmt(data.askingPerAcre)}</div></div>
         </div>
         ${renderAutomation1ReportCard(data.dealRecord)}
+        ${renderLandIdLinkHtml(data)}
         <div class="enrichment-full" style="margin-top:8px">${renderNearbyCommunitiesHtml(data)}</div>
       `;
       el.classList.add('visible');
