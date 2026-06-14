@@ -24,7 +24,9 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'docs');
-const APP_URL = 'https://barn-to-bank.vercel.app';
+const SITE_URL = 'https://barntobank.com';
+const APP_URL = 'https://barntobank.com/app';
+const LOGIN_URL = 'https://barntobank.com/app/login';
 const GOLD = '8B6914';
 const ACCENT = '2E5E34';
 const LIGHT = 'F5F1E8';
@@ -120,17 +122,22 @@ function link(label, url) {
   });
 }
 
-function table(rows, colWidths = [2800, 6560]) {
+function table(rows, colWidths) {
+  const cellCount = rows[0]?.length || 2;
+  const defaultWidths = cellCount === 3
+    ? [2200, 3000, 4160]
+    : [2800, 6560];
+  const widths = colWidths || defaultWidths;
   const border = { style: BorderStyle.SINGLE, size: 1, color: BORDER };
   const borders = { top: border, bottom: border, left: border, right: border };
-  const tableWidth = colWidths.reduce((a, b) => a + b, 0);
+  const tableWidth = widths.reduce((a, b) => a + b, 0);
   return new Table({
     width: { size: tableWidth, type: WidthType.DXA },
-    columnWidths: colWidths,
+    columnWidths: widths,
     rows: rows.map((cells, rowIdx) => new TableRow({
       children: cells.map((cell, i) => new TableCell({
         borders,
-        width: { size: colWidths[i], type: WidthType.DXA },
+        width: { size: widths[i], type: WidthType.DXA },
         shading: rowIdx === 0
           ? { fill: 'E8E0D0', type: ShadingType.CLEAR }
           : { fill: 'FFFFFF', type: ShadingType.CLEAR },
@@ -218,7 +225,7 @@ function buildPitchDoc() {
     bullet('Plat filings are seeded — swap for live county clerk / HBA feed when ready'),
 
     h2('Call to Action'),
-    numbered(`Open ${APP_URL}`),
+    numbered(`Open ${APP_URL} and sign in`),
     numbered('Run Automation 1 on a Bastrop, Bexar, Comal, or Caldwell tract'),
     numbered('Review entitlement score and assign a silo route'),
     numbered('Go to Intel → Cloud Sync to share with your team'),
@@ -245,139 +252,221 @@ function buildPitchDoc() {
 function buildHowToDoc() {
   const children = [
     para([text('BARN TO BANK', { bold: true, size: 52, color: GOLD })], { spacing: { after: 80 } }),
-    para([text('How-To Guide', { size: 28, color: ACCENT })], { spacing: { after: 200 } }),
-    para([text('Live app: '), link(APP_URL, APP_URL)], { spacing: { after: 240 } }),
+    para([text('Complete How-To Guide', { size: 28, color: ACCENT })], { spacing: { after: 120 } }),
+    para([text('Staff app: '), link(APP_URL, APP_URL)], { spacing: { after: 60 } }),
+    para([text('Public site: '), link(SITE_URL, SITE_URL)], { spacing: { after: 240 } }),
 
-    h1('Quick Start (5 Minutes)'),
-    numbered('Open the app link in Chrome or Safari (desktop or phone).'),
-    numbered('Read the welcome card, then dismiss it.'),
-    numbered('In Intake, pick a county and enter an address or parcel number.'),
-    numbered('Optional: sign in to id.land for full parcel and comp data.'),
-    numbered('Click Run Automation 1 → review → Add to Pipeline.'),
-    numbered('Open Intel → Cloud Sync to merge with your team.'),
+    h1('What This Platform Is'),
+    body('Barn to Bank is two connected pieces: a public marketing site that captures land leads, and a password-protected origination app where your team enriches parcels, routes deals, reaches owners, and builds a compounding intel moat.'),
+    table([
+      ['Piece', 'URL', 'Who uses it'],
+      ['Public marketing site', SITE_URL, 'Landowners, brokers, visitors'],
+      ['Staff origination app', APP_URL, 'Jack, analysts, origination team'],
+      ['Staff login', LOGIN_URL, 'Anyone with the origination password'],
+    ]),
+
+    h1('Quick Start — First 10 Minutes'),
+    numbered(`Go to ${APP_URL} and sign in with the origination password.`),
+    numbered('Dismiss the welcome card on the left (or read it — it explains the four-step workflow).'),
+    numbered('In Intake, choose a county and enter a property address or parcel/APN.'),
+    numbered('Click Run Automation 1. Wait for jurisdiction, flood, utilities, comps, and owner contact to populate.'),
+    numbered('Click + Add to Pipeline.'),
+    numbered('Open the Deals tab, click the new deal, review entitlement score and route (Develop / Sell / Retail).'),
+    numbered('Go to Outreach → Build Mail List → print labels or export CSV (no DNC vendor needed).'),
+    numbered('Go to Intel → Cloud Sync to share pipeline with your team.'),
+
+    h1('Signing In & Security'),
+    bullet(`Staff app and APIs are protected. Bookmark ${LOGIN_URL} if prompted.`),
+    bullet('Password is set in Vercel as ORIGINATION_PASSWORD — ask your admin if you do not have it.'),
+    bullet('Sign Out is in the header (desktop). Session lasts 30 days in your browser.'),
+    bullet('Public site contact form posts to /api/leads without a password — those leads appear in Website Leads inside the app.'),
+    bullet('Theme toggle (sun/moon) in the header switches light and dark mode; preference is saved in your browser.'),
 
     h1('Navigation'),
-    body('Use the section bar under the header: Intake | Deals | Silos | Outreach | Intel.'),
+    body('Desktop: use the sticky section bar — Intake | Deals | Silos | Outreach | Intel.'),
+    body('Mobile: same section bar at the bottom of the header area; ← Site returns to the public marketing site; ← Main Site in the header does the same.'),
     table([
       ['Tab', 'What you do here'],
-      ['Intake', 'Enter address/APN, run Automation 1 enrichment'],
-      ['Deals', 'View pipeline table or cards, open deal details'],
-      ['Silos', 'See deals grouped by Develop, Sell, Retail'],
-      ['Outreach', 'Build outreach list, DNC scrub, text/mail queues'],
-      ['Intel', 'Comp lake, plat alerts, audit log, Cloud Sync'],
+      ['Intake', 'Enter address/APN, run Automation 1, connect id.land, view website leads'],
+      ['Deals', 'Pipeline table or cards, open deal modal, quick add'],
+      ['Silos', 'Deals grouped by Develop, Sell (Flip), Retail'],
+      ['Outreach', 'Direct mail (default) or cold texts (DNC vendor required)'],
+      ['Intel', 'Comp lake, plat alerts, audit log, cloud sync, website leads refresh'],
     ]),
-    body('Header shortcuts: Intel jumps to Moat Intelligence. Cloud Sync runs team sync immediately.'),
+    body('Header buttons: Copy App Link (share with team), Feature Request, Intel (jump to moat), Cloud Sync (immediate team sync), Theme, Sign Out.'),
 
-    h1('1. Intake — Run Automation 1'),
+    h1('1. Intake — From Lead to Enriched Deal'),
+    h2('Website Leads (inbound)'),
+    bullet('Leads from the public site contact form land in Website Leads on the Intake panel.'),
+    bullet('Click Refresh to pull latest from Supabase.'),
+    bullet('Statuses: new → contacted → converted or dismissed.'),
+    bullet('Inbound leads do not need DNC scrub — they contacted you first.'),
+
+    h2('Automation 1 (parcel enrichment)'),
     h3('Step-by-step'),
     numbered('Select Lookup Type: Property Address or Parcel / APN.'),
-    numbered('Enter the full address (e.g. 6200 Old Pearsall Rd, San Antonio TX) or parcel ID.'),
-    numbered('Choose the county from the dropdown.'),
-    numbered('Click Run Automation 1 and wait for the pipeline steps to complete.'),
-    numbered('Review the enrichment panel — toggle Internal vs Client view.'),
-    numbered('Click + Add to Pipeline when ready.'),
+    numbered('Enter the full address or parcel ID.'),
+    numbered('Choose county from the dropdown.'),
+    numbered('Click Run Automation 1. Watch the pipeline steps complete.'),
+    numbered('Review enrichment — toggle Internal vs Client view (client view redacts skip-trace phones).'),
+    numbered('Click + Add to Pipeline.'),
 
     h3('What Automation 1 pulls'),
-    bullet('Jurisdiction: city limits, ETJ, or county-only'),
-    bullet('FEMA flood zone and SFHA flag'),
-    bullet('PUC water and sewer CCN holders'),
-    bullet('Private comps for the county (Comp Lake + seed data)'),
-    bullet('Nearby for-sale SF communities (Waterloo BTR excluded from radius)'),
-    bullet('Owner contact (Forewarn — license-gated mock until API key is set)'),
+    bullet('Jurisdiction: city limits, ETJ, or unincorporated county'),
+    bullet('FEMA flood zone and SFHA (Special Flood Hazard Area) flag'),
+    bullet('PUC water and sewer CCN (utility service areas)'),
+    bullet('Private comps from Comp Lake + county seed data'),
+    bullet('Nearby for-sale SF communities within radius'),
+    bullet('Owner contact via Forewarn (mock until production API key is configured)'),
+    bullet('Entitlement score 0–100 and Develop / Sell / Retail recommendation'),
 
-    h3('id.land connection'),
-    bullet('Enter your id.land email and password, or paste a Bearer token under Advanced.'),
-    bullet('Token stays in your browser only — not committed to the app file.'),
-    bullet('With a valid token, parcel and comp fields upgrade from MOCK to LIVE.'),
+    h3('id.land connection (optional, recommended)'),
+    bullet('Enter id.land email/password or paste a Bearer token under Advanced.'),
+    bullet('Token stays in your browser only — never stored in the repo.'),
+    bullet('Live token upgrades parcel geometry, land use, and market comps from MOCK to LIVE.'),
 
     h1('2. Pipeline — Manage Deals'),
-    h3('Viewing deals'),
-    bullet('Table view: sortable list with status, route, entitlement score pill.'),
-    bullet('Cards view: mobile-friendly cards with comp band summary.'),
+    h3('Views'),
+    bullet('Table view: sortable columns, status, route badge, entitlement pill.'),
+    bullet('Cards view: better on phone — acreage, comp band, bottleneck flag.'),
     bullet('Click any row or card to open the full deal modal.'),
 
     h3('Adding deals'),
-    bullet('+ From Intake: scroll to intake after running Automation 1.'),
-    bullet('+ Quick Add: manual entry without enrichment (run Automation 1 later).'),
+    bullet('From Intake: after Automation 1, click + Add to Pipeline.'),
+    bullet('Quick Add: manual entry without enrichment — run Automation 1 later from the deal modal.'),
 
-    h3('Deal modal sections'),
-    bullet('Entitlement Score: 0–100 with Develop / Sell / Retail recommendation'),
-    bullet('Enriched property data, tax history, utilities'),
+    h3('Deal modal — key sections'),
+    bullet('Entitlement Score and route recommendation'),
+    bullet('Enriched property, tax history, utilities, flood'),
     bullet('Automation 1 report card and nearby SF communities'),
-    bullet('Outreach CRM: status, sequence, touches, outcome'),
-    bullet('Margin analysis: entitled value, flip, retail commission'),
-    bullet('Internal Memo / Client Memo: printable deal summary'),
+    bullet('Owner contact panel (internal view shows phones; client view redacts)'),
+    bullet('Outreach CRM: contact status, sequence, touches'),
+    bullet('Margin analysis: entitled value, flip spread, retail commission'),
+    bullet('Deal Memo: printable PDF-style summary for partners or sellers'),
 
     h1('3. Three-Silo Routing'),
-    body('Assign each deal to the best path using the route dropdown on the card or in the modal.'),
-    bullet('Develop / Entitle: utilities and SF spillover support entitlement'),
-    bullet('Sell (Flip): comp-supported flip where sewer is the bottleneck'),
-    bullet('Retail: smaller tracts or brokerage commission plays'),
-    body('Use the Silos tab to see lane counts and acres at a glance.'),
+    body('Every deal gets a route — use the dropdown on the card or in the modal.'),
+    bullet('Develop / Entitle: sewer/utilities and builder spillover support entitlement plays'),
+    bullet('Sell (Flip): comp-supported acquisition where entitlement is the bottleneck'),
+    bullet('Retail: smaller tracts or straight brokerage/listing plays'),
+    body('Silos tab shows lane counts and total acres. Entitlement-bottlenecked tracts are excluded from outreach queues.'),
 
-    h1('4. Outreach — Owner Contact'),
-    h3('Build Outreach List wizard (3 steps — cannot skip)'),
-    numbered('Filter: only enriched, non-bottlenecked deals with owner contact are eligible.'),
-    numbered('DNC Scrub: run Federal DNC Registry scrub on every number (required).'),
-    numbered('Queue: cleared numbers go to text queue; mail pieces go to direct mail.'),
+    h1('4. Outreach — Reach Owners'),
+    h2('Choose your path (important)'),
+    table([
+      ['Method', 'DNC vendor needed?', 'When to use'],
+      ['Direct mail (recommended)', 'No', 'Letters and Avery labels — start here'],
+      ['Cold texts', 'Yes (e.g. DNCScrub)', 'Only with federal DNC scrub configured'],
+      ['Inbound website leads', 'No', 'They filled out your form — call or email back'],
+    ]),
+    body('The app defaults to direct mail. The federal Do Not Call list does not apply to postal mail. Cold unsolicited texts carry TCPA risk ($500–$50,000+ per violation) without proper scrubbing.'),
 
-    h3('Text queue'),
-    bullet('Edit the template — use {{owner_name}} and {{county}} merge fields.'),
+    h2('Direct mail workflow (2 steps)'),
+    numbered('Go to Outreach tab (mail tab is selected by default).'),
+    numbered('Click Build Mail List.'),
+    numbered('Step 1 — Pick tracts: check eligible deals (not entitlement-bottlenecked, has owner contact).'),
+    numbered('Click Build Mail Queue — no DNC scrub step.'),
+    numbered('Export CSV or Print Labels for Avery-style mail merge.'),
+    body('Eligible deals need Forewarn owner contact and must not be flagged as entitlement bottlenecked.'),
+
+    h2('Cold texts workflow (advanced, 3 steps)'),
+    numbered('In Outreach, switch to the Cold texts tab OR choose Cold texts in the wizard mode picker.'),
+    numbered('Click Build Text List.'),
+    numbered('Step 1 — Pick tracts. Step 2 — Run Federal DNC Registry Scrub (requires DNC_SCRUB_API_KEY on Vercel). Step 3 — Review text queue.'),
     bullet('Only DNC-cleared numbers can be queued.'),
-    bullet('Blocked numbers stay labeled DNC — DO NOT CONTACT.'),
-
-    h3('Direct mail'),
-    bullet('Export CSV for mail merge.'),
-    bullet('Print Labels opens a print-ready Avery-style label view.'),
+    bullet('Blocked numbers show DNC — DO NOT CONTACT.'),
+    bullet('Edit template with {{owner_name}} and {{county}} merge fields.'),
+    body('Until a DNC vendor API key is configured, scrub runs in mock mode for testing only — do not send real cold texts against mock results.'),
 
     h1('5. Intel — Moat Intelligence'),
     h3('Comp Lake'),
-    bullet('Click + Log Comp to record off-market sales (county, submarket, $/ac, buyer, date).'),
-    bullet('Comps feed entitlement scoring and margin analysis for that county.'),
-    bullet('Texas non-disclosure: every comp you log is proprietary moat data.'),
+    bullet('+ Log Comp: record off-market sales (county, submarket, $/ac, buyer, date, notes).'),
+    bullet('Comps feed entitlement scoring and margin bands for that county.'),
+    bullet('Texas non-disclosure: logged comps are proprietary — this is your moat.'),
 
     h3('Plat & Development Alerts'),
-    body('Shows plat filings within 8 miles of pipeline deals in the same county. Adjacency often drives the thesis.'),
+    body('Plat filings within ~8 miles of pipeline deals in the same county. Builder adjacency often drives the thesis.'),
+
+    h3('Website Leads'),
+    body('Same inbound leads from barntobank.com — refresh, review, and mark contacted/converted from Intel or Intake.'),
 
     h3('Outreach Audit Log'),
-    body('TCPA trail: DNC scrubs, queued texts, comp logs, bundle import/export, cloud sync — all timestamped.'),
+    body('Timestamped trail: DNC scrubs, queued texts, mail queue builds, comp logs, bundle import/export, cloud sync.'),
 
     h3('Team Moat Sync'),
-    bullet('Cloud Sync: merges your local data with Supabase team bundle (deals, comps, audit, outreach).'),
-    bullet('Export Bundle: download JSON to share offline.'),
+    bullet('Cloud Sync: merges local browser data with Supabase team bundle (deals, comps, audit, outreach).'),
+    bullet('Export Bundle: download JSON backup or email to a partner.'),
     bullet('Import Bundle: upload a teammate\'s JSON file.'),
-    body('Status bar shows Supabase connection and last sync time.'),
+    bullet('Status bar shows Supabase connection and last sync time.'),
 
     h1('6. Working With Your Team'),
-    bullet('Copy App Link in the header — send to Jack or any partner.'),
-    bullet('Each person uses their own browser; Cloud Sync merges on Intel tab.'),
-    bullet('Feature Request button: submit ideas (routes to jeremy@cto.com).'),
-    bullet('No software install — works on phone and desktop.'),
+    bullet('Copy App Link in header — sends partners to barntobank.com/app.'),
+    bullet('Each person signs in separately; id.land tokens are per-browser.'),
+    bullet('Cloud Sync on Intel tab merges everyone\'s work into one team moat.'),
+    bullet('Feature Request: submit product ideas from the header.'),
+    bullet('Works on iPhone and desktop — use ← Site to return to the public marketing page.'),
 
-    h1('7. Counties Supported'),
-    body('Intake dropdown: Williamson, Travis, Bastrop, Caldwell, Hays, Comal, Bexar, Guadalupe, Fort Bend, Smith (Tyler). Seed deals included for Bastrop, Caldwell, Comal, Bexar.'),
+    h1('7. Public Marketing Site'),
+    body(`The public site at ${SITE_URL} is separate from the staff app.`),
+    bullet('Visitors see farms, ranches, and land positioning for Central Texas.'),
+    bullet('Contact form submits to /api/leads → Website Leads in the staff app.'),
+    bullet('No password required on the public site.'),
+    bullet('Staff reach the app via /app or the login link.'),
 
-    h1('8. Tips & Troubleshooting'),
+    h1('8. Counties & Data Sources'),
+    body('Intake counties include Williamson, Travis, Bastrop, Caldwell, Hays, Comal, Bexar, Guadalupe, Fort Bend, Smith (Tyler), and more.'),
+    bullet('County GIS / ArcGIS for parcel attributes'),
+    bullet('FEMA NFHL for flood zones'),
+    bullet('Texas PUC for water/sewer CCN boundaries'),
+    bullet('id.land for parcel detail and comps (with token)'),
+    bullet('Forewarn for owner contact (production key required)'),
+    bullet('DNCScrub for federal DNC registry (cold texts only)'),
+
+    h1('9. Admin & Setup (for operators)'),
     table([
-      ['Issue', 'Fix'],
-      ['Cloud Sync says not configured', 'Deploy must be on Vercel with Supabase env vars. Use Export/Import Bundle offline.'],
-      ['Enrichment shows MOCK', 'Connect id.land token or county may lack public CAD REST — mock profile fills gaps.'],
-      ['Deal excluded from outreach', 'Entitlement bottleneck (no sewer) or missing owner contact.'],
-      ['Text blocked', 'Number failed DNC scrub — do not contact. Use direct mail instead.'],
-      ['Intel tab empty on phone', 'Tap Intel in section nav — moat section is panel-only on mobile.'],
-      ['Hard refresh', 'Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows) after updates.'],
+      ['Task', 'How'],
+      ['Deploy', 'Git push to main → Vercel auto-deploys to barntobank.com'],
+      ['Set staff password', 'Vercel env: ORIGINATION_PASSWORD'],
+      ['Enable cloud sync', 'Vercel env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, MOAT_TEAM_ID'],
+      ['Enable live DNC scrub', 'Vercel env: DNC_SCRUB_API_KEY — run npm run provision-dncscrub-mcp'],
+      ['Provision Supabase', 'npm run provision-supabase-mcp'],
     ]),
 
-    h1('9. Glossary'),
+    h1('10. Tips & Troubleshooting'),
+    table([
+      ['Issue', 'Fix'],
+      ['Redirected to login', 'Session expired — sign in again at /app/login'],
+      ['Cloud Sync not configured', 'Supabase env vars missing on Vercel — use Export/Import Bundle offline'],
+      ['Enrichment shows MOCK', 'Connect id.land token; some counties use mock profile until CAD REST is wired'],
+      ['Deal excluded from outreach', 'Entitlement bottleneck or missing owner contact'],
+      ['DNC scrub failed', 'Set DNC_SCRUB_API_KEY or use direct mail instead'],
+      ['Text blocked after scrub', 'Number on DNC list — use mail, do not text'],
+      ['Website lead not showing', 'Click Website Leads Refresh on Intake or Intel'],
+      ['Stale UI after update', 'Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)'],
+      ['www vs apex domain', 'Both barntobank.com and www.barntobank.com point to Vercel'],
+    ]),
+
+    h1('11. Daily Workflow Cheat Sheet'),
+    numbered('Morning: Intel → Cloud Sync. Review Website Leads.'),
+    numbered('Intake: run Automation 1 on new tracts or inbound inquiries.'),
+    numbered('Deals: route each tract Develop / Sell / Retail; open modal for margin check.'),
+    numbered('Log comps after every broker call or off-market sale (+ Log Comp).'),
+    numbered('Outreach: Build Mail List weekly; export CSV to mail house or print labels.'),
+    numbered('End of day: Cloud Sync again so Jack sees your pipeline.'),
+
+    h1('12. Glossary'),
     bullet('Automation 1: multi-source intake enrichment pipeline'),
-    bullet('CCN: Certificate of Convenience and Necessity (Texas utility service area)'),
-    bullet('SFHA: Special Flood Hazard Area (FEMA)'),
+    bullet('CCN: Certificate of Convenience and Necessity (Texas utility franchise area)'),
+    bullet('SFHA: Special Flood Hazard Area on FEMA maps'),
     bullet('Entitlement bottleneck: no central sewer CCN — limits develop path'),
-    bullet('Comp band: asking price vs private comp average for the county'),
-    bullet('Moat bundle: JSON export of deals, comps, audit, and outreach state'),
+    bullet('Comp band: asking price vs your private comp average'),
+    bullet('Moat bundle: JSON export of deals, comps, audit, outreach state'),
+    bullet('TCPA: federal law governing calls/texts to cell phones'),
+    bullet('DNC: National Do Not Call Registry — applies to cold calls/texts, not mail'),
+    bullet('SAN: FTC Subscription Account Number — required for live federal DNC scrub vendors'),
 
     h2('Ready?'),
-    para([text('Open '), link(APP_URL, APP_URL), text(' and run your first tract.')], { spacing: { after: 200 } }),
+    para([text('Sign in at '), link(LOGIN_URL, LOGIN_URL), text(', run your first tract, and build your first mail list.')], { spacing: { after: 200 } }),
   ];
 
   return new Document({
