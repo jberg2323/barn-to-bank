@@ -8,7 +8,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Barn to Bank — Texas Land Origination</title>
   <meta name="description" content="Barn to Bank turns Texas land leads into routed deals — enrich parcels, score entitlement, log off-market comps, outreach with DNC compliance, and sync your team moat.">
-  <meta name="theme-color" content="#0c0b09">
+  <meta name="theme-color" content="#0c0b09" id="theme-color-meta">
+  <script>
+    (function () {
+      var KEY = 'barn-to-bank-theme';
+      var stored = localStorage.getItem(KEY);
+      var theme = (stored === 'light' || stored === 'dark')
+        ? stored
+        : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+      var meta = document.getElementById('theme-color-meta');
+      if (meta) meta.content = theme === 'light' ? '#f4eddf' : '#0c0b09';
+    })();
+  </script>
   <meta property="og:title" content="Barn to Bank — Texas Land Origination">
   <meta property="og:description" content="From raw tract to funded deal — enrichment, routing, outreach, and team intel built for Texas land.">
   <meta property="og:type" content="website">
@@ -18,6 +30,20 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
+      --mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
+      --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --radius: 10px;
+      --radius-sm: 7px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+
+    :root,
+    [data-theme="dark"] {
+      color-scheme: dark;
       --bg-deep: #0c0b09;
       --bg-panel: #14120f;
       --bg-elevated: #1c1915;
@@ -45,18 +71,67 @@
       --develop: #c09aff;
       --sell: #72d48a;
       --retail: #78bcff;
-      --mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
-      --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-      --radius: 10px;
-      --radius-sm: 7px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
       --shadow: 0 20px 56px rgba(0, 0, 0, 0.5);
       --shadow-sm: 0 4px 24px rgba(0, 0, 0, 0.32);
       --shadow-glow: 0 0 40px rgba(212, 181, 106, 0.08);
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+      --surface-header: rgba(20, 18, 15, 0.88);
+      --surface-sidebar: rgba(23, 21, 18, 0.6);
+      --surface-nav: rgba(23, 21, 18, 0.92);
+      --surface-modal: rgba(23, 21, 18, 0.95);
+      --surface-modal-overlay: rgba(8, 7, 5, 0.72);
+      --surface-logo: linear-gradient(155deg, #2e281e 0%, #1a1714 55%, #14120f 100%);
+      --surface-sticky: #1a1714;
+      --header-highlight: rgba(255, 255, 255, 0.03);
+      --body-glow-a: rgba(212, 181, 106, 0.11);
+      --body-glow-b: rgba(114, 168, 120, 0.08);
+      --body-glow-c: rgba(166, 132, 64, 0.06);
+      --body-noise-opacity: 0.35;
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg-deep: #f4eddf;
+      --bg-panel: #ece2cd;
+      --bg-elevated: #fbf8f1;
+      --bg-hover: #e8dcc8;
+      --bg-card: #fbf8f1;
+      --border: rgba(30, 59, 44, 0.14);
+      --border-subtle: rgba(28, 36, 29, 0.08);
+      --border-strong: rgba(176, 130, 44, 0.38);
+      --text-primary: #1c241d;
+      --text-secondary: #4a5248;
+      --text-muted: #6d7568;
+      --accent: #9a6f22;
+      --accent-bright: #b0822c;
+      --accent-dim: #7a5a1a;
+      --accent-glow: rgba(176, 130, 44, 0.18);
+      --accent-soft: rgba(176, 130, 44, 0.1);
+      --land: #2f5841;
+      --land-dim: #1e3b2c;
+      --green: #2f7a45;
+      --green-dim: #1e5c32;
+      --blue: #2a6db0;
+      --orange: #b87a28;
+      --red: #c44a42;
+      --purple: #7a52b8;
+      --develop: #7a52b8;
+      --sell: #2f7a45;
+      --retail: #2a6db0;
+      --shadow: 0 20px 56px rgba(20, 42, 31, 0.12);
+      --shadow-sm: 0 4px 24px rgba(20, 42, 31, 0.08);
+      --shadow-glow: 0 0 40px rgba(176, 130, 44, 0.06);
+      --surface-header: rgba(251, 248, 241, 0.92);
+      --surface-sidebar: rgba(244, 237, 223, 0.88);
+      --surface-nav: rgba(251, 248, 241, 0.95);
+      --surface-modal: rgba(251, 248, 241, 0.98);
+      --surface-modal-overlay: rgba(28, 36, 29, 0.42);
+      --surface-logo: linear-gradient(155deg, #ece2cd 0%, #e0d4bc 55%, #f4eddf 100%);
+      --surface-sticky: #f4eddf;
+      --header-highlight: rgba(28, 36, 29, 0.05);
+      --body-glow-a: rgba(176, 130, 44, 0.1);
+      --body-glow-b: rgba(47, 88, 65, 0.07);
+      --body-glow-c: rgba(236, 226, 205, 0.55);
+      --body-noise-opacity: 0.12;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -80,9 +155,9 @@
       pointer-events: none;
       z-index: 0;
       background:
-        radial-gradient(ellipse 90% 55% at 5% -15%, rgba(212, 181, 106, 0.11), transparent 58%),
-        radial-gradient(ellipse 65% 45% at 98% 5%, rgba(114, 168, 120, 0.08), transparent 52%),
-        radial-gradient(ellipse 55% 35% at 50% 105%, rgba(166, 132, 64, 0.06), transparent 62%);
+        radial-gradient(ellipse 90% 55% at 5% -15%, var(--body-glow-a), transparent 58%),
+        radial-gradient(ellipse 65% 45% at 98% 5%, var(--body-glow-b), transparent 52%),
+        radial-gradient(ellipse 55% 35% at 50% 105%, var(--body-glow-c), transparent 62%);
     }
 
     body::after {
@@ -91,7 +166,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.35;
+      opacity: var(--body-noise-opacity);
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
@@ -132,11 +207,11 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px 28px;
-      background: rgba(20, 18, 15, 0.88);
+      background: var(--surface-header);
       backdrop-filter: blur(20px) saturate(1.2);
       -webkit-backdrop-filter: blur(20px) saturate(1.2);
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 0 rgba(255,255,255,0.03);
+      box-shadow: 0 1px 0 var(--header-highlight);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -170,8 +245,8 @@
       gap: 6px;
       padding: 10px 14px;
       min-height: 44px;
-      background: linear-gradient(180deg, rgba(212,181,106,0.18), rgba(212,181,106,0.08));
-      border: 1px solid rgba(212,181,106,0.45);
+      background: linear-gradient(180deg, var(--accent-soft), transparent);
+      border: 1px solid var(--border-strong);
       border-radius: var(--radius-sm);
       color: var(--accent-bright);
       font-size: 12px;
@@ -185,14 +260,14 @@
       flex-shrink: 0;
     }
     .btn-main-site:hover {
-      background: rgba(212,181,106,0.22);
+      background: var(--accent-glow);
       border-color: var(--accent);
     }
 
     .logo-mark {
       width: 44px;
       height: 44px;
-      background: linear-gradient(155deg, #2e281e 0%, #1a1714 55%, #14120f 100%);
+      background: var(--surface-logo);
       border: 1px solid var(--border-strong);
       border-radius: 13px;
       display: flex;
@@ -302,7 +377,7 @@
     }
 
     .sidebar {
-      background: rgba(23, 21, 18, 0.6);
+      background: var(--surface-sidebar);
       border-right: 1px solid var(--border);
       padding: 22px 20px;
       overflow-y: auto;
@@ -1121,7 +1196,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(8, 7, 5, 0.72);
+      background: var(--surface-modal-overlay);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       z-index: 200;
@@ -1155,7 +1230,7 @@
       align-items: flex-start;
       position: sticky;
       top: 0;
-      background: rgba(23, 21, 18, 0.95);
+      background: var(--surface-modal);
       backdrop-filter: blur(12px);
       z-index: 1;
     }
@@ -1796,8 +1871,8 @@
     .mail-print-toolbar {
       position: sticky;
       top: 0;
-      background: #222;
-      color: #fff;
+      background: var(--surface-sticky);
+      color: var(--text-primary);
       padding: 12px 20px;
       display: flex;
       gap: 12px;
@@ -2024,7 +2099,7 @@
     }
     .deal-memo-overlay.open { display: block; }
     .deal-memo-toolbar {
-      position: sticky; top: 0; background: #1a1714; color: #f6f2ea;
+      position: sticky; top: 0; background: var(--surface-sticky); color: var(--text-primary);
       padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
     }
     .deal-memo-body { max-width: 720px; margin: 0 auto; padding: 32px 24px 48px; }
@@ -2285,6 +2360,15 @@
       border-color: var(--border);
     }
 
+    .btn-theme-toggle {
+      gap: 6px;
+      min-width: 44px;
+    }
+    .btn-theme-toggle .theme-glyph {
+      font-size: 15px;
+      line-height: 1;
+    }
+
     .partner-welcome {
       margin-bottom: 16px;
       padding: 18px;
@@ -2367,7 +2451,7 @@
       position: sticky;
       top: 0;
       z-index: 95;
-      background: rgba(23, 21, 18, 0.92);
+      background: var(--surface-nav);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       padding: 0 12px;
@@ -2410,8 +2494,8 @@
       min-height: 44px;
       padding: 8px 12px;
       margin-right: 2px;
-      background: rgba(212,181,106,0.12);
-      border: 1px solid rgba(212,181,106,0.35);
+      background: var(--accent-soft);
+      border: 1px solid var(--border-strong);
       border-radius: 8px;
       color: var(--accent-bright);
       font-size: 11px;
@@ -2423,7 +2507,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     .mobile-nav-exit:hover {
-      background: rgba(212,181,106,0.2);
+      background: var(--accent-glow);
       border-color: var(--accent);
     }
 
@@ -2744,6 +2828,11 @@
     <a href="/" class="btn-main-site" title="Back to barntobank.com">← Main Site</a>
     <div class="header-right">
       <div class="header-actions">
+        <button type="button" class="btn-share-link btn-theme-toggle" id="theme-toggle" title="Toggle light or dark mode" aria-label="Toggle theme">
+          <span class="theme-glyph" aria-hidden="true">☀</span>
+          <span class="theme-label hide-mobile">Light</span>
+          <span class="theme-label show-mobile">Theme</span>
+        </button>
         <a href="/" class="btn-share-link btn-public-site" title="Back to public marketing site" style="text-decoration:none;display:inline-flex;align-items:center;">Public Site</a>
         <button type="button" class="btn-share-link" id="auth-sign-out" title="Sign out of origination platform">Sign Out</button>
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
@@ -7773,6 +7862,50 @@
     }
 
     // =========================================================================
+    // Theme
+    // =========================================================================
+    const THEME_STORAGE_KEY = 'barn-to-bank-theme';
+
+    function getActiveTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+
+    function applyTheme(theme) {
+      const next = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+      const meta = document.getElementById('theme-color-meta');
+      if (meta) meta.content = next === 'light' ? '#f4eddf' : '#0c0b09';
+      updateThemeToggleUi(next);
+    }
+
+    function updateThemeToggleUi(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      const isLight = theme === 'light';
+      const glyph = btn.querySelector('.theme-glyph');
+      const desktopLabel = btn.querySelector('.theme-label.hide-mobile');
+      if (glyph) glyph.textContent = isLight ? '☾' : '☀';
+      if (desktopLabel) desktopLabel.textContent = isLight ? 'Dark' : 'Light';
+      btn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+
+    function initThemeToggle() {
+      updateThemeToggleUi(getActiveTheme());
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        applyTheme(getActiveTheme() === 'light' ? 'dark' : 'light');
+      });
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+
+    // =========================================================================
     // Init
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
@@ -7796,6 +7929,7 @@
       updateFeatureRequestBadge();
       initPartnerWelcome();
       initMobileNav();
+      initThemeToggle();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
       document.getElementById('auth-sign-out')?.addEventListener('click', async () => {

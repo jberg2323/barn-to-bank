@@ -5,25 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Barn to Bank — Staff Login</title>
+<meta name="theme-color" content="#142a1f" id="theme-color-meta">
+<script>
+  (function () {
+    var KEY = 'barn-to-bank-theme';
+    var stored = localStorage.getItem(KEY);
+    var theme = (stored === 'light' || stored === 'dark')
+      ? stored
+      : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    var meta = document.getElementById('theme-color-meta');
+    if (meta) meta.content = theme === 'light' ? '#f4eddf' : '#142a1f';
+  })();
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f1f17'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%23d6b061' font-family='Georgia' font-size='14' font-style='italic'%3EB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
+  :root,
+  [data-theme="dark"]{
+    color-scheme:dark;
     --bg:#142a1f;
     --card:#1e3b2c;
     --ink:#f4eddf;
     --muted:rgba(244,237,223,.68);
     --brass:#d6b061;
     --line:rgba(244,237,223,.16);
+    --input-bg:rgba(244,237,223,.06);
+    --panel-shadow:0 24px 60px -30px rgba(0,0,0,.55);
+    --glow-a:rgba(214,176,97,.12);
+    --glow-b:rgba(114,168,120,.08);
+  }
+  [data-theme="light"]{
+    color-scheme:light;
+    --bg:#f4eddf;
+    --card:#fbf8f1;
+    --ink:#1c241d;
+    --muted:#6d7568;
+    --brass:#9a6f22;
+    --line:rgba(28,36,29,.14);
+    --input-bg:rgba(28,36,29,.04);
+    --panel-shadow:0 24px 60px -30px rgba(20,42,31,.12);
+    --glow-a:rgba(176,130,44,.1);
+    --glow-b:rgba(47,88,65,.07);
   }
   *{box-sizing:border-box;}
   html,body{min-height:100%;margin:0;}
   body{
     font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:radial-gradient(1200px 600px at 10% -10%, rgba(214,176,97,.12), transparent 55%),
-               radial-gradient(900px 500px at 100% 100%, rgba(114,168,120,.08), transparent 50%),
+    background:radial-gradient(1200px 600px at 10% -10%, var(--glow-a), transparent 55%),
+               radial-gradient(900px 500px at 100% 100%, var(--glow-b), transparent 50%),
                var(--bg);
     color:var(--ink);
     display:flex;align-items:center;justify-content:center;
@@ -31,11 +63,11 @@
   }
   .panel{
     width:min(420px, 100%);
-    background:linear-gradient(165deg, rgba(214,176,97,.08), rgba(30,59,44,.95));
+    background:linear-gradient(165deg, var(--glow-a), var(--card));
     border:1px solid var(--line);
     border-radius:10px;
     padding:2rem 1.8rem 1.7rem;
-    box-shadow:0 24px 60px -30px rgba(0,0,0,.55);
+    box-shadow:var(--panel-shadow);
   }
   .brand{
     font-family:"Fraunces",Georgia,serif;
@@ -49,7 +81,7 @@
   }
   input{
     width:100%;font:inherit;font-size:16px;
-    background:rgba(244,237,223,.06);border:1px solid var(--line);border-radius:4px;
+    background:var(--input-bg);border:1px solid var(--line);border-radius:4px;
     color:var(--ink);padding:.85em 1em;margin-bottom:1rem;
     -webkit-appearance:none;appearance:none;
   }
@@ -70,9 +102,22 @@
     text-decoration:none;
   }
   .back:hover{color:var(--brass);}
+  .theme-toggle{
+    position:fixed;top:max(16px, env(safe-area-inset-top));right:max(16px, env(safe-area-inset-right));
+    display:inline-flex;align-items:center;gap:6px;padding:.55rem .85rem;min-height:44px;
+    background:var(--card);border:1px solid var(--line);border-radius:999px;
+    color:var(--muted);font:inherit;font-size:.78rem;font-weight:600;cursor:pointer;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  }
+  .theme-toggle:hover{color:var(--brass);border-color:var(--brass);}
+  .theme-toggle .theme-glyph{font-size:1rem;line-height:1;}
 </style>
 </head>
 <body>
+  <button type="button" class="theme-toggle" id="theme-toggle" title="Toggle light or dark mode" aria-label="Toggle theme">
+    <span class="theme-glyph" aria-hidden="true">☀</span>
+    <span class="theme-label">Light</span>
+  </button>
   <main class="panel">
     <h1 class="brand">Barn <em>to</em> Bank</h1>
     <p class="sub">Origination platform — staff access only.</p>
@@ -85,6 +130,34 @@
     <a class="back" href="/">← Back to public site</a>
   </main>
   <script>
+    const THEME_STORAGE_KEY = 'barn-to-bank-theme';
+
+    function getActiveTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+
+    function applyTheme(theme) {
+      const next = theme === 'light' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+      const meta = document.getElementById('theme-color-meta');
+      if (meta) meta.content = next === 'light' ? '#f4eddf' : '#142a1f';
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      const isLight = next === 'light';
+      const glyph = btn.querySelector('.theme-glyph');
+      const label = btn.querySelector('.theme-label');
+      if (glyph) glyph.textContent = isLight ? '☾' : '☀';
+      if (label) label.textContent = isLight ? 'Dark' : 'Light';
+      btn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+
+    applyTheme(getActiveTheme());
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      applyTheme(getActiveTheme() === 'light' ? 'dark' : 'light');
+    });
+
     const params = new URLSearchParams(window.location.search);
     const next = params.get('next') || '/app';
     const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/app';
