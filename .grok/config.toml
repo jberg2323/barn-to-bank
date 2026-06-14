@@ -1,0 +1,8 @@
+# Barn to Bank — project MCP servers (merged with ~/.grok/config.toml)
+
+[mcp_servers.dncscrub]
+url = "https://mcp.dnc.com/mcp"
+enabled = true
+
+[mcp_servers.dncscrub.headers]
+x-dncscrub-api-key = "${DNC_SCRUB_API_KEY}"

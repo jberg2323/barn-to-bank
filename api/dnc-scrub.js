@@ -44,11 +44,12 @@ module.exports = async function handler(req, res) {
       return json(res, 400, { ok: false, error: 'Maximum 1,000 phone numbers per request' });
     }
 
-    const { results, live, provider } = await scrubPhones(phones);
+    const { results, live, provider, transport } = await scrubPhones(phones);
     return json(res, 200, {
       ok: true,
       live,
       provider,
+      transport: transport || (live ? 'rest' : 'mock'),
       results,
       summary: {
         total: results.length,

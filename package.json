@@ -7,7 +7,9 @@
     "connect-landid": "node scripts/landid-connect.mjs",
     "connect-landid-mcp": "node scripts/mcp-landid-connect.mjs",
     "provision-supabase-mcp": "node scripts/mcp-supabase-provision.mjs",
+    "provision-dncscrub-mcp": "node scripts/mcp-dncscrub-provision.mjs",
     "generate-docs": "node scripts/generate-docs.mjs",
+    "open-google-docs": "node scripts/open-in-google-docs.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
