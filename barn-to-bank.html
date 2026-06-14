@@ -1125,6 +1125,57 @@
       flex-wrap: wrap;
     }
     .fr-actions-row .btn { flex: 1; min-width: 120px; }
+
+    .btn-share-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .btn-share-link:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border-color: var(--text-muted);
+    }
+
+    .partner-welcome {
+      margin-bottom: 14px;
+      padding: 12px;
+      background: rgba(88,166,255,0.08);
+      border: 1px solid rgba(88,166,255,0.3);
+      border-radius: var(--radius);
+      font-size: 10px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .partner-welcome.hidden { display: none; }
+    .partner-welcome strong { color: var(--blue); display: block; margin-bottom: 6px; font-size: 11px; }
+    .partner-welcome ol {
+      margin: 8px 0 0 16px;
+      padding: 0;
+    }
+    .partner-welcome li { margin-bottom: 4px; }
+    .partner-welcome-dismiss {
+      margin-top: 10px;
+      width: 100%;
+      padding: 5px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      font-size: 10px;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .partner-welcome-dismiss:hover { color: var(--text-primary); border-color: var(--text-muted); }
   </style>
 </head>
 <body>
@@ -1139,6 +1190,9 @@
     </div>
     <div class="header-right">
       <div class="header-actions">
+        <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
+          Copy App Link
+        </button>
         <button type="button" class="btn-feature-request" id="feature-request-open" title="Submit a feature request or customization">
           <span>Feature Request</span>
           <span class="fr-badge hidden" id="fr-badge">0</span>
@@ -1164,6 +1218,17 @@
   <main class="main">
     <!-- INTAKE -->
     <aside class="sidebar">
+      <div class="partner-welcome" id="partner-welcome">
+        <strong>Welcome — quick start</strong>
+        Barn to Bank runs in your browser. No install needed.
+        <ol>
+          <li>Pick a <strong>county</strong> and enter an <strong>address</strong> or parcel #</li>
+          <li>Sign in to <strong>id.land</strong> below (your own account) for full parcel data</li>
+          <li>Click <strong>Run Automation 1</strong> → review the report → <strong>Add to Pipeline</strong></li>
+          <li>Use <strong>Feature Request</strong> (top right) for ideas or customizations</li>
+        </ol>
+        <button type="button" class="partner-welcome-dismiss" id="partner-welcome-dismiss">Got it — hide this</button>
+      </div>
       <div class="section-title">Intake — The Net</div>
       <form class="intake-form" id="intake-form">
         <div class="form-group">
@@ -1376,6 +1441,13 @@
       // Set true to upgrade MOCK fields to LIVE where Tier 1/2 APIs succeed
       USE_LIVE_APIS: true,
       SIMULATE_DELAY_MS: 350,
+
+      // Partner access — share APP_URL with Jack; each user keeps their own id.land login in-browser
+      PARTNERS: {
+        enabled: true,
+        names: ['Jack'],
+        appUrl: 'https://barn-to-bank.vercel.app',
+      },
 
       // Feature requests — Jack (or anyone) submits via header button
       FEATURE_REQUESTS: {
@@ -3958,6 +4030,55 @@
     }
 
     // =========================================================================
+    // Partner access & sharing
+    // =========================================================================
+    const PARTNER_WELCOME_KEY = 'barn-to-bank-partner-welcome-dismissed';
+
+    function appShareUrl() {
+      const configured = DATA_SOURCES.PARTNERS?.appUrl?.trim();
+      if (configured) return configured.replace(/\/$/, '');
+      const { origin, pathname } = window.location;
+      if (origin === 'null' || origin.startsWith('file:')) {
+        return 'https://github.com/jberg2323/barn-to-bank';
+      }
+      const base = pathname.replace(/\/[^/]*$/, '') || '';
+      return `${origin}${base}`.replace(/\/$/, '') || origin;
+    }
+
+    function initPartnerWelcome() {
+      const el = document.getElementById('partner-welcome');
+      if (!el) return;
+      if (localStorage.getItem(PARTNER_WELCOME_KEY) === '1') {
+        el.classList.add('hidden');
+        return;
+      }
+      const partners = DATA_SOURCES.PARTNERS?.names || [];
+      if (partners.length) {
+        const strong = el.querySelector('strong');
+        if (strong) strong.textContent = `Welcome${partners.includes('Jack') ? ', Jack' : ''} — quick start`;
+      }
+      document.getElementById('partner-welcome-dismiss')?.addEventListener('click', () => {
+        try { localStorage.setItem(PARTNER_WELCOME_KEY, '1'); } catch { /* private mode */ }
+        el.classList.add('hidden');
+      });
+    }
+
+    async function copyAppShareLink() {
+      const url = appShareUrl();
+      const btn = document.getElementById('share-link-copy');
+      try {
+        await navigator.clipboard.writeText(url);
+        if (btn) {
+          const prev = btn.textContent;
+          btn.textContent = 'Link copied!';
+          setTimeout(() => { btn.textContent = prev; }, 2000);
+        }
+      } catch {
+        window.prompt('Copy this link to share with Jack:', url);
+      }
+    }
+
+    // =========================================================================
     // Feature requests (partner intake)
     // =========================================================================
     const FEATURE_REQUEST_STORAGE_KEY = 'barn-to-bank-feature-requests';
@@ -4178,7 +4299,9 @@
       renderAll();
       updateLandIdConnectStatus();
       updateFeatureRequestBadge();
+      initPartnerWelcome();
 
+      document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
       document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
       document.getElementById('fr-modal-overlay').addEventListener('click', (e) => {

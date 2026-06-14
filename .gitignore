@@ -1,3 +1,4 @@
 node_modules/
 .playwright-idland-profile/
 .landid-token
+.vercel

@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/barn-to-bank.html" }]
+}
