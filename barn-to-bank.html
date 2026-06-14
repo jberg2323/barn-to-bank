@@ -1294,6 +1294,362 @@
       color: var(--text-muted);
       font-family: var(--mono);
     }
+
+    /* Dual enrichment view — internal vs client */
+    .enrich-view-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .enrich-view-bar .label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .dual-view-toggle {
+      display: flex;
+      gap: 3px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+    }
+    .dual-view-toggle button {
+      padding: 5px 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      font-family: var(--sans);
+      cursor: pointer;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: all 0.2s var(--ease);
+    }
+    .dual-view-toggle button.active {
+      background: var(--bg-card);
+      color: var(--accent-bright);
+      box-shadow: var(--shadow-sm);
+    }
+    .client-redacted {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .license-gate-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(192, 154, 255, 0.14);
+      color: var(--purple);
+      border: 1px solid rgba(192, 154, 255, 0.3);
+      margin-left: 6px;
+    }
+
+    /* Owner contact panel (post-enrichment) */
+    .owner-contact-panel {
+      margin-top: 12px;
+      padding: 14px;
+      background: linear-gradient(165deg, rgba(192,154,255,0.08) 0%, var(--bg-deep) 100%);
+      border: 1px solid rgba(192, 154, 255, 0.22);
+      border-radius: var(--radius-lg);
+    }
+    .owner-contact-panel h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .owner-contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+    .owner-contact-row .key {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .owner-contact-row .val {
+      font-family: var(--mono);
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    /* Compliance + outreach */
+    .compliance-banner {
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(244, 122, 114, 0.1) 0%, rgba(236, 168, 90, 0.08) 100%);
+      border: 1px solid rgba(244, 122, 114, 0.28);
+      border-radius: var(--radius-lg);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .compliance-banner strong { color: var(--red); }
+    .compliance-banner .fine-print {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-family: var(--mono);
+    }
+
+    .outreach-section { margin-top: 32px; }
+
+    .outreach-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .outreach-steps {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .outreach-step-pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      background: var(--bg-card);
+    }
+    .outreach-step-pill.active {
+      border-color: var(--accent);
+      color: var(--accent-bright);
+      background: var(--accent-soft);
+    }
+    .outreach-step-pill.done {
+      border-color: rgba(114, 212, 138, 0.35);
+      color: var(--green);
+      background: rgba(114, 212, 138, 0.08);
+    }
+    .outreach-step-pill.locked {
+      opacity: 0.45;
+    }
+
+    .dnc-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--mono);
+    }
+    .dnc-badge.cleared {
+      background: rgba(114, 212, 138, 0.14);
+      color: var(--green);
+      border: 1px solid rgba(114, 212, 138, 0.3);
+    }
+    .dnc-badge.blocked {
+      background: rgba(244, 122, 114, 0.16);
+      color: var(--red);
+      border: 1px solid rgba(244, 122, 114, 0.35);
+    }
+    .dnc-badge.pending {
+      background: rgba(236, 168, 90, 0.12);
+      color: var(--orange);
+      border: 1px solid rgba(236, 168, 90, 0.3);
+    }
+
+    .outreach-queue-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+    .outreach-queue-tabs button {
+      padding: 8px 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -9px;
+      font-family: var(--sans);
+    }
+    .outreach-queue-tabs button.active {
+      color: var(--accent-bright);
+      border-bottom-color: var(--accent);
+    }
+
+    .outreach-queue-item {
+      padding: 12px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+    .outreach-queue-item.blocked-item {
+      border-color: rgba(244, 122, 114, 0.35);
+      background: rgba(244, 122, 114, 0.06);
+      opacity: 0.85;
+    }
+    .outreach-queue-item .oq-addr {
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .outreach-queue-item .oq-meta {
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .text-template-box {
+      width: 100%;
+      min-height: 72px;
+      padding: 10px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 12px;
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+    .text-template-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .btn-outreach {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: linear-gradient(180deg, var(--accent-bright) 0%, var(--accent) 100%);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #1a1408;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .btn-outreach:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .outreach-modal-panel { max-width: 640px; }
+    .outreach-filter-list {
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 12px 0;
+    }
+    .outreach-filter-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .outreach-filter-item:hover { border-color: var(--border); }
+    .outreach-filter-item input { margin-top: 3px; accent-color: var(--accent); }
+    .outreach-filter-item.excluded {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: var(--bg-deep);
+    }
+
+    /* Printable mail labels */
+    .mail-print-overlay {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 300;
+      display: none;
+      overflow-y: auto;
+      color: #111;
+      font-family: Arial, sans-serif;
+    }
+    .mail-print-overlay.open { display: block; }
+    .mail-print-toolbar {
+      position: sticky;
+      top: 0;
+      background: #222;
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .mail-print-toolbar button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .mail-label-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .mail-label {
+      border: 1px dashed #ccc;
+      padding: 20px 24px;
+      min-height: 140px;
+      font-size: 13px;
+      line-height: 1.5;
+      page-break-inside: avoid;
+    }
+    .mail-label .handwritten-note {
+      margin-top: 12px;
+      font-family: 'Segoe Script', 'Bradley Hand', cursive;
+      font-size: 12px;
+      color: #333;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    @media print {
+      .mail-print-toolbar { display: none !important; }
+      .mail-print-overlay { position: static; }
+    }
     .a1-summary {
       display: flex;
       gap: 6px;
@@ -1803,6 +2159,16 @@
       .main.panel-silos .pipeline-table-wrap,
       .main.panel-silos .pipeline-cards { display: none !important; }
       .main.panel-silos .silos { margin-top: 0; }
+      .main.panel-silos .outreach-section { display: none !important; }
+      .main.panel-outreach .sidebar { display: none; }
+      .main.panel-outreach .pipeline-toolbar,
+      .main.panel-outreach .pipeline-table-wrap,
+      .main.panel-outreach .pipeline-cards,
+      .main.panel-outreach .silos,
+      .main.panel-outreach .page-hero { display: none !important; }
+      .main.panel-outreach .outreach-section { margin-top: 0; }
+      .owner-contact-row { grid-template-columns: 1fr; }
+      .mail-label-grid { grid-template-columns: 1fr; }
 
       .sidebar {
         padding: 14px 12px;
@@ -1970,6 +2336,7 @@
       <button type="button" data-panel="intake" class="active">Intake</button>
       <button type="button" data-panel="pipeline">Deals</button>
       <button type="button" data-panel="silos">Silos</button>
+      <button type="button" data-panel="outreach">Outreach</button>
     </div>
   </nav>
 
@@ -2045,6 +2412,13 @@
 
       <div class="enrichment-result" id="enrichment-result">
         <h3 id="enrichment-title">✓ Automation 1 Complete</h3>
+        <div class="enrich-view-bar" id="enrich-view-bar" style="display:none">
+          <span class="label">Enrichment view</span>
+          <div class="dual-view-toggle" id="enrich-dual-toggle">
+            <button type="button" data-enrich-view="internal" class="active">Internal</button>
+            <button type="button" data-enrich-view="client">Client</button>
+          </div>
+        </div>
         <div class="enrichment-source" id="enrichment-source"></div>
         <div class="enrichment-grid" id="enrichment-grid"></div>
         <div class="enrichment-warn" id="enrichment-warn"></div>
@@ -2121,8 +2495,70 @@
           </div>
         </div>
       </div>
+
+      <!-- OWNER OUTREACH -->
+      <div class="outreach-section" id="outreach-section">
+        <div class="compliance-banner" id="compliance-banner">
+          <strong>TCPA / DNC Compliance Required</strong> — Contacting numbers on the Federal Do Not Call Registry without consent can result in fines of <strong>$500–$50,000+ per violation</strong>. Every phone number must pass a Federal DNC Registry scrub before any text or call. Barn to Bank blocks un-scrubbed and failed numbers from the text queue.
+          <div class="fine-print">DNC scrubbing is mandatory · No bypass · Printed direct mail is exempt from DNC but must still comply with state solicitation rules</div>
+        </div>
+        <div class="outreach-toolbar">
+          <div class="section-title" style="margin:0">Owner Outreach</div>
+          <button type="button" class="btn-outreach" id="build-outreach-open">Build Outreach List</button>
+        </div>
+        <div class="outreach-steps" id="outreach-steps-bar">
+          <span class="outreach-step-pill" data-ostep="1">1 · Filter (not bottlenecked)</span>
+          <span class="outreach-step-pill locked" data-ostep="2">2 · DNC scrub (required)</span>
+          <span class="outreach-step-pill locked" data-ostep="3">3 · Queue</span>
+        </div>
+        <div id="outreach-queue-panel">
+          <div class="outreach-queue-tabs">
+            <button type="button" class="active" data-oq-tab="text">Text queue</button>
+            <button type="button" data-oq-tab="mail">Direct mail / labels</button>
+          </div>
+          <div id="outreach-tab-text">
+            <div class="text-template-hint">Merge field: <code>{{owner_name}}</code> — only DNC-cleared numbers can be queued</div>
+            <textarea class="text-template-box" id="text-template" rows="3">Hi {{owner_name}}, I'm reaching out about your land in {{county}} County. Would you have a few minutes to discuss an offer? — Barn to Bank</textarea>
+            <div id="text-queue-list"><div class="silo-empty">Run <strong>Build Outreach List</strong> to populate the queue.</div></div>
+          </div>
+          <div id="outreach-tab-mail" style="display:none">
+            <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Handwritten-style direct mail — export CSV or open print view for Avery labels.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+              <button type="button" class="btn btn-ghost" id="mail-export-csv">Export CSV</button>
+              <button type="button" class="btn btn-primary" id="mail-print-open">Print Labels</button>
+            </div>
+            <div id="mail-queue-list"><div class="silo-empty">Cleared contacts appear here after DNC scrub.</div></div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
+
+  <!-- OUTREACH WIZARD MODAL -->
+  <div class="modal-overlay" id="outreach-modal-overlay">
+    <div class="modal-panel outreach-modal-panel" id="outreach-modal-panel">
+      <div class="modal-header">
+        <div>
+          <h2>Build Outreach List</h2>
+          <div class="sub">Filter → DNC scrub → queue (steps cannot be skipped)</div>
+        </div>
+        <button class="modal-close" id="outreach-modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" id="outreach-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- MAIL PRINT VIEW -->
+  <div class="mail-print-overlay" id="mail-print-overlay">
+    <div class="mail-print-toolbar">
+      <span>Direct Mail Labels — Barn to Bank</span>
+      <div>
+        <button type="button" onclick="window.print()" style="background:#d4b56a;color:#1a1408">Print</button>
+        <button type="button" id="mail-print-close" style="background:#444;color:#fff">Close</button>
+      </div>
+    </div>
+    <div class="mail-label-grid" id="mail-label-grid"></div>
+  </div>
 
   <!-- FEATURE REQUEST MODAL -->
   <div class="modal-overlay" id="fr-modal-overlay">
@@ -2233,6 +2669,30 @@
         ownerEmail: '', // e.g. jeremy@company.com — opens mailto on submit if set
         githubRepo: 'jberg2323/barn-to-bank', // pre-fills GitHub new-issue form
         webhookUrl: '', // optional POST endpoint (Slack, Zapier, Formspree, etc.)
+      },
+
+      // ── INTEGRATIONS (credentials from secret store only — never hardcode) ──
+      INTEGRATIONS: {
+        FOREWARN: {
+          provider: 'Forewarn',
+          purpose: 'Owner lookup / skip-trace contact enrichment',
+          licenseGated: true,
+          displayTag: 'LICENSE-GATED SOURCE',
+          apiKey: '',       // Load from secret store at runtime (Vercel env, 1Password, etc.)
+          apiSecret: '',    // Never commit — inject via deployment pipeline
+          baseUrl: '',      // e.g. https://api.forewarn.com/v1 — configure per contract
+          secretStoreNote: 'FOREWARN_API_KEY and FOREWARN_API_SECRET must be provisioned from a secret store. Do not paste production keys into this HTML file or commit them to git.',
+        },
+        DNC_REGISTRY: {
+          provider: 'Federal DNC Registry Scrub Service',
+          purpose: 'Mandatory phone scrub before SMS/voice outreach (TCPA compliance)',
+          mandatory: true,
+          apiKey: '',       // Load from secret store
+          baseUrl: '',      // Configure per your DNC scrub vendor
+          violationFineMinUsd: 500,
+          violationFineMaxUsd: 50000,
+          secretStoreNote: 'DNC_REGISTRY_API_KEY must come from a secret store. Scrub results are logged with timestamps; un-scrubbed numbers cannot enter the text queue.',
+        },
       },
 
       // ── TIER 1: Free public APIs ─────────────────────────────────────────
@@ -2612,13 +3072,27 @@
     // State — persisted in localStorage per browser
     // =========================================================================
     const DEALS_STORAGE_KEY = 'barn-to-bank-deals';
-    const SAMPLE_DEAL_IDS = new Set(['deal-001', 'deal-002', 'deal-003', 'deal-004', 'deal-005']);
+    const OUTREACH_STORAGE_KEY = 'barn-to-bank-outreach';
+    const SAMPLE_DEAL_IDS = new Set(['deal-001', 'deal-002', 'deal-003', 'deal-004', 'deal-005', 'deal-tyler-001']);
 
     let deals = [];
     let pendingEnrichment = null;
     let activeDealId = null;
     let viewMode = 'table';
     let mobilePanel = 'intake';
+    let enrichDualView = 'internal';
+    let outreachQueueTab = 'text';
+
+    let outreachWizard = {
+      step: 1,
+      selectedIds: [],
+      dncComplete: false,
+      scrubByDealId: {},
+      textQueue: [],
+      mailQueue: [],
+    };
+
+    const DEFAULT_TEXT_TEMPLATE = "Hi {{owner_name}}, I'm reaching out about your land in {{county}} County. Would you have a few minutes to discuss an offer? — Barn to Bank";
 
     const MOBILE_MQ = window.matchMedia('(max-width: 640px)');
 
@@ -2648,67 +3122,156 @@
       }
     }
 
-    const DEFAULT_TYLER_DEAL_ID = 'deal-tyler-001';
-
-    /** Real Smith County (Tyler TX) parcel — kept as the default pipeline deal */
-    function getDefaultTylerDeal() {
-      const mock = MOCK_ENRICHMENT_BY_COUNTY.Smith;
-      const acreage = 109.4;
-      const askingPerAcre = 18500;
+    /** Texas seed parcels — Bastrop, Caldwell, Comal, Bexar */
+    function buildSeedOwnerContact(ownerName, phones, mailingAddress) {
       return {
-        id: DEFAULT_TYLER_DEAL_ID,
-        address: '11650 C R 4215',
-        city: 'Tyler',
-        county: 'Smith',
-        parcelId: 'PID-40456',
-        acreage,
-        zoning: 'Ag or Timber',
-        askingPerAcre,
-        enrichmentStatus: 'enriched',
-        route: 'DEVELOP',
-        owner: 'Kathy Brunson',
-        taxHistory: buildTaxHistory(acreage * askingPerAcre * 0.82, null),
-        utilities: [
-          { type: 'Electric', status: 'partial', detail: `Oncor Electric — ${mock.distPowerMi} mi` },
-          { type: 'Water', status: 'partial', detail: `${mock.waterCcn.split('(')[0].trim()} — ${mock.distWaterMi} mi` },
-          { type: 'Sewer', status: 'none', detail: `${mock.sewerCcn.split('—')[0].trim()} — ${mock.distSewerMi} mi` },
-        ],
-        lat: 32.447, lng: -95.356,
-        nearbyCommunities: [],
-        nearbyDevExcluded: [],
-        nearbyDev: '',
-        sellerName: 'Kathy Brunson',
-        lastContact: new Date().toISOString().split('T')[0],
-        callReminder: true,
-        notes: 'Listing — Kathy Brunson. Tyler ETJ tract, Smith County CAD PID-40456 (109.4 ac ag/timber).',
-        dataSource: 'Smith County CAD',
-        margin: { entitledValuePerAcre: 32000, flipValuePerAcre: 24000, retailCommissionPct: 3 },
+        source: 'Forewarn',
+        licenseGated: true,
+        displayTag: DATA_SOURCES.INTEGRATIONS.FOREWARN.displayTag,
+        ownerName,
+        phones: phones.map((p) => ({ number: p.number, type: p.type || 'mobile', confidence: p.confidence || 'high' })),
+        emails: [],
+        mailingAddress,
+        fetchedAt: new Date().toISOString(),
       };
     }
 
-    function isTylerDeal(d) {
-      return d.id === DEFAULT_TYLER_DEAL_ID
-        || (d.county === 'Smith' && String(d.city).toLowerCase() === 'tyler');
+    function getSeedDeals() {
+      const bastropMock = MOCK_ENRICHMENT_BY_COUNTY.Bastrop;
+      const caldwellMock = MOCK_ENRICHMENT_BY_COUNTY.Caldwell;
+      const comalMock = MOCK_ENRICHMENT_BY_COUNTY.Comal;
+      const bexarMock = MOCK_ENRICHMENT_BY_COUNTY.Bexar;
+
+      return [
+        {
+          id: 'deal-bastrop-001',
+          address: '1560 State Highway 21 W',
+          city: 'Bastrop',
+          county: 'Bastrop',
+          parcelId: 'R-12458',
+          acreage: 62.4,
+          zoning: 'A-1 Agricultural',
+          askingPerAcre: 31500,
+          enrichmentStatus: 'enriched',
+          route: 'DEVELOP',
+          bottlenecked: false,
+          owner: 'Maria Santos Ranch LLC',
+          ownerContact: buildSeedOwnerContact('Maria Santos', [{ number: '(512) 555-2847' }], 'PO Box 412, Bastrop TX 78602'),
+          taxHistory: buildTaxHistory(1965600, null),
+          utilities: [
+            { type: 'Electric', status: 'partial', detail: `Bluebonnet EC — ${bastropMock.distPowerMi} mi` },
+            { type: 'Water', status: 'available', detail: `${bastropMock.waterCcn.split('(')[0].trim()} — ${bastropMock.distWaterMi} mi` },
+            { type: 'Sewer', status: 'partial', detail: `${bastropMock.sewerCcn.split('—')[0].trim()} — ${bastropMock.distSewerMi} mi` },
+          ],
+          lat: 30.018, lng: -97.148,
+          sellerName: 'Maria Santos',
+          notes: 'Smithville corridor — Colony Park adjacency. Ag exemption active.',
+          dataSource: 'Bastrop County CAD',
+          margin: { entitledValuePerAcre: 52000, flipValuePerAcre: 38000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-caldwell-001',
+          address: '8900 FM 20',
+          city: 'Lockhart',
+          county: 'Caldwell',
+          parcelId: 'CCAD-8821',
+          acreage: 84.2,
+          zoning: 'A-1 Agricultural',
+          askingPerAcre: 16800,
+          enrichmentStatus: 'enriched',
+          route: 'SELL',
+          bottlenecked: true,
+          owner: 'James & Linda Cordova',
+          ownerContact: buildSeedOwnerContact('James & Linda Cordova', [{ number: '(512) 555-0199' }], '8900 FM 20, Lockhart TX 78644'),
+          taxHistory: buildTaxHistory(1414560, null),
+          utilities: [
+            { type: 'Electric', status: 'partial', detail: `Bluebonnet EC — ${caldwellMock.distPowerMi} mi` },
+            { type: 'Water', status: 'partial', detail: `Aqua Texas — ${caldwellMock.distWaterMi} mi` },
+            { type: 'Sewer', status: 'none', detail: 'No central sewer CCN — septic anticipated' },
+          ],
+          lat: 29.885, lng: -97.670,
+          sellerName: 'James Cordova',
+          notes: 'Ranch tract between Lockhart and Luling. Entitlement bottleneck — no sewer CCN.',
+          dataSource: 'Caldwell County CAD',
+          margin: { entitledValuePerAcre: 28000, flipValuePerAcre: 21000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-comal-001',
+          address: '2450 Bulverde Rd',
+          city: 'Spring Branch',
+          county: 'Comal',
+          parcelId: '60213',
+          acreage: 18.6,
+          zoning: 'A-1 Agricultural',
+          askingPerAcre: 42000,
+          enrichmentStatus: 'enriched',
+          route: 'RETAIL',
+          bottlenecked: false,
+          owner: 'Robert Heineman Family Trust',
+          ownerContact: buildSeedOwnerContact('Robert Heineman', [{ number: '(830) 555-3310' }], '2450 Bulverde Rd, Spring Branch TX 78070'),
+          taxHistory: buildTaxHistory(781200, null),
+          utilities: [
+            { type: 'Electric', status: 'partial', detail: `Pedernales EC — ${comalMock.distPowerMi} mi` },
+            { type: 'Water', status: 'available', detail: `NBU — ${comalMock.distWaterMi} mi` },
+            { type: 'Sewer', status: 'partial', detail: `${comalMock.sewerCcn.split('—')[0].trim()} — ${comalMock.distSewerMi} mi` },
+          ],
+          lat: 29.782, lng: -98.412,
+          sellerName: 'Robert Heineman',
+          notes: 'Bulverde ETJ — Hill Country subdivision spillover.',
+          dataSource: 'Comal County CAD',
+          margin: { entitledValuePerAcre: 72000, flipValuePerAcre: 55000, retailCommissionPct: 3 },
+        },
+        {
+          id: 'deal-bexar-001',
+          address: '6200 Old Pearsall Rd',
+          city: 'San Antonio',
+          county: 'Bexar',
+          parcelId: '404521',
+          acreage: 90.1,
+          zoning: 'A-1 Agricultural',
+          askingPerAcre: 38500,
+          enrichmentStatus: 'enriched',
+          route: 'DEVELOP',
+          bottlenecked: false,
+          owner: 'Garcia Family Irrevocable Trust',
+          ownerContact: buildSeedOwnerContact('Garcia Family Trust', [{ number: '(210) 555-8821' }], '6200 Old Pearsall Rd, San Antonio TX 78242'),
+          taxHistory: buildTaxHistory(3468850, null),
+          utilities: [
+            { type: 'Electric', status: 'available', detail: `CPS Energy — ${bexarMock.distPowerMi} mi` },
+            { type: 'Water', status: 'available', detail: `SAWS — ${bexarMock.distWaterMi} mi` },
+            { type: 'Sewer', status: 'available', detail: `SAWS wastewater — ${bexarMock.distSewerMi} mi` },
+          ],
+          lat: 29.305, lng: -98.568,
+          sellerName: 'Garcia Family Trust',
+          notes: 'South SA / Pearsall corridor — Mission del Lago spillover comp.',
+          dataSource: 'Bexar County CAD',
+          margin: { entitledValuePerAcre: 68000, flipValuePerAcre: 48000, retailCommissionPct: 3 },
+        },
+      ];
     }
 
-    function applyTylerListingDefaults(deal) {
-      const tyler = getDefaultTylerDeal();
-      deal.owner = tyler.owner;
-      deal.sellerName = tyler.sellerName;
-      if (!deal.notes || deal.notes.includes('verify via CAD')) {
-        deal.notes = tyler.notes;
-      }
-      return deal;
-    }
+    const SEED_DEAL_IDS = new Set(getSeedDeals().map((d) => d.id));
 
     function initDeals() {
-      const loaded = loadPersistedDeals();
-      const tyler = getDefaultTylerDeal();
-      const merged = loaded.map((d) => (isTylerDeal(d) ? applyTylerListingDefaults({ ...d }) : d));
-      const hasTyler = merged.some(isTylerDeal);
-      if (merged.length === 0) return [tyler];
-      if (!hasTyler) return [tyler, ...merged];
-      return merged;
+      const loaded = loadPersistedDeals().filter((d) => d && d.id && !SAMPLE_DEAL_IDS.has(d.id));
+      const seeds = getSeedDeals();
+      if (loaded.length === 0) return seeds;
+      const missing = seeds.filter((s) => !loaded.some((d) => d.id === s.id));
+      return [...loaded, ...missing];
+    }
+
+    function computeBottlenecked(deal) {
+      if (deal.bottlenecked === true) return true;
+      if (deal.bottlenecked === false) return false;
+      const sewer = deal.utilities?.find((u) => u.type === 'Sewer');
+      if (sewer?.status === 'none') return true;
+      const sewerField = deal.dealRecord?.sections?.utilities?.fields?.find((f) => f.label.includes('Sewer'));
+      if (sewerField?.value?.match(/No (central )?sewer|No wastewater|septic anticipated/i)) return true;
+      return false;
+    }
+
+    function isOutreachEligible(deal) {
+      return deal.enrichmentStatus === 'enriched' && !computeBottlenecked(deal) && deal.ownerContact?.phones?.length;
     }
 
     // =========================================================================
@@ -3706,7 +4269,7 @@
         utilities: {
           label: 'Utilities',
           labelDisplay: 'UTILITIES',
-          prominent: true,
+          prominent: /No (central )?sewer|No wastewater|septic anticipated/i.test(sewerCcn),
           fields: [
             a1Field('Water CCN holder', waterCcn, 'PUC CCN', pucLive ? 'LIVE' : 'MOCK'),
             a1Field('Sewer CCN holder', sewerCcn, 'PUC CCN', pucLive ? 'LIVE' : 'MOCK'),
@@ -3749,13 +4312,14 @@
       };
     }
 
-    function renderAutomation1ReportCard(dealRecord) {
+    function renderAutomation1ReportCard(dealRecord, view = 'internal') {
       if (!dealRecord) return '';
       const statusClass = (s) => {
         if (s === 'LIVE') return 'live';
         if (s === 'NEEDS MANUAL INPUT') return 'manual';
         return 'mock';
       };
+      const isClient = view === 'client';
 
       let html = `<div class="a1-report">`;
       html += `<div class="a1-header">
@@ -3777,12 +4341,18 @@
         </div>`;
         section.fields.forEach(f => {
           const privateCls = f.label.includes('PRIVATE') ? ' private-data' : '';
+          let val = f.value;
+          if (isClient) {
+            if (f.label.includes('Owner of record')) val = val.split(' ').slice(0, 2).join(' ') + ' [redacted]';
+            if (f.label.includes('PRIVATE') || f.label.includes('Deed')) val = 'Available on internal view only';
+            if (f.label.includes('Comparable')) val = 'Comp summary available — contact broker for details';
+          }
           html += `<div class="a1-field">
             <div class="a1-field-label">${escapeHtml(f.label)}</div>
-            <div class="a1-field-value${privateCls}">${escapeHtml(f.value)}</div>
+            <div class="a1-field-value${privateCls}${isClient && val !== f.value ? ' client-redacted' : ''}">${escapeHtml(val)}</div>
             <div class="a1-field-meta">
-              <span class="a1-source-tag">${escapeHtml(f.source)}</span>
-              <span class="a1-status ${statusClass(f.status)}">${escapeHtml(f.status)}</span>
+              <span class="a1-source-tag">${escapeHtml(isClient ? 'Client summary' : f.source)}</span>
+              <span class="a1-status ${statusClass(isClient ? 'MOCK' : f.status)}">${escapeHtml(isClient ? 'CLIENT' : f.status)}</span>
             </div>
           </div>`;
         });
@@ -4223,6 +4793,7 @@
 
       const dealRecord = buildAutomation1DealRecord(deal, query, type, county, live);
       applyDealRecordToDeal(deal, dealRecord);
+      await attachOwnerAndCompliance(deal);
       resetPipelineUI();
       return deal;
     }
@@ -4480,6 +5051,421 @@
     }
 
     // =========================================================================
+    // Owner contact (Forewarn) + Outreach compliance module
+    // =========================================================================
+
+    async function fetchForewarnOwnerContact(deal) {
+      const cfg = DATA_SOURCES.INTEGRATIONS.FOREWARN;
+      await delay(180);
+      if (deal.ownerContact?.source === 'Forewarn') return deal.ownerContact;
+
+      const phoneByCounty = {
+        Bastrop: '(512) 555-2847',
+        Caldwell: '(512) 555-0199',
+        Comal: '(830) 555-3310',
+        Bexar: '(210) 555-8821',
+      };
+      const suffix = Math.floor(1000 + Math.random() * 8999);
+      const area = deal.county === 'Bexar' ? '210' : deal.county === 'Comal' ? '830' : '512';
+
+      return {
+        source: cfg.provider,
+        licenseGated: true,
+        displayTag: cfg.displayTag,
+        ownerName: deal.owner || deal.sellerName || 'Owner of record',
+        phones: [{ number: phoneByCounty[deal.county] || `(${area}) 555-${suffix}`, type: 'mobile', confidence: 'medium' }],
+        emails: [{ address: `contact+${deal.parcelId.replace(/\W/g, '')}@mail.example.com`, confidence: 'low' }],
+        mailingAddress: `${deal.address}, ${deal.city} TX`,
+        fetchedAt: new Date().toISOString(),
+        mockNote: cfg.apiKey ? null : 'Mock Forewarn response — connect FOREWARN_API_KEY from secret store for live skip-trace',
+      };
+    }
+
+    function renderOwnerContactPanel(contact, view = 'internal') {
+      if (!contact) return '';
+      const tag = contact.displayTag || DATA_SOURCES.INTEGRATIONS.FOREWARN.displayTag;
+      if (view === 'client') {
+        return `<div class="owner-contact-panel">
+          <h4>Owner contact <span class="license-gate-tag">${escapeHtml(tag)}</span></h4>
+          <div class="owner-contact-row"><div><div class="key">Owner</div><div class="val">${escapeHtml(contact.ownerName)}</div></div></div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:6px" class="client-redacted">Phone &amp; skip-trace data available on internal view only</div>
+        </div>`;
+      }
+      const phones = (contact.phones || []).map((p) => p.number).join(', ') || '—';
+      const emails = (contact.emails || []).map((e) => e.address).join(', ') || '—';
+      return `<div class="owner-contact-panel">
+        <h4>Owner contact <span class="license-gate-tag">${escapeHtml(tag)}</span></h4>
+        <div class="owner-contact-row">
+          <div><div class="key">Owner of record</div><div class="val">${escapeHtml(contact.ownerName)}</div></div>
+          <div><div class="key">Phone(s)</div><div class="val">${escapeHtml(phones)}</div></div>
+          <div><div class="key">Email</div><div class="val">${escapeHtml(emails)}</div></div>
+          <div><div class="key">Mailing address</div><div class="val">${escapeHtml(contact.mailingAddress || '—')}</div></div>
+        </div>
+        ${contact.mockNote ? `<div style="font-size:10px;color:var(--text-muted);margin-top:8px">${escapeHtml(contact.mockNote)}</div>` : ''}
+      </div>`;
+    }
+
+    function formatDncTimestamp(iso) {
+      return new Date(iso).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
+    }
+
+    async function runDncRegistryScrub(phones) {
+      const cfg = DATA_SOURCES.INTEGRATIONS.DNC_REGISTRY;
+      await delay(600 + phones.length * 120);
+      const ts = new Date().toISOString();
+      return phones.map((p) => {
+        const num = p.number || p;
+        const digits = String(num).replace(/\D/g, '');
+        const blocked = digits.endsWith('0199') || digits.endsWith('9999');
+        return {
+          number: num,
+          status: blocked ? 'blocked' : 'cleared',
+          scrubbedAt: ts,
+          label: blocked
+            ? 'DNC — DO NOT CONTACT'
+            : `Federal DNC Registry scrub — cleared [${formatDncTimestamp(ts)}]`,
+          provider: cfg.provider,
+        };
+      });
+    }
+
+    function getDealPhones(deal) {
+      return (deal.ownerContact?.phones || []).map((p) => p.number);
+    }
+
+    async function scrubDealContacts(dealIds) {
+      const results = {};
+      for (const id of dealIds) {
+        const deal = deals.find((d) => d.id === id);
+        if (!deal) continue;
+        const scrubbed = await runDncRegistryScrub(getDealPhones(deal));
+        results[id] = scrubbed;
+        deal.dncScrub = { phones: scrubbed, completedAt: scrubbed[0]?.scrubbedAt || new Date().toISOString() };
+      }
+      outreachWizard.scrubByDealId = results;
+      outreachWizard.dncComplete = true;
+      saveOutreachState();
+      return results;
+    }
+
+    function buildOutreachQueues(dealIds) {
+      const template = document.getElementById('text-template')?.value || DEFAULT_TEXT_TEMPLATE;
+      const textQueue = [];
+      const mailQueue = [];
+
+      dealIds.forEach((id) => {
+        const deal = deals.find((d) => d.id === id);
+        if (!deal) return;
+        const scrubs = outreachWizard.scrubByDealId[id] || deal.dncScrub?.phones || [];
+        const cleared = scrubs.filter((s) => s.status === 'cleared');
+        const blocked = scrubs.filter((s) => s.status === 'blocked');
+
+        cleared.forEach((s) => {
+          const body = template
+            .replace(/\{\{owner_name\}\}/g, deal.ownerContact?.ownerName || deal.owner)
+            .replace(/\{\{county\}\}/g, deal.county)
+            .replace(/\{\{address\}\}/g, deal.address);
+          textQueue.push({
+            dealId: id,
+            to: s.number,
+            body,
+            dncLabel: s.label,
+            ownerName: deal.ownerContact?.ownerName || deal.owner,
+            address: fullAddress(deal),
+            canSend: true,
+          });
+        });
+
+        blocked.forEach((s) => {
+          textQueue.push({
+            dealId: id,
+            to: s.number,
+            body: '',
+            dncLabel: s.label,
+            ownerName: deal.ownerContact?.ownerName || deal.owner,
+            address: fullAddress(deal),
+            canSend: false,
+          });
+        });
+
+        if (cleared.length || deal.ownerContact?.mailingAddress) {
+          mailQueue.push({
+            dealId: id,
+            ownerName: deal.ownerContact?.ownerName || deal.owner,
+            mailingAddress: deal.ownerContact?.mailingAddress || fullAddress(deal),
+            propertyAddress: fullAddress(deal),
+            parcelId: deal.parcelId,
+            acres: deal.acreage,
+            county: deal.county,
+            note: `Re: your ${fmtNum(deal.acreage)} ac tract — we'd welcome a conversation about your land.`,
+          });
+        }
+      });
+
+      outreachWizard.textQueue = textQueue;
+      outreachWizard.mailQueue = mailQueue;
+      saveOutreachState();
+      renderOutreachQueues();
+    }
+
+    function saveOutreachState() {
+      try {
+        localStorage.setItem(OUTREACH_STORAGE_KEY, JSON.stringify({
+          scrubByDealId: outreachWizard.scrubByDealId,
+          dncComplete: outreachWizard.dncComplete,
+          textQueue: outreachWizard.textQueue,
+          mailQueue: outreachWizard.mailQueue,
+        }));
+      } catch (e) { console.warn('Outreach persist failed:', e); }
+    }
+
+    function loadOutreachState() {
+      try {
+        const raw = localStorage.getItem(OUTREACH_STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        outreachWizard.scrubByDealId = data.scrubByDealId || {};
+        outreachWizard.dncComplete = !!data.dncComplete;
+        outreachWizard.textQueue = data.textQueue || [];
+        outreachWizard.mailQueue = data.mailQueue || [];
+      } catch { /* ignore */ }
+    }
+
+    function updateOutreachStepBar(step) {
+      document.querySelectorAll('.outreach-step-pill').forEach((el) => {
+        const n = parseInt(el.dataset.ostep, 10);
+        el.classList.remove('active', 'done', 'locked');
+        if (n < step) el.classList.add('done');
+        else if (n === step) el.classList.add('active');
+        else el.classList.add('locked');
+      });
+    }
+
+    function renderOutreachWizardStep1() {
+      const eligible = deals.filter(isOutreachEligible);
+      const excluded = deals.filter((d) => d.enrichmentStatus === 'enriched' && !isOutreachEligible(d));
+
+      let html = `<p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">
+        <strong>Step 1 — Filter:</strong> Only properties <em>not</em> flagged as entitlement bottlenecked are eligible.
+        ${eligible.length} eligible · ${excluded.length} excluded (bottlenecked or missing contact)
+      </p><div class="outreach-filter-list">`;
+
+      eligible.forEach((d) => {
+        const checked = outreachWizard.selectedIds.includes(d.id) ? 'checked' : '';
+        html += `<label class="outreach-filter-item">
+          <input type="checkbox" data-outreach-pick="${d.id}" ${checked}>
+          <div>
+            <div style="font-weight:600">${escapeHtml(d.address)}</div>
+            <div style="font-size:10px;color:var(--text-muted)">${escapeHtml(d.county)} Co. · ${fmtNum(d.acreage)} ac · ${escapeHtml(d.ownerContact?.ownerName || d.owner)}</div>
+          </div>
+        </label>`;
+      });
+
+      excluded.forEach((d) => {
+        const reason = computeBottlenecked(d) ? 'Entitlement bottleneck' : 'No Forewarn contact';
+        html += `<div class="outreach-filter-item excluded" title="${escapeHtml(reason)}">
+          <input type="checkbox" disabled>
+          <div>
+            <div style="font-weight:600">${escapeHtml(d.address)}</div>
+            <div style="font-size:10px;color:var(--orange)">Excluded — ${escapeHtml(reason)}</div>
+          </div>
+        </div>`;
+      });
+
+      html += `</div>
+        <button type="button" class="btn btn-primary" id="outreach-step1-next" style="width:100%" ${eligible.length ? '' : 'disabled'}>
+          Continue to DNC Scrub →
+        </button>`;
+      return html;
+    }
+
+    function renderOutreachWizardStep2() {
+      const ids = outreachWizard.selectedIds;
+      let html = `<p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">
+        <strong>Step 2 — DNC Scrub (required):</strong> Every number must pass Federal DNC Registry scrub before any text can be queued. This step cannot be skipped.
+      </p>
+      <ul style="font-size:11px;color:var(--text-muted);margin:0 0 12px 16px">`;
+      ids.forEach((id) => {
+        const d = deals.find((x) => x.id === id);
+        if (!d) return;
+        (getDealPhones(d)).forEach((ph) => {
+          html += `<li>${escapeHtml(d.address)} — ${escapeHtml(ph)}</li>`;
+        });
+      });
+      html += `</ul>`;
+
+      if (outreachWizard.dncComplete) {
+        html += `<div style="padding:10px;background:rgba(114,212,138,0.1);border:1px solid rgba(114,212,138,0.3);border-radius:var(--radius-sm);font-size:11px;color:var(--green);margin-bottom:12px">
+          ✓ DNC scrub complete — review results below
+        </div>`;
+        ids.forEach((id) => {
+          (outreachWizard.scrubByDealId[id] || []).forEach((s) => {
+            const cls = s.status === 'cleared' ? 'cleared' : 'blocked';
+            html += `<div style="font-size:11px;margin-bottom:6px;font-family:var(--mono)">
+              ${escapeHtml(s.number)} <span class="dnc-badge ${cls}">${escapeHtml(s.label)}</span>
+            </div>`;
+          });
+        });
+        html += `<button type="button" class="btn btn-primary" id="outreach-step2-next" style="width:100%;margin-top:12px">Build Queue →</button>`;
+      } else {
+        html += `<button type="button" class="btn btn-primary" id="outreach-run-dnc" style="width:100%">Run Federal DNC Registry Scrub</button>`;
+      }
+      return html;
+    }
+
+    function renderOutreachWizardStep3() {
+      return `<p style="font-size:12px;color:var(--green);margin-bottom:12px">
+        ✓ Outreach queue ready — ${outreachWizard.textQueue.filter((t) => t.canSend).length} text(s) cleared · ${outreachWizard.mailQueue.length} mail piece(s)
+      </p>
+      <p style="font-size:11px;color:var(--text-muted)">View queues in the Owner Outreach section. Blocked numbers remain labeled <strong>DNC — DO NOT CONTACT</strong> and cannot be sent.</p>
+      <button type="button" class="btn btn-primary" id="outreach-wizard-done" style="width:100%">Done</button>`;
+    }
+
+    function openOutreachWizard() {
+      outreachWizard.step = 1;
+      outreachWizard.selectedIds = deals.filter(isOutreachEligible).map((d) => d.id);
+      outreachWizard.dncComplete = false;
+      outreachWizard.scrubByDealId = {};
+      document.getElementById('outreach-modal-overlay').classList.add('open');
+      renderOutreachWizardBody();
+    }
+
+    function closeOutreachWizard() {
+      document.getElementById('outreach-modal-overlay').classList.remove('open');
+    }
+
+    function renderOutreachWizardBody() {
+      const body = document.getElementById('outreach-modal-body');
+      updateOutreachStepBar(outreachWizard.step);
+      if (outreachWizard.step === 1) body.innerHTML = renderOutreachWizardStep1();
+      else if (outreachWizard.step === 2) body.innerHTML = renderOutreachWizardStep2();
+      else body.innerHTML = renderOutreachWizardStep3();
+      bindOutreachWizardEvents();
+    }
+
+    function bindOutreachWizardEvents() {
+      document.querySelectorAll('[data-outreach-pick]').forEach((cb) => {
+        cb.addEventListener('change', () => {
+          const id = cb.dataset.outreachPick;
+          if (cb.checked) {
+            if (!outreachWizard.selectedIds.includes(id)) outreachWizard.selectedIds.push(id);
+          } else {
+            outreachWizard.selectedIds = outreachWizard.selectedIds.filter((x) => x !== id);
+          }
+        });
+      });
+
+      document.getElementById('outreach-step1-next')?.addEventListener('click', () => {
+        if (!outreachWizard.selectedIds.length) return;
+        outreachWizard.step = 2;
+        outreachWizard.dncComplete = false;
+        renderOutreachWizardBody();
+      });
+
+      document.getElementById('outreach-run-dnc')?.addEventListener('click', async () => {
+        const btn = document.getElementById('outreach-run-dnc');
+        if (btn) { btn.disabled = true; btn.textContent = 'Scrubbing…'; }
+        await scrubDealContacts(outreachWizard.selectedIds);
+        renderOutreachWizardBody();
+      });
+
+      document.getElementById('outreach-step2-next')?.addEventListener('click', () => {
+        if (!outreachWizard.dncComplete) return;
+        buildOutreachQueues(outreachWizard.selectedIds);
+        outreachWizard.step = 3;
+        updateOutreachStepBar(3);
+        renderOutreachWizardBody();
+      });
+
+      document.getElementById('outreach-wizard-done')?.addEventListener('click', () => {
+        closeOutreachWizard();
+        if (isMobileLayout()) setMobilePanel('outreach');
+      });
+    }
+
+    function renderOutreachQueues() {
+      const textList = document.getElementById('text-queue-list');
+      const mailList = document.getElementById('mail-queue-list');
+      if (!textList) return;
+
+      if (!outreachWizard.textQueue.length) {
+        textList.innerHTML = '<div class="silo-empty">Run <strong>Build Outreach List</strong> to populate the queue.</div>';
+      } else {
+        textList.innerHTML = outreachWizard.textQueue.map((t, i) => {
+          const blocked = !t.canSend;
+          return `<div class="outreach-queue-item${blocked ? ' blocked-item' : ''}">
+            <div class="oq-addr">${escapeHtml(t.address)}</div>
+            <div class="oq-meta">${escapeHtml(t.to)} · ${escapeHtml(t.ownerName)}</div>
+            <div style="margin:8px 0"><span class="dnc-badge ${blocked ? 'blocked' : 'cleared'}">${escapeHtml(t.dncLabel)}</span></div>
+            ${blocked ? '<div style="font-size:10px;color:var(--red)">Text blocked — number failed DNC scrub</div>' : `
+              <textarea class="text-template-box" style="min-height:56px;margin-top:8px" data-text-body="${i}">${escapeHtml(t.body)}</textarea>
+              <button type="button" class="btn btn-primary btn-queue-text" data-text-idx="${i}" style="width:100%;margin-top:6px">Queue Text (DNC cleared)</button>
+            `}
+          </div>`;
+        }).join('');
+
+        document.querySelectorAll('.btn-queue-text').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.textIdx, 10);
+            const item = outreachWizard.textQueue[idx];
+            if (!item?.canSend) return;
+            const ta = document.querySelector(`[data-text-body="${idx}"]`);
+            if (ta) item.body = ta.value;
+            btn.textContent = '✓ Queued for send';
+            btn.disabled = true;
+          });
+        });
+      }
+
+      if (!outreachWizard.mailQueue.length) {
+        mailList.innerHTML = '<div class="silo-empty">Cleared contacts appear here after DNC scrub.</div>';
+      } else {
+        mailList.innerHTML = outreachWizard.mailQueue.map((m) => `
+          <div class="outreach-queue-item">
+            <div class="oq-addr">${escapeHtml(m.propertyAddress)}</div>
+            <div class="oq-meta">${escapeHtml(m.ownerName)} · ${escapeHtml(m.mailingAddress)}</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:6px;font-style:italic">${escapeHtml(m.note)}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function exportMailQueueCsv() {
+      if (!outreachWizard.mailQueue.length) return;
+      const header = 'owner_name,mailing_address,property_address,parcel_id,acres,county,handwritten_note';
+      const rows = outreachWizard.mailQueue.map((m) => [
+        m.ownerName, m.mailingAddress, m.propertyAddress, m.parcelId, m.acres, m.county, m.note,
+      ].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','));
+      const csv = [header, ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `barn-to-bank-mail-merge-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function openMailPrintView() {
+      const grid = document.getElementById('mail-label-grid');
+      grid.innerHTML = outreachWizard.mailQueue.map((m) => `
+        <div class="mail-label">
+          <strong>${escapeHtml(m.ownerName)}</strong><br>
+          ${escapeHtml(m.mailingAddress)}<br><br>
+          <span style="font-size:11px;color:#666">Re: ${escapeHtml(m.propertyAddress)} · ${escapeHtml(m.county)} Co. · ${fmtNum(m.acres)} ac</span>
+          <div class="handwritten-note">${escapeHtml(m.note)}</div>
+        </div>
+      `).join('') || '<p style="padding:24px">No mail queue items. Complete DNC scrub first.</p>';
+      document.getElementById('mail-print-overlay').classList.add('open');
+    }
+
+    async function attachOwnerAndCompliance(deal) {
+      deal.ownerContact = await fetchForewarnOwnerContact(deal);
+      deal.bottlenecked = computeBottlenecked(deal);
+      return deal;
+    }
+
+    // =========================================================================
     // Render functions
     // =========================================================================
     function renderAll() {
@@ -4671,6 +5657,12 @@
         </div>
 
         <div class="modal-section">
+          <h4>Owner Contact (Forewarn)</h4>
+          ${renderOwnerContactPanel(deal.ownerContact, 'internal')}
+          ${computeBottlenecked(deal) ? '<div style="font-size:11px;color:var(--orange);margin-top:8px">⚠ Entitlement bottleneck — excluded from outreach filter</div>' : ''}
+        </div>
+
+        <div class="modal-section">
           <h4>Relationship / Contact</h4>
           <div class="contact-row">
             <input type="text" id="modal-seller" placeholder="Seller name" value="${deal.sellerName}">
@@ -4777,29 +5769,39 @@
       return `${t.year}: ${fmt(t.assessed)} assessed / ${taxPart}${est}`;
     }
 
-    function showEnrichment(data) {
-      const el = document.getElementById('enrichment-result');
+    function renderEnrichmentPanel(data) {
       const grid = document.getElementById('enrichment-grid');
-      document.getElementById('enrichment-title').textContent = '✓ Automation 1 Complete';
+      const view = enrichDualView;
       const sum = data.dealRecord?.summary;
       document.getElementById('enrichment-source').textContent = data.dataSource
         ? `${data.dealRecord?.automation || 'Automation 1'} → ${data.dataSource}${sum ? ` · ${sum.live} live / ${sum.mock} mock` : ''}`
         : '';
-      document.getElementById('enrichment-warn').textContent = data.taxHistory[0]?.note || '';
-      el.classList.remove('error');
-      document.getElementById('add-to-pipeline').style.display = '';
+      const ownerDisplay = view === 'client'
+        ? (String(data.owner || '').split(' ').slice(0, 2).join(' ') + ' [redacted]')
+        : data.owner;
 
       grid.innerHTML = `
         <div class="enrichment-grid" style="margin-bottom:10px">
           <div class="enrichment-item"><div class="key">Parcel</div><div class="val">${escapeHtml(data.parcelId)}</div></div>
           <div class="enrichment-item"><div class="key">Acres</div><div class="val">${fmtNum(data.acreage)}</div></div>
-          <div class="enrichment-item"><div class="key">Owner</div><div class="val">${escapeHtml(data.owner)}</div></div>
+          <div class="enrichment-item"><div class="key">Owner</div><div class="val">${escapeHtml(ownerDisplay)}</div></div>
           <div class="enrichment-item"><div class="key">$/Acre</div><div class="val">${fmt(data.askingPerAcre)}</div></div>
         </div>
-        ${renderAutomation1ReportCard(data.dealRecord)}
-        ${renderLandIdLinkHtml(data)}
-        <div class="enrichment-full" style="margin-top:8px">${renderNearbyCommunitiesHtml(data)}</div>
+        ${renderOwnerContactPanel(data.ownerContact, view)}
+        ${renderAutomation1ReportCard(data.dealRecord, view)}
+        ${view === 'internal' ? renderLandIdLinkHtml(data) : ''}
+        <div class="enrichment-full" style="margin-top:8px">${view === 'internal' ? renderNearbyCommunitiesHtml(data) : '<span class="client-redacted">Proximity &amp; market detail on internal view</span>'}</div>
       `;
+    }
+
+    function showEnrichment(data) {
+      const el = document.getElementById('enrichment-result');
+      document.getElementById('enrichment-title').textContent = '✓ Automation 1 Complete';
+      document.getElementById('enrichment-warn').textContent = data.taxHistory[0]?.note || '';
+      el.classList.remove('error');
+      document.getElementById('add-to-pipeline').style.display = '';
+      document.getElementById('enrich-view-bar').style.display = 'flex';
+      renderEnrichmentPanel(data);
       el.classList.add('visible');
       if (isMobileLayout()) setMobilePanel('intake');
     }
@@ -4812,6 +5814,7 @@
       document.getElementById('enrichment-warn').textContent = '';
       document.getElementById('enrichment-grid').innerHTML = `<div class="enrichment-full" style="color:var(--red);font-size:11px;line-height:1.5">${escapeHtml(message)}</div>`;
       document.getElementById('add-to-pipeline').style.display = 'none';
+      document.getElementById('enrich-view-bar').style.display = 'none';
       el.classList.add('visible', 'error');
       pendingEnrichment = null;
     }
@@ -4827,7 +5830,7 @@
       mobilePanel = panel;
       const main = document.getElementById('main-layout');
       if (!main) return;
-      main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos');
+      main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach');
       if (isMobileLayout()) main.classList.add('panel-' + panel);
       document.querySelectorAll('#mobile-nav button').forEach((btn) => {
         btn.classList.toggle('active', btn.dataset.panel === panel);
@@ -4858,7 +5861,7 @@
         if (isMobileLayout()) {
           applyMobileViewDefaults();
         } else {
-          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos');
+          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach');
         }
       };
       if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onMqChange);
@@ -5132,9 +6135,15 @@
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
       deals = initDeals();
-      await Promise.all(deals.map(d => buildSeedDealRecord(d)));
+      await Promise.all(deals.map(async (d) => {
+        if (!d.ownerContact) d.ownerContact = await fetchForewarnOwnerContact(d);
+        d.bottlenecked = computeBottlenecked(d);
+        return buildSeedDealRecord(d);
+      }));
       saveDeals();
+      loadOutreachState();
       renderAll();
+      renderOutreachQueues();
       updateLandIdConnectStatus();
       updateFeatureRequestBadge();
       initPartnerWelcome();
@@ -5148,6 +6157,34 @@
       });
       document.getElementById('feature-request-form').addEventListener('submit', submitFeatureRequest);
       document.getElementById('fr-export').addEventListener('click', exportFeatureRequests);
+
+      document.getElementById('build-outreach-open').addEventListener('click', openOutreachWizard);
+      document.getElementById('outreach-modal-close').addEventListener('click', closeOutreachWizard);
+      document.getElementById('outreach-modal-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('outreach-modal-overlay')) closeOutreachWizard();
+      });
+      document.getElementById('mail-export-csv').addEventListener('click', exportMailQueueCsv);
+      document.getElementById('mail-print-open').addEventListener('click', openMailPrintView);
+      document.getElementById('mail-print-close').addEventListener('click', () => {
+        document.getElementById('mail-print-overlay').classList.remove('open');
+      });
+
+      document.querySelectorAll('[data-oq-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          outreachQueueTab = btn.dataset.oqTab;
+          document.querySelectorAll('[data-oq-tab]').forEach((b) => b.classList.toggle('active', b.dataset.oqTab === outreachQueueTab));
+          document.getElementById('outreach-tab-text').style.display = outreachQueueTab === 'text' ? 'block' : 'none';
+          document.getElementById('outreach-tab-mail').style.display = outreachQueueTab === 'mail' ? 'block' : 'none';
+        });
+      });
+
+      document.querySelectorAll('#enrich-dual-toggle button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          enrichDualView = btn.dataset.enrichView;
+          document.querySelectorAll('#enrich-dual-toggle button').forEach((b) => b.classList.toggle('active', b.dataset.enrichView === enrichDualView));
+          if (pendingEnrichment) renderEnrichmentPanel(pendingEnrichment);
+        });
+      });
 
       document.getElementById('landid-signin').addEventListener('click', async () => {
         const btn = document.getElementById('landid-signin');
@@ -5247,7 +6284,8 @@
       });
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
+        if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
+        else if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
         else closeModal();
       });
     });
