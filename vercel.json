@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/app", "destination": "/barn-to-bank.html" },
+    { "source": "/app/(.*)", "destination": "/barn-to-bank.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

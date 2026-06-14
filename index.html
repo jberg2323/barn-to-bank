@@ -407,7 +407,7 @@
         <div class="listing-body">
           <h3>Blanco River Frontage</h3>
           <div class="listing-meta"><span>Blanco County</span><span class="dot"></span><span>128± Acres</span></div>
-          <div class="listing-foot"><span class="price">$4.9M</span><a href="#contact">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">$4.9M</span><a href="#contact" data-listing="Blanco River Ranch">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -415,7 +415,7 @@
         <div class="listing-body">
           <h3>Twin Oaks Cattle Ranch</h3>
           <div class="listing-meta"><span>Gillespie County</span><span class="dot"></span><span>540± Acres</span></div>
-          <div class="listing-foot"><span class="price">$7.2M</span><a href="#contact">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">$7.2M</span><a href="#contact" data-listing="Pedernales Valley Ranch">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -423,7 +423,7 @@
         <div class="listing-body">
           <h3>Guadalupe Valley Farm</h3>
           <div class="listing-meta"><span>Guadalupe County</span><span class="dot"></span><span>208± Acres</span></div>
-          <div class="listing-foot"><span class="price">$3.6M</span><a href="#contact">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">$3.6M</span><a href="#contact" data-listing="Guadalupe Valley Farm">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -431,7 +431,7 @@
         <div class="listing-body">
           <h3>Highway 46 Growth Tract</h3>
           <div class="listing-meta"><span>Comal County</span><span class="dot"></span><span>312± Acres</span></div>
-          <div class="listing-foot"><span class="price">$6.1M</span><a href="#contact">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">$6.1M</span><a href="#contact" data-listing="Path of Growth Ranch">Inquire →</a></div>
         </div>
       </div>
     </div>
@@ -539,6 +539,7 @@
     </div>
     <div class="reveal in">
       <form id="leadForm">
+        <input type="hidden" id="listing" name="listing" value="">
         <div class="field-row">
           <div><label for="name">Name</label><input type="text" id="name" name="name" required=""></div>
           <div><label for="phone">Phone</label><input type="tel" id="phone" name="phone"></div>
@@ -546,7 +547,7 @@
         <div><label for="email">Email</label><input type="email" id="email" name="email" required=""></div>
         <div><label for="about">Tell us about your land</label><textarea id="about" name="about" placeholder="County, approximate acreage, and what you have in mind…"></textarea></div>
         <button type="submit" class="btn btn-brass" style="justify-content:center;">Request a Valuation <span class="arrow">→</span></button>
-        <p class="form-note">Demo form — connect to your CRM or email service to capture live leads.</p>
+        <p class="form-note" id="formNote">Your inquiry goes directly to the Barn to Bank team.</p>
         <div class="form-success" id="formSuccess">Thank you — we'll be in touch within one business day.</div>
       </form>
     </div>
@@ -568,7 +569,7 @@
         <a href="#process">Approach</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
-        <a href="/barn-to-bank.html">Origination Platform</a>
+        <a href="/app">Origination Platform</a>
       </div>
     </div>
     <div class="foot-legal">
@@ -609,65 +610,58 @@
     cio.observe(barsWrap);
   }
 
-  // Demo form
-  document.getElementById('leadForm').addEventListener('submit',function(ev){
+  // Listing context from URL or inquire links
+  (function applyListingContext(){
+    const params=new URLSearchParams(window.location.search);
+    const listingField=document.getElementById('listing');
+    const aboutField=document.getElementById('about');
+    const fromUrl=params.get('listing');
+    if(fromUrl&&listingField){
+      listingField.value=fromUrl;
+      if(aboutField&&!aboutField.value){
+        aboutField.placeholder=`Interested in ${fromUrl} — county, acreage, or questions…`;
+      }
+    }
+    document.querySelectorAll('[data-listing]').forEach(a=>{
+      a.addEventListener('click',()=>{
+        if(listingField) listingField.value=a.dataset.listing||'';
+        if(aboutField&&!aboutField.value){
+          aboutField.placeholder=`Interested in ${a.dataset.listing} — county, acreage, or questions…`;
+        }
+      });
+    });
+  })();
+
+  // Lead capture → origination backend
+  document.getElementById('leadForm').addEventListener('submit',async function(ev){
     ev.preventDefault();
-    document.getElementById('formSuccess').style.display='block';
-    this.querySelector('button').style.display='none';
-  });
-</script>
-<script>
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && window.parent !== window) {
-    window.parent.postMessage({ type: 'close-fullscreen' }, '*');
-  }
-});
-</script>
-<!-- broken-img-handler -->
-
-
-
-<script>
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && window.parent !== window) {
-    window.parent.postMessage({ type: 'close-fullscreen' }, '*');
-  }
-});
-</script>
-
-<script>
-  // Sticky header
-  const header=document.getElementById('header');
-  const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>40);
-  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
-
-  // Mobile nav
-  const toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
-  toggle.addEventListener('click',()=>links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
-
-  // Reveal on scroll
-  const io=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-  },{threshold:.14});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  // Animate chart bars when visible
-  const barsWrap=document.getElementById('bars');
-  if(barsWrap){
-    const bars=barsWrap.querySelectorAll('.bar');
-    bars.forEach(b=>b.style.height='0%');
-    const cio=new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{if(e.isIntersecting){bars.forEach(b=>{b.style.height=getComputedStyle(b).getPropertyValue('--h');});cio.disconnect();}});
-    },{threshold:.4});
-    cio.observe(barsWrap);
-  }
-
-  // Demo form
-  document.getElementById('leadForm').addEventListener('submit',function(ev){
-    ev.preventDefault();
-    document.getElementById('formSuccess').style.display='block';
-    this.querySelector('button').style.display='none';
+    const btn=this.querySelector('button[type="submit"]');
+    const note=document.getElementById('formNote');
+    const success=document.getElementById('formSuccess');
+    btn.disabled=true;
+    const payload={
+      name:document.getElementById('name').value.trim(),
+      phone:document.getElementById('phone').value.trim(),
+      email:document.getElementById('email').value.trim(),
+      about:document.getElementById('about').value.trim(),
+      listing:document.getElementById('listing').value.trim(),
+      source:'website',
+    };
+    try{
+      const res=await fetch('/api/leads',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload),
+      });
+      const data=await res.json();
+      if(!res.ok||!data.ok) throw new Error(data.error||'Submit failed');
+      if(note) note.style.display='none';
+      success.style.display='block';
+      btn.style.display='none';
+    }catch(err){
+      btn.disabled=false;
+      if(note) note.textContent=err.message||'Something went wrong — please call (737)777-9669.';
+    }
   });
 </script>
 </body>

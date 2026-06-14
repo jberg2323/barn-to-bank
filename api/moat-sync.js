@@ -84,6 +84,15 @@ function mergeBundles(local, remote) {
   });
   audit.sort((a, b) => String(b.ts).localeCompare(String(a.ts)));
 
+  const leadMap = new Map();
+  [...(remote.inboundLeads || []), ...(local.inboundLeads || [])].forEach((l) => {
+    if (!l?.id) return;
+    const prev = leadMap.get(l.id);
+    if (!prev || String(l.updatedAt || l.createdAt || '') >= String(prev.updatedAt || prev.createdAt || '')) {
+      leadMap.set(l.id, l);
+    }
+  });
+
   const remoteTime = remote.exportedAt || remote.updated_at || '';
   const localTime = local.exportedAt || '';
   const outreach = localTime >= remoteTime ? (local.outreach || remote.outreach) : (remote.outreach || local.outreach);
@@ -96,6 +105,7 @@ function mergeBundles(local, remote) {
     comps: [...compMap.values()],
     audit: audit.slice(0, 500),
     outreach: outreach || {},
+    inboundLeads: [...leadMap.values()],
   };
 }
 

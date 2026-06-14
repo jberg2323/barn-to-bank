@@ -1865,7 +1865,7 @@
       gap: 8px;
     }
 
-    .comp-row, .alert-row, .audit-row {
+    .comp-row, .alert-row, .audit-row, .lead-row {
       padding: 8px 10px;
       margin-bottom: 6px;
       background: var(--bg-deep);
@@ -1874,6 +1874,57 @@
       font-size: 10px;
       line-height: 1.45;
     }
+    .lead-row.new { border-color: rgba(114, 168, 120, 0.45); }
+    .lead-row-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .lead-row-head strong { font-size: 11px; color: var(--text-primary); }
+    .lead-badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .lead-badge.contacted { color: var(--orange); border-color: rgba(232, 168, 88, 0.35); }
+    .lead-badge.converted { color: var(--land); border-color: rgba(114, 168, 120, 0.35); }
+    .lead-meta { color: var(--text-muted); margin-bottom: 4px; }
+    .lead-about {
+      color: var(--text-secondary);
+      margin: 4px 0 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .lead-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .lead-actions .btn {
+      font-size: 9px;
+      padding: 4px 8px;
+      min-height: 0;
+    }
+    .website-leads-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .website-leads-header .section-title { margin-bottom: 0; flex: 1; }
     .comp-row .price { font-family: var(--mono); color: var(--accent-bright); font-weight: 600; }
 
     .score-pill {
@@ -2704,6 +2755,15 @@
       </form>
       </div>
 
+      <div class="panel-card" id="website-leads-panel">
+        <div class="website-leads-header">
+          <div class="section-title" style="margin-top:0">Website Leads</div>
+          <button type="button" class="btn btn-ghost" id="website-leads-refresh" style="font-size:9px;padding:4px 8px;">Refresh</button>
+        </div>
+        <p class="section-blurb" style="margin-top:-6px">Inquiries from the public site at <a href="/" target="_blank" rel="noopener" style="color:var(--accent)">barn-to-bank.vercel.app</a> land here. Adopt into pipeline or dismiss.</p>
+        <div id="website-leads-list"><div class="silo-empty">Loading website leads…</div></div>
+      </div>
+
       <div class="panel-card">
         <div class="section-title" style="margin-top:0">id.land Connection</div>
         <div id="landid-connect-status" style="font-size:11px;color:var(--text-muted);margin-bottom:10px;line-height:1.45;padding:8px 10px;background:var(--bg-deep);border-radius:var(--radius-sm);border:1px solid var(--border-subtle)">Checking…</div>
@@ -3140,7 +3200,7 @@
       PARTNERS: {
         enabled: true,
         names: ['Jack'],
-        appUrl: 'https://barn-to-bank.vercel.app',
+        appUrl: 'https://barn-to-bank.vercel.app/app',
       },
 
       // Feature requests — Jack (or anyone) submits via header button
@@ -3582,6 +3642,7 @@
     let auditLog = [];
 
     let deals = [];
+    let inboundLeads = [];
     let pendingEnrichment = null;
     let activeDealId = null;
     let viewMode = 'table';
@@ -6444,6 +6505,157 @@
       updateSyncStatusText();
     }
 
+    const LEADS_API = '/api/leads';
+
+    async function fetchWebsiteLeads() {
+      const el = document.getElementById('website-leads-list');
+      try {
+        const res = await fetch(LEADS_API, { cache: 'no-store' });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || `Failed (${res.status})`);
+        inboundLeads = (data.leads || []).filter((l) => l.status !== 'dismissed');
+        inboundLeads.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+        renderWebsiteLeads();
+        return inboundLeads;
+      } catch (err) {
+        if (el) {
+          el.innerHTML = `<div class="silo-empty">Could not load website leads — ${escapeHtml(err.message)}. Deploy with Supabase env vars on Vercel.</div>`;
+        }
+        return [];
+      }
+    }
+
+    async function patchWebsiteLead(id, status) {
+      const res = await fetch(LEADS_API, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Update failed');
+      if (status === 'dismissed') {
+        inboundLeads = inboundLeads.filter((l) => l.id !== id);
+      } else {
+        inboundLeads = inboundLeads.map((l) =>
+          l.id === id ? { ...l, status, updatedAt: new Date().toISOString() } : l,
+        );
+      }
+      renderWebsiteLeads();
+    }
+
+    function renderWebsiteLeads() {
+      const el = document.getElementById('website-leads-list');
+      if (!el) return;
+      const active = inboundLeads.filter((l) => l.status !== 'dismissed' && l.status !== 'converted');
+      if (!active.length) {
+        el.innerHTML = '<div class="silo-empty">No new website inquiries — leads from the public contact form appear here.</div>';
+        return;
+      }
+      el.innerHTML = active.map((lead) => {
+        const status = lead.status || 'new';
+        const listing = lead.listing ? `<div class="lead-meta">Listing: ${escapeHtml(lead.listing)}</div>` : '';
+        const contact = [lead.email, lead.phone].filter(Boolean).map(escapeHtml).join(' · ');
+        const about = lead.about ? `<div class="lead-about">${escapeHtml(lead.about)}</div>` : '';
+        const when = lead.createdAt ? formatDncTimestamp(lead.createdAt) : '';
+        return `
+          <div class="lead-row ${status === 'new' ? 'new' : ''}" data-lead-id="${escapeHtml(lead.id)}">
+            <div class="lead-row-head">
+              <strong>${escapeHtml(lead.name)}</strong>
+              <span class="lead-badge ${escapeHtml(status)}">${escapeHtml(status)}</span>
+            </div>
+            ${listing}
+            <div class="lead-meta">${contact}${when ? ` · ${when}` : ''}</div>
+            ${about}
+            <div class="lead-actions">
+              <button type="button" class="btn btn-primary" data-lead-adopt="${escapeHtml(lead.id)}">Adopt</button>
+              <button type="button" class="btn btn-ghost" data-lead-contacted="${escapeHtml(lead.id)}">Contacted</button>
+              <button type="button" class="btn btn-ghost" data-lead-dismiss="${escapeHtml(lead.id)}">Dismiss</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      el.querySelectorAll('[data-lead-adopt]').forEach((btn) => {
+        btn.addEventListener('click', () => adoptWebsiteLead(btn.dataset.leadAdopt));
+      });
+      el.querySelectorAll('[data-lead-contacted]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await patchWebsiteLead(btn.dataset.leadContacted, 'contacted');
+            showToast('Lead marked contacted');
+          } catch (err) {
+            showToast(err.message, 'warn');
+          }
+        });
+      });
+      el.querySelectorAll('[data-lead-dismiss]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await patchWebsiteLead(btn.dataset.leadDismiss, 'dismissed');
+            showToast('Lead dismissed', 'warn');
+          } catch (err) {
+            showToast(err.message, 'warn');
+          }
+        });
+      });
+    }
+
+    async function adoptWebsiteLead(leadId) {
+      const lead = inboundLeads.find((l) => l.id === leadId);
+      if (!lead) return;
+      const notes = [
+        `Website lead (${lead.source || 'website'})`,
+        lead.listing ? `Listing: ${lead.listing}` : '',
+        lead.email ? `Email: ${lead.email}` : '',
+        lead.phone ? `Phone: ${lead.phone}` : '',
+        lead.about ? `About: ${lead.about}` : '',
+      ].filter(Boolean).join('\n');
+      const mock = mockProfileFor('Williamson');
+      const deal = {
+        id: `deal-${Date.now()}`,
+        address: lead.listing || 'Website lead — address TBD',
+        city: 'TBD',
+        county: 'Williamson',
+        parcelId: `WEB-${Math.floor(10000 + Math.random() * 89999)}`,
+        acreage: 0,
+        zoning: 'A-1 Agricultural',
+        askingPerAcre: 0,
+        enrichmentStatus: 'new',
+        route: 'RETAIL',
+        owner: lead.name,
+        sellerName: lead.name,
+        taxHistory: buildTaxHistory(0, null),
+        utilities: [
+          { type: 'Electric', status: 'partial', detail: 'Verify via intake' },
+          { type: 'Water', status: 'partial', detail: mock.waterCcn.split('(')[0].trim() },
+          { type: 'Sewer', status: 'none', detail: 'Verify via intake' },
+        ],
+        lat: null,
+        lng: null,
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: true,
+        notes,
+        dataSource: 'Website lead',
+        margin: computeMarginsFromLand(0, 0),
+        bottlenecked: false,
+        websiteLeadId: lead.id,
+      };
+      try {
+        await finalizeNewDeal(deal);
+        insertDeal(deal, { toastMsg: `Adopted website lead: ${lead.name}` });
+        await patchWebsiteLead(lead.id, 'converted');
+        appendOutreachAudit({
+          type: 'website_lead_adopted',
+          summary: `Adopted ${lead.name}${lead.listing ? ` (${lead.listing})` : ''} from public site`,
+        });
+        if (isMobileLayout()) setMobilePanel('pipeline');
+      } catch (err) {
+        showToast(`Adopt failed: ${err.message}`, 'warn');
+      }
+    }
+
     const MoatStore = {
       buildBundle() {
         return {
@@ -6459,6 +6671,7 @@
             textQueue: outreachWizard.textQueue,
             mailQueue: outreachWizard.mailQueue,
           },
+          inboundLeads,
         };
       },
 
@@ -6510,8 +6723,22 @@
           saveOutreachState();
         }
 
+        if (Array.isArray(bundle.inboundLeads)) {
+          const leadMap = new Map(inboundLeads.map((l) => [l.id, l]));
+          bundle.inboundLeads.forEach((l) => {
+            if (!l?.id) return;
+            const prev = leadMap.get(l.id);
+            if (!prev || String(l.updatedAt || l.createdAt || '') >= String(prev.updatedAt || prev.createdAt || '')) {
+              leadMap.set(l.id, l);
+            }
+          });
+          inboundLeads = [...leadMap.values()].filter((l) => l.status !== 'dismissed');
+          inboundLeads.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+        }
+
         deals.forEach(applyMoatToDeal);
         saveDeals();
+        renderWebsiteLeads();
       },
 
       async importBundle(file) {
@@ -6569,6 +6796,7 @@
           renderAll();
           renderOutreachQueues();
           updateSyncStatusText();
+          await fetchWebsiteLeads();
           showToast(data.merged ? 'Cloud sync merged with team data' : 'Cloud sync complete');
         } catch (err) {
           showToast(`Cloud sync failed: ${err.message}`, 'warn');
@@ -6609,6 +6837,7 @@
       renderPipeline();
       renderSilos();
       renderMoatPanels();
+      renderWebsiteLeads();
     }
 
     function renderHeader() {
@@ -7479,6 +7708,7 @@
       saveDeals();
       loadOutreachState();
       await fetchMoatCloudConfig();
+      await fetchWebsiteLeads();
       renderAll();
       renderOutreachQueues();
       updateLandIdConnectStatus();
@@ -7487,6 +7717,18 @@
       initMobileNav();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
+      document.getElementById('website-leads-refresh')?.addEventListener('click', async () => {
+        const btn = document.getElementById('website-leads-refresh');
+        if (btn) { btn.disabled = true; btn.textContent = '…'; }
+        try {
+          await fetchWebsiteLeads();
+          showToast('Website leads refreshed');
+        } catch (err) {
+          showToast(err.message, 'warn');
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = 'Refresh'; }
+        }
+      });
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
       document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
       document.getElementById('fr-modal-overlay').addEventListener('click', (e) => {
