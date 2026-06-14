@@ -2005,12 +2005,14 @@
           <label for="intake-county">County</label>
           <select id="intake-county">
             <option value="Williamson">Williamson</option>
+            <option value="Travis">Travis</option>
             <option value="Bastrop">Bastrop</option>
-            <option value="Fort Bend">Fort Bend</option>
+            <option value="Caldwell">Caldwell</option>
             <option value="Hays">Hays</option>
+            <option value="Comal">Comal</option>
             <option value="Bexar">Bexar</option>
             <option value="Guadalupe">Guadalupe</option>
-            <option value="Travis">Travis</option>
+            <option value="Fort Bend">Fort Bend</option>
             <option value="Smith">Smith (Tyler)</option>
           </select>
         </div>
@@ -2330,6 +2332,8 @@
           'Austin': { water: 'Austin Water', sewer: 'Austin Water' },
           'Taylor': { water: 'City of Taylor', sewer: 'City of Taylor' },
           'Tyler': { water: 'City of Tyler Water Utilities', sewer: 'City of Tyler Wastewater' },
+          'New Braunfels': { water: 'New Braunfels Utilities', sewer: 'New Braunfels Utilities' },
+          'Lockhart': { water: 'City of Lockhart', sewer: 'City of Lockhart' },
         },
       },
       COUNTY_GIS: {
@@ -2375,8 +2379,20 @@
             streetNum: 'NUMBER', streetName: 'STREET', city: 'POSTAL_CITY',
           },
         },
+        Comal: {
+          url: 'https://services6.arcgis.com/eNPJk90aMrXNOKF8/arcgis/rest/services/Comal_County_Parcels/FeatureServer/40',
+          situsField: 'SITUS_ADDR',
+          parcelFields: ['PROP_ID', 'GEO_ID'],
+          fields: {
+            parcelId: 'PROP_ID', owner: 'OWNER_NAME', acres: 'GIS_AREA',
+            situs: 'SITUS_ADDR', assessed: 'MKT_VALUE', landValue: 'LAND_VALUE',
+            zoning: 'STAT_LAND_', landUse: 'LOC_LAND_U',
+            streetNum: 'SITUS_NUM', streetName: 'SITUS_ST_1', city: 'SITUS_CITY',
+          },
+        },
         // Counties below: id.land (with token) or REGRID_API_KEY until public CAD REST is confirmed
         Bastrop:    null,
+        Caldwell:   null,
         Hays:       null,
         Guadalupe:  null,
         Travis:     null,
@@ -2384,8 +2400,10 @@
       REGRID_PATHS: {
         Williamson: '/us/tx/williamson-county',
         Bastrop: '/us/tx/bastrop-county',
+        Caldwell: '/us/tx/caldwell-county',
         'Fort Bend': '/us/tx/fort-bend-county',
         Hays: '/us/tx/hays-county',
+        Comal: '/us/tx/comal-county',
         Bexar: '/us/tx/bexar-county',
         Guadalupe: '/us/tx/guadalupe-county',
         Travis: '/us/tx/travis-county',
@@ -2522,6 +2540,32 @@
         nearestSfMi: 0.9,
         nearestCommercial: 'H-E-B Plus corridor',
         nearestCommercialMi: 1.8,
+      },
+      Caldwell: {
+        jurisdiction: 'ETJ — Lockhart / Luling corridor (unincorporated)',
+        floodZone: 'Zone X',
+        waterCcn: 'Aqua Texas WSC (CCN 10188)',
+        sewerCcn: 'No central sewer CCN — septic / future MUD',
+        distWaterMi: 1.6, distSewerMi: 3.4, distPowerMi: 0.5,
+        providers: 'Bluebonnet EC · Aqua Texas',
+        deedNotes: 'Ranch tract; ag exemption — verify rollback',
+        nearestSf: 'San Marcos / Kyle corridor spillover',
+        nearestSfMi: 8.5,
+        nearestCommercial: 'Lockhart town square retail',
+        nearestCommercialMi: 5.2,
+      },
+      Comal: {
+        jurisdiction: 'ETJ — New Braunfels / Bulverde (unincorporated)',
+        floodZone: 'Zone X (verify Guadalupe River floodway on north tracts)',
+        waterCcn: 'New Braunfels Utilities (CCN 10102)',
+        sewerCcn: 'NBU wastewater — extension study area',
+        distWaterMi: 0.8, distSewerMi: 2.2, distPowerMi: 0.3,
+        providers: 'New Braunfels Utilities · Pedernales EC',
+        deedNotes: 'Fee simple; Hill Country subdivision adjacency',
+        nearestSf: 'New Braunfels / Canyon Lake corridor SF',
+        nearestSfMi: 3.1,
+        nearestCommercial: 'New Braunfels retail corridor',
+        nearestCommercialMi: 4.0,
       },
       Guadalupe: {
         jurisdiction: 'ETJ — Seguin (unincorporated)',
@@ -3510,6 +3554,8 @@
       const acreage = 25 + Math.floor(Math.random() * 175);
       const askingPerAcre = county === 'Fort Bend' ? 75000 + Math.floor(Math.random() * 25000)
         : county === 'Bexar' ? 28000 + Math.floor(Math.random() * 12000)
+        : county === 'Comal' ? 22000 + Math.floor(Math.random() * 18000)
+        : county === 'Caldwell' ? 16000 + Math.floor(Math.random() * 14000)
         : 14000 + Math.floor(Math.random() * 10000);
 
       return {
@@ -4364,9 +4410,9 @@
 
     function extractCity(query, county) {
       const cities = {
-        Williamson: 'Taylor', Bastrop: 'Smithville', 'Fort Bend': 'Sugar Land',
-        Hays: 'Driftwood', Bexar: 'San Antonio', Guadalupe: 'Seguin', Travis: 'Austin',
-        Smith: 'Tyler',
+        Williamson: 'Taylor', Bastrop: 'Smithville', Caldwell: 'Lockhart',
+        'Fort Bend': 'Sugar Land', Hays: 'Driftwood', Comal: 'New Braunfels',
+        Bexar: 'San Antonio', Guadalupe: 'Seguin', Travis: 'Austin', Smith: 'Tyler',
       };
       const match = query.match(/,\s*([^,]+)\s*TX/i);
       return match ? match[1].trim() : (cities[county] || 'Unknown');
