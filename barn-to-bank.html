@@ -533,6 +533,127 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-add-deal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--accent-bright);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: all 0.2s var(--ease);
+    }
+    .btn-add-deal:hover {
+      background: rgba(212, 181, 106, 0.16);
+      border-color: var(--border-strong);
+    }
+
+    .btn-remove-deal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+    .btn-remove-deal:hover {
+      color: var(--red);
+      border-color: rgba(244, 122, 114, 0.35);
+      background: rgba(244, 122, 114, 0.1);
+    }
+
+    .deal-card-header-right {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .pipeline-table .col-actions {
+      width: 44px;
+      text-align: center;
+    }
+
+    .modal-footer-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+    .modal-footer-actions .btn-danger {
+      margin-right: auto;
+      padding: 10px 16px;
+      background: rgba(244, 122, 114, 0.12);
+      border: 1px solid rgba(244, 122, 114, 0.35);
+      border-radius: var(--radius-sm);
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .modal-footer-actions .btn-danger:hover {
+      background: rgba(244, 122, 114, 0.2);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      padding: 12px 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      z-index: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s var(--ease-spring), opacity 0.3s var(--ease);
+    }
+    .toast.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .toast.success { border-color: rgba(114, 212, 138, 0.4); color: var(--green); }
+    .toast.warn { border-color: rgba(244, 122, 114, 0.4); color: var(--red); }
+
+    .empty-state-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
     }
 
     .view-toggle {
@@ -2422,7 +2543,7 @@
         <div class="enrichment-source" id="enrichment-source"></div>
         <div class="enrichment-grid" id="enrichment-grid"></div>
         <div class="enrichment-warn" id="enrichment-warn"></div>
-        <button type="button" class="btn btn-ghost" style="margin-top:12px;width:100%" id="add-to-pipeline">Add to Pipeline</button>
+        <button type="button" class="btn btn-primary" style="margin-top:12px;width:100%" id="add-to-pipeline">+ Add to Pipeline</button>
       </div>
     </aside>
 
@@ -2434,10 +2555,14 @@
         <p>Every enriched deal in one view — triage into develop, direct sale, or retail brokerage.</p>
       </div>
       <div class="pipeline-toolbar">
-        <div class="section-title" style="margin:0;flex:1">Active Deals</div>
-        <div class="view-toggle">
-          <button type="button" class="active" data-view="table">Table</button>
-          <button type="button" data-view="cards">Cards</button>
+        <div class="section-title" style="margin:0">Active Deals</div>
+        <div class="pipeline-actions">
+          <button type="button" class="btn-add-deal" id="pipeline-add-intake" title="Run Automation 1 intake">+ From Intake</button>
+          <button type="button" class="btn-add-deal" id="pipeline-quick-add" title="Add a deal manually">+ Quick Add</button>
+          <div class="view-toggle">
+            <button type="button" class="active" data-view="table">Table</button>
+            <button type="button" data-view="cards">Cards</button>
+          </div>
         </div>
       </div>
 
@@ -2451,6 +2576,7 @@
               <th>$/Acre</th>
               <th>Status</th>
               <th>Route</th>
+              <th class="col-actions" aria-label="Actions"></th>
             </tr>
           </thead>
           <tbody id="pipeline-tbody"></tbody>
@@ -2624,6 +2750,69 @@
       </div>
     </div>
   </div>
+
+  <!-- QUICK ADD DEAL MODAL -->
+  <div class="modal-overlay" id="quick-add-overlay">
+    <div class="modal-panel fr-modal-panel" id="quick-add-panel">
+      <div class="modal-header">
+        <div>
+          <h2>Quick Add Deal</h2>
+          <div class="sub">Add to pipeline without running Automation 1</div>
+        </div>
+        <button class="modal-close" id="quick-add-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="quick-add-form" class="intake-form">
+          <div class="form-group">
+            <label for="qa-address">Address</label>
+            <input type="text" id="qa-address" placeholder="e.g. 6200 Old Pearsall Rd" required>
+          </div>
+          <div class="form-group">
+            <label for="qa-city">City</label>
+            <input type="text" id="qa-city" placeholder="San Antonio" required>
+          </div>
+          <div class="form-group">
+            <label for="qa-county">County</label>
+            <select id="qa-county" required>
+              <option value="Williamson">Williamson</option>
+              <option value="Travis">Travis</option>
+              <option value="Bastrop">Bastrop</option>
+              <option value="Caldwell">Caldwell</option>
+              <option value="Hays">Hays</option>
+              <option value="Comal">Comal</option>
+              <option value="Bexar">Bexar</option>
+              <option value="Guadalupe">Guadalupe</option>
+              <option value="Fort Bend">Fort Bend</option>
+              <option value="Smith">Smith (Tyler)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qa-acres">Acres</label>
+            <input type="number" id="qa-acres" min="0.1" step="0.1" placeholder="90" required>
+          </div>
+          <div class="form-group">
+            <label for="qa-price">$/Acre</label>
+            <input type="number" id="qa-price" min="1" step="100" placeholder="35000" required>
+          </div>
+          <div class="form-group">
+            <label for="qa-owner">Owner / seller</label>
+            <input type="text" id="qa-owner" placeholder="Owner of record">
+          </div>
+          <div class="form-group">
+            <label for="qa-route">Route</label>
+            <select id="qa-route">
+              <option value="DEVELOP">Develop / Entitle</option>
+              <option value="SELL">Sell (Flip)</option>
+              <option value="RETAIL">Retail</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px">Add to Pipeline</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- DEAL DETAIL MODAL -->
   <div class="modal-overlay" id="modal-overlay">
@@ -5489,9 +5678,132 @@
         <div class="empty-state">
           <div class="empty-state-icon">${EMPTY_PIPELINE_SVG}</div>
           <h3>Your pipeline is empty</h3>
-          <p>Run <strong>Automation 1</strong> on a property in Intake, review the enrichment, then add it here.</p>
-          <div class="empty-state-cta">← Start in Intake</div>
+          <p>Run <strong>Automation 1</strong> on a property in Intake, or quick-add a deal manually.</p>
+          <div class="empty-state-actions">
+            <button type="button" class="btn btn-primary" data-empty-add-intake>+ From Intake</button>
+            <button type="button" class="btn btn-ghost" data-empty-quick-add>+ Quick Add</button>
+          </div>
         </div>`;
+    }
+
+    let toastTimer = null;
+    function showToast(message, type = 'success') {
+      const el = document.getElementById('toast');
+      if (!el) return;
+      el.textContent = message;
+      el.className = `toast visible ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('visible'), 2800);
+    }
+
+    function scrollToIntake(focusQuery = true) {
+      if (isMobileLayout()) {
+        setMobilePanel('intake');
+      } else {
+        document.querySelector('.sidebar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (focusQuery) {
+        setTimeout(() => document.getElementById('intake-query')?.focus(), 300);
+      }
+    }
+
+    function purgeOutreachForDeal(dealId) {
+      outreachWizard.selectedIds = outreachWizard.selectedIds.filter((id) => id !== dealId);
+      delete outreachWizard.scrubByDealId[dealId];
+      outreachWizard.textQueue = outreachWizard.textQueue.filter((t) => t.dealId !== dealId);
+      outreachWizard.mailQueue = outreachWizard.mailQueue.filter((m) => m.dealId !== dealId);
+      saveOutreachState();
+      renderOutreachQueues();
+    }
+
+    function insertDeal(deal, { toastMsg } = {}) {
+      deals.unshift(deal);
+      saveDeals();
+      renderAll();
+      if (toastMsg) showToast(toastMsg);
+    }
+
+    async function finalizeNewDeal(deal) {
+      deal.id = deal.id || `deal-${Date.now()}`;
+      if (!deal.ownerContact) deal.ownerContact = await fetchForewarnOwnerContact(deal);
+      deal.bottlenecked = computeBottlenecked(deal);
+      if (!deal.dealRecord) await buildSeedDealRecord(deal);
+      return deal;
+    }
+
+    async function addDealFromEnrichment(enriched) {
+      const deal = await finalizeNewDeal({ ...enriched, id: `deal-${Date.now()}` });
+      insertDeal(deal, { toastMsg: `Added ${deal.address} to pipeline` });
+      return deal;
+    }
+
+    async function createQuickDeal(form) {
+      const county = form.county;
+      const acreage = parseFloat(form.acres) || 0;
+      const askingPerAcre = parseFloat(form.price) || 0;
+      const owner = form.owner?.trim() || 'Owner of record — verify via CAD';
+      const mock = mockProfileFor(county);
+      const deal = {
+        id: `deal-${Date.now()}`,
+        address: form.address.trim(),
+        city: form.city.trim(),
+        county,
+        parcelId: `${county.slice(0, 2).toUpperCase()}-${Math.floor(10000 + Math.random() * 89999)}`,
+        acreage,
+        zoning: 'A-1 Agricultural',
+        askingPerAcre,
+        enrichmentStatus: 'new',
+        route: form.route || 'DEVELOP',
+        owner,
+        sellerName: owner,
+        taxHistory: buildTaxHistory(acreage * askingPerAcre * 0.85, null),
+        utilities: [
+          { type: 'Electric', status: 'partial', detail: `Verify — ${mock.distPowerMi} mi` },
+          { type: 'Water', status: 'partial', detail: mock.waterCcn.split('(')[0].trim() },
+          { type: 'Sewer', status: mock.distSewerMi > 2 ? 'none' : 'partial', detail: mock.sewerCcn.split('—')[0].trim() },
+        ],
+        lat: null,
+        lng: null,
+        nearbyCommunities: [],
+        nearbyDevExcluded: [],
+        nearbyDev: '',
+        lastContact: new Date().toISOString().split('T')[0],
+        callReminder: false,
+        notes: 'Quick-added — run Automation 1 to enrich.',
+        dataSource: 'Manual quick add',
+        margin: computeMarginsFromLand(acreage, acreage * askingPerAcre),
+        bottlenecked: mock.distSewerMi > 2,
+      };
+      await finalizeNewDeal(deal);
+      insertDeal(deal, { toastMsg: `Added ${deal.address}` });
+      return deal;
+    }
+
+    function confirmRemoveDeal(deal) {
+      const label = deal ? `${deal.address}, ${deal.city}` : 'this deal';
+      return window.confirm(`Remove ${label} from the pipeline?\n\nThis cannot be undone.`);
+    }
+
+    function removeDeal(id) {
+      const deal = deals.find((d) => d.id === id);
+      if (!deal || !confirmRemoveDeal(deal)) return false;
+      deals = deals.filter((d) => d.id !== id);
+      purgeOutreachForDeal(id);
+      saveDeals();
+      if (activeDealId === id) closeModal();
+      renderAll();
+      showToast(`Removed ${deal.address}`, 'warn');
+      return true;
+    }
+
+    function openQuickAddModal() {
+      document.getElementById('quick-add-overlay').classList.add('open');
+      document.getElementById('qa-address')?.focus();
+    }
+
+    function closeQuickAddModal() {
+      document.getElementById('quick-add-overlay').classList.remove('open');
+      document.getElementById('quick-add-form')?.reset();
     }
 
     function renderPipeline() {
@@ -5512,7 +5824,7 @@
             <thead>
               <tr>
                 <th>Address</th><th>County</th><th>Acres</th><th>$/Acre</th>
-                <th>Status</th><th>Route</th>
+                <th>Status</th><th>Route</th><th class="col-actions" aria-label="Actions"></th>
               </tr>
             </thead>
             <tbody id="pipeline-tbody"></tbody>
@@ -5539,6 +5851,9 @@
               ).join('')}
             </select>
           </td>
+          <td class="col-actions">
+            <button type="button" class="btn-remove-deal" data-remove-deal="${d.id}" title="Remove deal" aria-label="Remove deal">×</button>
+          </td>
         </tr>
       `).join('');
 
@@ -5549,7 +5864,10 @@
               <div class="deal-card-address">${d.address}</div>
               <div class="deal-card-county">${d.city}, ${d.county} Co.</div>
             </div>
-            <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+            <div class="deal-card-header-right">
+              <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+              <button type="button" class="btn-remove-deal" data-remove-deal="${d.id}" title="Remove deal" aria-label="Remove deal">×</button>
+            </div>
           </div>
           <div class="deal-card-metrics">
             <div class="deal-card-metric">
@@ -5702,6 +6020,11 @@
             <span>Best path: <strong>${margins.scenarios.find(s => s.net === bestNet).label}</strong></span>
           </div>
         </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-danger" id="modal-remove-deal">Remove from Pipeline</button>
+          <button type="button" class="btn btn-ghost" id="modal-close-footer">Close</button>
+        </div>
       `;
 
       bindModalEvents(deal);
@@ -5713,9 +6036,23 @@
     function bindPipelineEvents() {
       document.querySelectorAll('#pipeline-tbody tr, .deal-card').forEach(el => {
         el.addEventListener('click', (e) => {
-          if (e.target.closest('[data-route-select]')) return;
+          if (e.target.closest('[data-route-select]') || e.target.closest('[data-remove-deal]')) return;
           openModal(el.dataset.id);
         });
+      });
+
+      document.querySelectorAll('[data-remove-deal]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeDeal(btn.dataset.removeDeal);
+        });
+      });
+
+      document.querySelectorAll('[data-empty-add-intake]').forEach(btn => {
+        btn.addEventListener('click', () => scrollToIntake(true));
+      });
+      document.querySelectorAll('[data-empty-quick-add]').forEach(btn => {
+        btn.addEventListener('click', () => openQuickAddModal());
       });
 
       document.querySelectorAll('[data-route-select]').forEach(sel => {
@@ -5747,6 +6084,11 @@
         if (el) el.addEventListener('change', save);
         if (el && el.tagName === 'TEXTAREA') el.addEventListener('input', save);
       });
+
+      document.getElementById('modal-remove-deal')?.addEventListener('click', () => {
+        if (removeDeal(deal.id)) closeModal();
+      });
+      document.getElementById('modal-close-footer')?.addEventListener('click', closeModal);
     }
 
     function openModal(id) {
@@ -6250,20 +6592,47 @@
         }
       });
 
-      // Add to pipeline
-      document.getElementById('add-to-pipeline').addEventListener('click', () => {
+      document.getElementById('pipeline-add-intake').addEventListener('click', () => scrollToIntake(true));
+      document.getElementById('pipeline-quick-add').addEventListener('click', openQuickAddModal);
+      document.getElementById('quick-add-close').addEventListener('click', closeQuickAddModal);
+      document.getElementById('quick-add-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('quick-add-overlay')) closeQuickAddModal();
+      });
+      document.getElementById('quick-add-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        try {
+          await createQuickDeal({
+            address: document.getElementById('qa-address').value,
+            city: document.getElementById('qa-city').value,
+            county: document.getElementById('qa-county').value,
+            acres: document.getElementById('qa-acres').value,
+            price: document.getElementById('qa-price').value,
+            owner: document.getElementById('qa-owner').value,
+            route: document.getElementById('qa-route').value,
+          });
+          closeQuickAddModal();
+          if (isMobileLayout()) setMobilePanel('pipeline');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      // Add to pipeline (from Automation 1 enrichment)
+      document.getElementById('add-to-pipeline').addEventListener('click', async () => {
         if (!pendingEnrichment) return;
-        const newDeal = {
-          ...pendingEnrichment,
-          id: 'deal-' + Date.now(),
-        };
-        deals.unshift(newDeal);
-        saveDeals();
-        pendingEnrichment = null;
-        document.getElementById('enrichment-result').classList.remove('visible');
-        document.getElementById('intake-query').value = '';
-        renderAll();
-        if (isMobileLayout()) setMobilePanel('pipeline');
+        const btn = document.getElementById('add-to-pipeline');
+        btn.disabled = true;
+        try {
+          await addDealFromEnrichment(pendingEnrichment);
+          pendingEnrichment = null;
+          document.getElementById('enrichment-result').classList.remove('visible');
+          document.getElementById('intake-query').value = '';
+          if (isMobileLayout()) setMobilePanel('pipeline');
+        } finally {
+          btn.disabled = false;
+        }
       });
 
       // View toggle
@@ -6284,7 +6653,8 @@
       });
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
+        if (document.getElementById('quick-add-overlay').classList.contains('open')) closeQuickAddModal();
+        else if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
         else if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
         else closeModal();
       });
