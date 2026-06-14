@@ -1771,6 +1771,141 @@
       .mail-print-toolbar { display: none !important; }
       .mail-print-overlay { position: static; }
     }
+
+    /* ── Moat intelligence layer ───────────────────────────────────────── */
+    .sync-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, rgba(192,154,255,0.08) 0%, var(--bg-card) 60%);
+      border: 1px solid rgba(192, 154, 255, 0.2);
+      border-radius: var(--radius-lg);
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+    .sync-bar .sync-status { color: var(--text-secondary); }
+    .sync-bar .sync-status.live { color: var(--green); }
+    .sync-bar .sync-status.local { color: var(--orange); }
+    .sync-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sync {
+      padding: 6px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .btn-sync:hover { border-color: var(--border-strong); color: var(--accent-bright); }
+
+    .moat-section { margin-top: 32px; }
+    .moat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px) { .moat-grid { grid-template-columns: 1fr; } }
+
+    .moat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .moat-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .comp-row, .alert-row, .audit-row {
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .comp-row .price { font-family: var(--mono); color: var(--accent-bright); font-weight: 600; }
+
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--mono);
+    }
+    .score-high { background: rgba(114,212,138,0.14); color: var(--green); border: 1px solid rgba(114,212,138,0.3); }
+    .score-mid { background: rgba(236,168,90,0.12); color: var(--orange); border: 1px solid rgba(236,168,90,0.3); }
+    .score-low { background: rgba(244,122,114,0.12); color: var(--red); border: 1px solid rgba(244,122,114,0.3); }
+
+    .comp-band {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-family: var(--mono);
+    }
+    .comp-band strong { color: var(--accent); }
+
+    .entitlement-card {
+      padding: 14px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      margin-bottom: 14px;
+    }
+    .entitlement-card .score-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .entitlement-factors { font-size: 10px; color: var(--text-muted); }
+    .entitlement-factors li { margin-bottom: 4px; }
+
+    .outreach-crm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 640px) { .outreach-crm-grid { grid-template-columns: 1fr; } }
+
+    .deal-memo-overlay {
+      position: fixed; inset: 0; z-index: 350;
+      background: #fff; color: #111;
+      display: none; overflow-y: auto;
+      font-family: Georgia, serif;
+    }
+    .deal-memo-overlay.open { display: block; }
+    .deal-memo-toolbar {
+      position: sticky; top: 0; background: #1a1714; color: #f6f2ea;
+      padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .deal-memo-body { max-width: 720px; margin: 0 auto; padding: 32px 24px 48px; }
+    .deal-memo-body h1 { font-size: 22px; margin-bottom: 4px; }
+    .deal-memo-body .brand { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #888; margin-bottom: 24px; }
+    .deal-memo-body table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; font-family: Arial, sans-serif; }
+    .deal-memo-body th, .deal-memo-body td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .deal-memo-body th { background: #f5f5f5; }
+    @media print { .deal-memo-toolbar { display: none; } }
     .a1-summary {
       display: flex;
       gap: 6px;
@@ -2288,6 +2423,18 @@
       .main.panel-outreach .silos,
       .main.panel-outreach .page-hero { display: none !important; }
       .main.panel-outreach .outreach-section { margin-top: 0; }
+      .main.panel-outreach .moat-section { display: none !important; }
+      .main.panel-intake .moat-section,
+      .main.panel-pipeline .moat-section,
+      .main.panel-silos .moat-section { display: none !important; }
+      .main.panel-intel .sidebar { display: none; }
+      .main.panel-intel .pipeline-toolbar,
+      .main.panel-intel .pipeline-table-wrap,
+      .main.panel-intel .pipeline-cards,
+      .main.panel-intel .silos,
+      .main.panel-intel .outreach-section,
+      .main.panel-intel .page-hero { display: none !important; }
+      .main.panel-intel .moat-section { margin-top: 0; }
       .owner-contact-row { grid-template-columns: 1fr; }
       .mail-label-grid { grid-template-columns: 1fr; }
 
@@ -2434,6 +2581,7 @@
           <span class="hide-mobile">Feature Request</span><span class="show-mobile">Request</span>
           <span class="fr-badge hidden" id="fr-badge">0</span>
         </button>
+        <button type="button" class="btn-sync" id="moat-sync-btn" title="Sync team data">Sync</button>
       </div>
       <div class="header-stats">
         <div class="header-stat">
@@ -2458,6 +2606,7 @@
       <button type="button" data-panel="pipeline">Deals</button>
       <button type="button" data-panel="silos">Silos</button>
       <button type="button" data-panel="outreach">Outreach</button>
+      <button type="button" data-panel="intel">Intel</button>
     </div>
   </nav>
 
@@ -2657,8 +2806,81 @@
           </div>
         </div>
       </div>
+
+      <!-- MOAT INTELLIGENCE -->
+      <div class="moat-section" id="moat-section">
+        <div class="sync-bar" id="sync-bar">
+          <div>
+            <div class="section-title" style="margin:0 0 6px">Team Moat Sync</div>
+            <span class="sync-status local" id="sync-status-text">Local only — export bundle to share with Jack</span>
+          </div>
+          <div class="sync-actions">
+            <button type="button" class="btn-sync" id="moat-export-bundle">Export Bundle</button>
+            <button type="button" class="btn-sync" id="moat-import-bundle">Import Bundle</button>
+            <button type="button" class="btn-sync" id="moat-cloud-sync">Cloud Sync</button>
+          </div>
+        </div>
+        <input type="file" id="moat-import-file" accept=".json,application/json" hidden>
+
+        <div class="moat-grid">
+          <div class="moat-card">
+            <h3>Comp Lake <span class="tier-badge tier-moat">moat</span> <button type="button" class="btn-sync" id="log-comp-open">+ Log Comp</button></h3>
+            <p style="font-size:10px;color:var(--text-muted);margin-bottom:10px">Off-market sales — Texas non-disclosure. Every comp you log compounds pricing power.</p>
+            <div id="comp-lake-list"></div>
+          </div>
+          <div class="moat-card">
+            <h3>Plat &amp; Development Alerts</h3>
+            <div id="plat-alerts-feed"></div>
+          </div>
+          <div class="moat-card" style="grid-column:1/-1">
+            <h3>Outreach Audit Log <span style="font-size:9px;color:var(--text-muted);font-weight:500">TCPA trail</span></h3>
+            <div id="audit-log-list"></div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
+
+  <!-- LOG COMP MODAL -->
+  <div class="modal-overlay" id="comp-modal-overlay">
+    <div class="modal-panel fr-modal-panel">
+      <div class="modal-header">
+        <div><h2>Log Private Comp</h2><div class="sub">Off-market / HIS / verbal LOI — moat data</div></div>
+        <button class="modal-close" id="comp-modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="log-comp-form" class="intake-form">
+          <div class="form-group"><label>County</label>
+            <select id="lc-county" required>
+              <option value="Bastrop">Bastrop</option><option value="Bexar">Bexar</option><option value="Caldwell">Caldwell</option>
+              <option value="Comal">Comal</option><option value="Hays">Hays</option><option value="Williamson">Williamson</option>
+              <option value="Travis">Travis</option><option value="Smith">Smith</option><option value="Fort Bend">Fort Bend</option><option value="Guadalupe">Guadalupe</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Submarket</label><input type="text" id="lc-submarket" placeholder="e.g. South SA / Pearsall" required></div>
+          <div class="form-group"><label>Acres</label><input type="number" id="lc-acres" min="0.1" step="0.1" required></div>
+          <div class="form-group"><label>$/Acre</label><input type="number" id="lc-price" min="1" step="100" required></div>
+          <div class="form-group"><label>Buyer</label><input type="text" id="lc-buyer" placeholder="DR Horton" required></div>
+          <div class="form-group"><label>Date (YYYY-MM)</label><input type="text" id="lc-date" placeholder="2026-03" required></div>
+          <div class="form-group"><label>Off-market?</label><select id="lc-offmarket"><option value="yes">Yes — off-market</option><option value="no">MLS / public</option></select></div>
+          <div class="form-group"><label>Notes</label><textarea class="notes-field" id="lc-notes" rows="3" placeholder="Verbal LOI, adjacency, exemption..."></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Save to Comp Lake</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEAL MEMO VIEW -->
+  <div class="deal-memo-overlay" id="deal-memo-overlay">
+    <div class="deal-memo-toolbar">
+      <span id="deal-memo-title-bar">Deal Memo</span>
+      <div>
+        <button type="button" onclick="window.print()" style="background:#d4b56a;color:#1a1408;padding:8px 16px;border:none;border-radius:6px;font-weight:600;cursor:pointer">Print / PDF</button>
+        <button type="button" id="deal-memo-close" style="background:#444;color:#fff;padding:8px 16px;border:none;border-radius:6px;cursor:pointer">Close</button>
+      </div>
+    </div>
+    <div class="deal-memo-body" id="deal-memo-body"></div>
+  </div>
 
   <!-- OUTREACH WIZARD MODAL -->
   <div class="modal-overlay" id="outreach-modal-overlay">
@@ -2858,6 +3080,17 @@
         ownerEmail: 'jeremy@cto.com', // opens mailto draft on submit
         githubRepo: '', // set to 'user/repo' to also pre-fill GitHub issues
         webhookUrl: '', // optional POST endpoint (Slack, Zapier, Formspree, etc.)
+      },
+
+      // Team moat sync — optional Supabase; fallback is export/import JSON bundle
+      MOAT_SYNC: {
+        enabled: false,
+        supabaseUrl: '',       // SUPABASE_URL from secret store
+        supabaseAnonKey: '',   // SUPABASE_ANON_KEY from secret store
+        teamId: 'barn-to-bank-team',
+        tableName: 'moat_bundles',
+        bundleVersion: 1,
+        secretStoreNote: 'Provision SUPABASE_URL and SUPABASE_ANON_KEY via deployment pipeline — never commit keys to this file.',
       },
 
       // ── INTEGRATIONS (credentials from secret store only — never hardcode) ──
@@ -3085,8 +3318,8 @@
       { name: 'Sienna', builder: 'Johnson Development', county: 'Fort Bend', lat: 29.505, lng: -95.508, productType: 'sf_for_sale', status: 'Active master-planned', lotsRemaining: 1200 },
     ];
 
-    // Private comps — HIS / manual ingest (the moat). Keyed by county + submarket.
-    const PRIVATE_COMPS_DB = [
+    // Private comps seed — HIS / manual ingest (the moat). Merged with local Comp Lake.
+    const PRIVATE_COMPS_SEED = [
       { county: 'Williamson', submarket: 'Taylor / East Wilco', acres: 140, pricePerAcre: 19200, buyer: 'DR Horton', date: '2026-03', notes: 'Off-market, Sendero adjacency' },
       { county: 'Williamson', submarket: 'Taylor / East Wilco', acres: 85, pricePerAcre: 17800, buyer: 'Lennar', date: '2025-11', notes: 'Estate sale, no MLS' },
       { county: 'Bastrop', submarket: 'Smithville corridor', acres: 62, pricePerAcre: 31500, buyer: 'Meritage', date: '2026-01', notes: 'Builder bulk, Colony Park proximity' },
@@ -3096,6 +3329,15 @@
       { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 16, pricePerAcre: 105000, buyer: 'Private investor', date: '2025-12', notes: 'Commercial pad adjacent' },
       { county: 'Smith', submarket: 'Tyler / South Loop', acres: 48, pricePerAcre: 22400, buyer: 'DR Horton', date: '2026-02', notes: 'Off-market, FM 756 corridor' },
       { county: 'Smith', submarket: 'Tyler / Lindale ETJ', acres: 112, pricePerAcre: 16800, buyer: 'Lennar', date: '2025-10', notes: 'Estate tract; timber exemption' },
+    ];
+
+    // Plat filings seed — swap for county clerk / HBA feed
+    const PLAT_FILINGS = [
+      { id: 'plat-001', county: 'Bastrop', name: 'Colony Park Phase 3', builder: 'Meritage', status: 'Preliminary plat filed', filedDate: '2026-05-12', lat: 30.020, lng: -97.150, lots: 156 },
+      { id: 'plat-002', county: 'Bexar', name: 'Mission del Lago Phase 5', builder: 'KB Home', status: 'Final plat approved', filedDate: '2026-04-28', lat: 29.308, lng: -98.565, lots: 88 },
+      { id: 'plat-003', county: 'Williamson', name: 'Legacy Ranch Phase 1', builder: 'Pulte', status: 'Plat filed', filedDate: '2026-03-15', lat: 30.595, lng: -97.362, lots: 320 },
+      { id: 'plat-004', county: 'Comal', name: 'Bulverde Oaks', builder: 'Lennar', status: 'Replat pending', filedDate: '2026-06-01', lat: 29.780, lng: -98.410, lots: 45 },
+      { id: 'plat-005', county: 'Caldwell', name: 'Lockhart South MUD', builder: 'DR Horton', status: 'Conceptual plat', filedDate: '2026-02-20', lat: 29.880, lng: -97.665, lots: 210 },
     ];
 
     // Spatial engine reference nodes (swap for live utility / commercial GIS)
@@ -3262,7 +3504,13 @@
     // =========================================================================
     const DEALS_STORAGE_KEY = 'barn-to-bank-deals';
     const OUTREACH_STORAGE_KEY = 'barn-to-bank-outreach';
+    const COMPS_STORAGE_KEY = 'barn-to-bank-comps';
+    const AUDIT_STORAGE_KEY = 'barn-to-bank-audit';
+    const MOAT_SYNC_META_KEY = 'barn-to-bank-moat-sync';
     const SAMPLE_DEAL_IDS = new Set(['deal-001', 'deal-002', 'deal-003', 'deal-004', 'deal-005', 'deal-tyler-001']);
+
+    let privateComps = [];
+    let auditLog = [];
 
     let deals = [];
     let pendingEnrichment = null;
@@ -4358,7 +4606,7 @@
         };
       }
 
-      const comps = PRIVATE_COMPS_DB.filter(c => c.county === deal.county);
+      const comps = getCompsForDeal(deal);
       if (!comps.length) {
         return {
           text: 'No comps ingested — NEEDS MANUAL INPUT (TX non-disclosure)',
@@ -4757,7 +5005,7 @@
     }
 
     function layerPrivateComps(deal) {
-      const comps = PRIVATE_COMPS_DB.filter(c => c.county === deal.county);
+      const comps = getCompsForDeal(deal);
       if (!comps.length) {
         return { status: 'warn', message: 'No private comps ingested for county', data: { comps: [] } };
       }
@@ -5012,6 +5260,7 @@
         live,
       );
       applyDealRecordToDeal(deal, dealRecord);
+      applyMoatToDeal(deal);
     }
 
     // =========================================================================
@@ -5330,6 +5579,14 @@
         const scrubbed = await runDncRegistryScrub(getDealPhones(deal));
         results[id] = scrubbed;
         deal.dncScrub = { phones: scrubbed, completedAt: scrubbed[0]?.scrubbedAt || new Date().toISOString() };
+        const cleared = scrubbed.filter((s) => s.status === 'cleared').length;
+        const blocked = scrubbed.filter((s) => s.status === 'blocked').length;
+        appendOutreachAudit({
+          type: 'dnc_scrub',
+          dealId: id,
+          summary: `DNC scrub: ${deal.address} — ${cleared} cleared, ${blocked} blocked`,
+          detail: scrubbed.map((s) => `${s.number}: ${s.status}`).join('; '),
+        });
       }
       outreachWizard.scrubByDealId = results;
       outreachWizard.dncComplete = true;
@@ -5394,6 +5651,11 @@
       outreachWizard.textQueue = textQueue;
       outreachWizard.mailQueue = mailQueue;
       saveOutreachState();
+      appendOutreachAudit({
+        type: 'outreach_queue',
+        summary: `Outreach queue built — ${textQueue.filter((t) => t.canSend).length} text, ${mailQueue.length} mail`,
+        detail: `${dealIds.length} deal(s) selected`,
+      });
       renderOutreachQueues();
     }
 
@@ -5602,6 +5864,20 @@
             if (ta) item.body = ta.value;
             btn.textContent = '✓ Queued for send';
             btn.disabled = true;
+            const deal = deals.find((d) => d.id === item.dealId);
+            if (deal) {
+              const crm = ensureOutreachCrm(deal);
+              crm.touches = (crm.touches || 0) + 1;
+              crm.lastTouchAt = new Date().toISOString();
+              crm.status = crm.status === 'not_contacted' ? 'contacted' : crm.status;
+              saveDeals();
+            }
+            appendOutreachAudit({
+              type: 'text_queue',
+              dealId: item.dealId,
+              summary: `Text queued: ${item.address} → ${item.to}`,
+              detail: item.dncLabel,
+            });
           });
         });
       }
@@ -5651,7 +5927,570 @@
     async function attachOwnerAndCompliance(deal) {
       deal.ownerContact = await fetchForewarnOwnerContact(deal);
       deal.bottlenecked = computeBottlenecked(deal);
+      applyMoatToDeal(deal);
       return deal;
+    }
+
+    // =========================================================================
+    // Moat Intelligence — comp lake, entitlement score, sync, audit, memos
+    // =========================================================================
+
+    function initPrivateComps() {
+      try {
+        const raw = localStorage.getItem(COMPS_STORAGE_KEY);
+        const stored = raw ? JSON.parse(raw) : [];
+        const byKey = new Map();
+        PRIVATE_COMPS_SEED.forEach((c, i) => {
+          byKey.set(`seed-${i}`, { ...c, id: `seed-${i}`, source: 'seed' });
+        });
+        (Array.isArray(stored) ? stored : []).forEach((c) => {
+          if (c?.id) byKey.set(c.id, c);
+        });
+        privateComps = [...byKey.values()];
+      } catch {
+        privateComps = PRIVATE_COMPS_SEED.map((c, i) => ({ ...c, id: `seed-${i}`, source: 'seed' }));
+      }
+    }
+
+    function savePrivateComps() {
+      const userComps = privateComps.filter((c) => c.source !== 'seed');
+      try {
+        localStorage.setItem(COMPS_STORAGE_KEY, JSON.stringify(userComps));
+      } catch (e) {
+        console.warn('Could not persist comps:', e);
+      }
+    }
+
+    function getCompsForDeal(deal) {
+      if (!deal?.county) return [];
+      return privateComps.filter((c) => c.county === deal.county);
+    }
+
+    function addComp(entry) {
+      const comp = {
+        id: `comp-${Date.now()}`,
+        county: entry.county,
+        submarket: entry.submarket,
+        acres: parseFloat(entry.acres) || 0,
+        pricePerAcre: parseFloat(entry.pricePerAcre) || 0,
+        buyer: entry.buyer,
+        date: entry.date,
+        notes: entry.notes || '',
+        offMarket: entry.offMarket !== false,
+        loggedAt: new Date().toISOString(),
+        source: 'user',
+      };
+      privateComps.unshift(comp);
+      savePrivateComps();
+      appendOutreachAudit({
+        type: 'comp_logged',
+        summary: `Comp logged: ${comp.acres} ac @ ${fmt(comp.pricePerAcre)}/ac — ${comp.county}`,
+        detail: `${comp.buyer} · ${comp.submarket}`,
+      });
+      renderMoatPanels();
+      return comp;
+    }
+
+    function loadAuditLog() {
+      try {
+        const raw = localStorage.getItem(AUDIT_STORAGE_KEY);
+        auditLog = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(auditLog)) auditLog = [];
+      } catch {
+        auditLog = [];
+      }
+    }
+
+    function saveAuditLog() {
+      try {
+        localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(auditLog.slice(-500)));
+      } catch (e) {
+        console.warn('Could not persist audit log:', e);
+      }
+    }
+
+    function appendOutreachAudit(entry) {
+      auditLog.unshift({
+        id: `audit-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        ts: new Date().toISOString(),
+        actor: 'local',
+        ...entry,
+      });
+      saveAuditLog();
+      renderAuditLog();
+    }
+
+    function ensureOutreachCrm(deal) {
+      if (!deal.outreachCrm) {
+        deal.outreachCrm = {
+          status: 'not_contacted',
+          touches: 0,
+          sequence: 'none',
+          lastTouchAt: null,
+          outcome: null,
+        };
+      }
+      return deal.outreachCrm;
+    }
+
+    const OUTREACH_CRM_STATUSES = {
+      not_contacted: 'Not contacted',
+      contacted: 'Contacted',
+      responded: 'Responded',
+      negotiating: 'Negotiating',
+      closed: 'Closed',
+      dead: 'Dead',
+    };
+
+    const OUTREACH_CRM_SEQUENCES = {
+      none: 'No sequence',
+      initial: 'Initial outreach',
+      follow_up_1: 'Follow-up 1',
+      follow_up_2: 'Follow-up 2',
+    };
+
+    const OUTREACH_CRM_OUTCOMES = {
+      '': '—',
+      loi: 'LOI / verbal',
+      passed: 'Passed',
+      under_contract: 'Under contract',
+    };
+
+    function getCompBandForDeal(deal) {
+      const compData = formatMarketComps(deal);
+      if (!compData.avg || !deal.askingPerAcre) return null;
+      const deltaPct = Math.round(((deal.askingPerAcre - compData.avg) / compData.avg) * 100);
+      const label = deltaPct <= -10 ? 'Below band' : deltaPct <= 5 ? 'In band' : 'Above band';
+      return { avg: compData.avg, deltaPct, label, source: compData.source };
+    }
+
+    function computeEntitlementScore(deal) {
+      const factors = [];
+      let score = 50;
+
+      const water = deal.utilities?.find((u) => u.type === 'Water');
+      const sewer = deal.utilities?.find((u) => u.type === 'Sewer');
+
+      if (water?.status === 'available') { score += 12; factors.push({ label: 'Water available', pts: '+12' }); }
+      else if (water?.status === 'partial') { score += 6; factors.push({ label: 'Water partial', pts: '+6' }); }
+      else { score -= 5; factors.push({ label: 'Water gap', pts: '-5' }); }
+
+      if (sewer?.status === 'available') { score += 13; factors.push({ label: 'Sewer available', pts: '+13' }); }
+      else if (sewer?.status === 'partial') { score += 5; factors.push({ label: 'Sewer partial', pts: '+5' }); }
+      else { score -= 15; factors.push({ label: 'No central sewer', pts: '-15' }); }
+
+      if (deal.floodplain?.inSpecialFloodHazardArea) {
+        score -= 12;
+        factors.push({ label: 'SFHA flood zone', pts: '-12' });
+      } else {
+        score += 10;
+        factors.push({ label: 'Minimal flood hazard', pts: '+10' });
+      }
+
+      const compData = formatMarketComps(deal);
+      if (compData.avg && deal.askingPerAcre) {
+        const ratio = deal.askingPerAcre / compData.avg;
+        if (ratio <= 0.85) { score += 18; factors.push({ label: 'Below comp band', pts: '+18' }); }
+        else if (ratio <= 1.0) { score += 10; factors.push({ label: 'At comp band', pts: '+10' }); }
+        else if (ratio <= 1.15) { score += 2; factors.push({ label: 'Slight premium to comps', pts: '+2' }); }
+        else { score -= 10; factors.push({ label: 'Above comp band', pts: '-10' }); }
+      } else {
+        factors.push({ label: 'Comps unavailable', pts: '0' });
+      }
+
+      const sf = deal.nearbyCommunities?.[0];
+      if (sf) {
+        const mi = parseFloat(sf.distanceMi) || 5;
+        if (mi <= 2) { score += 18; factors.push({ label: `SF within ${mi} mi`, pts: '+18' }); }
+        else if (mi <= 5) { score += 10; factors.push({ label: `SF ${mi} mi`, pts: '+10' }); }
+        else { score += 4; factors.push({ label: `SF ${mi} mi (distant)`, pts: '+4' }); }
+      } else {
+        score -= 5;
+        factors.push({ label: 'No SF in radius', pts: '-5' });
+      }
+
+      if (computeBottlenecked(deal)) {
+        score -= 25;
+        factors.push({ label: 'Entitlement bottleneck', pts: '-25' });
+      }
+
+      const juris = deal.jurisdiction?.summary
+        || deal.dealRecord?.sections?.jurisdiction?.fields?.[0]?.value || '';
+      if (/city limits/i.test(juris)) {
+        score += 8;
+        factors.push({ label: 'City limits', pts: '+8' });
+      } else if (/ETJ/i.test(juris)) {
+        score += 4;
+        factors.push({ label: 'ETJ', pts: '+4' });
+      }
+
+      score = Math.max(0, Math.min(100, Math.round(score)));
+      const band = score >= 70 ? 'high' : score >= 45 ? 'mid' : 'low';
+      const bandLabel = score >= 70 ? 'Strong' : score >= 45 ? 'Moderate' : 'Weak';
+
+      let recommendation = 'DEVELOP';
+      if (computeBottlenecked(deal)) recommendation = 'SELL';
+      else if (score >= 70 && (sewer?.status === 'available' || water?.status === 'available')) recommendation = 'DEVELOP';
+      else if (score >= 45 && compData.avg && deal.askingPerAcre <= compData.avg * 1.05) recommendation = 'SELL';
+      else if (score < 45 || (deal.acreage && deal.acreage < 25)) recommendation = 'RETAIL';
+
+      return { score, band, bandLabel, recommendation, factors };
+    }
+
+    function applyMoatToDeal(deal) {
+      ensureOutreachCrm(deal);
+      deal.entitlement = computeEntitlementScore(deal);
+      deal.compBand = getCompBandForDeal(deal);
+      return deal;
+    }
+
+    function scorePillHtml(ent) {
+      if (!ent) return '';
+      const cls = ent.band === 'high' ? 'score-high' : ent.band === 'mid' ? 'score-mid' : 'score-low';
+      return `<span class="score-pill ${cls}" title="${escapeHtml(ROUTES[ent.recommendation]?.label || ent.recommendation)}">${ent.score} · ${escapeHtml(ent.bandLabel)}</span>`;
+    }
+
+    function getPlatAlertsForDeals(dealList, radiusMi = 8) {
+      const alerts = [];
+      dealList.forEach((deal) => {
+        if (deal.lat == null || deal.lng == null) return;
+        PLAT_FILINGS.forEach((plat) => {
+          if (plat.county !== deal.county) return;
+          const dist = haversineMiles(deal.lat, deal.lng, plat.lat, plat.lng);
+          if (dist <= radiusMi) {
+            alerts.push({
+              ...plat,
+              dealId: deal.id,
+              dealAddress: deal.address,
+              distanceMi: Math.round(dist * 10) / 10,
+            });
+          }
+        });
+      });
+      return alerts.sort((a, b) => a.distanceMi - b.distanceMi);
+    }
+
+    function renderEntitlementCard(deal) {
+      const ent = deal.entitlement || computeEntitlementScore(deal);
+      const rec = ROUTES[ent.recommendation] || ROUTES.DEVELOP;
+      const band = deal.compBand;
+      return `
+        <div class="entitlement-card">
+          <div class="score-line">
+            <strong style="font-size:11px;color:var(--purple)">Entitlement Score</strong>
+            ${scorePillHtml(ent)}
+          </div>
+          <div style="font-size:11px;margin-bottom:8px">
+            Recommended route: <span class="route-select ${rec.class}" style="display:inline;padding:2px 8px;font-size:10px">${escapeHtml(rec.label)}</span>
+          </div>
+          ${band ? `<div class="comp-band">Comp band: <strong>${fmt(band.avg)}/ac</strong> · asking ${band.deltaPct >= 0 ? '+' : ''}${band.deltaPct}% · ${escapeHtml(band.label)}</div>` : ''}
+          <ul class="entitlement-factors">
+            ${ent.factors.slice(0, 6).map((f) => `<li>${escapeHtml(f.label)} <span style="font-family:var(--mono);color:var(--text-secondary)">${escapeHtml(f.pts)}</span></li>`).join('')}
+          </ul>
+        </div>`;
+    }
+
+    function renderOutreachCrmFields(deal) {
+      const crm = ensureOutreachCrm(deal);
+      return `
+        <div class="outreach-crm-grid">
+          <div class="form-group">
+            <label>Outreach status</label>
+            <select id="modal-crm-status">
+              ${Object.entries(OUTREACH_CRM_STATUSES).map(([k, v]) =>
+                `<option value="${k}" ${crm.status === k ? 'selected' : ''}>${escapeHtml(v)}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Sequence</label>
+            <select id="modal-crm-sequence">
+              ${Object.entries(OUTREACH_CRM_SEQUENCES).map(([k, v]) =>
+                `<option value="${k}" ${crm.sequence === k ? 'selected' : ''}>${escapeHtml(v)}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Touches</label>
+            <input type="number" id="modal-crm-touches" min="0" value="${crm.touches || 0}">
+          </div>
+          <div class="form-group">
+            <label>Outcome</label>
+            <select id="modal-crm-outcome">
+              ${Object.entries(OUTREACH_CRM_OUTCOMES).map(([k, v]) =>
+                `<option value="${k}" ${(crm.outcome || '') === k ? 'selected' : ''}>${escapeHtml(v)}</option>`
+              ).join('')}
+            </select>
+          </div>
+        </div>`;
+    }
+
+    function generateDealMemo(deal, view = 'internal') {
+      const ent = deal.entitlement || computeEntitlementScore(deal);
+      const margins = calcMargins(deal);
+      const best = margins.scenarios.reduce((a, b) => (b.net > a.net ? b : a));
+      const compData = formatMarketComps(deal);
+      const ownerLine = view === 'client'
+        ? escapeHtml(String(deal.owner || '').split(' ').slice(0, 2).join(' ') + ' [redacted]')
+        : escapeHtml(deal.owner);
+      const sf = deal.nearbyCommunities?.[0];
+      const platAlerts = getPlatAlertsForDeals([deal]).slice(0, 3);
+
+      return `
+        <div class="brand">Barn to Bank · Deal Memo · ${view === 'client' ? 'Client' : 'Internal'}</div>
+        <h1>${escapeHtml(deal.address)}</h1>
+        <p style="color:#666;font-size:13px">${escapeHtml(deal.city)}, ${escapeHtml(deal.county)} County · ${fmtNum(deal.acreage)} acres · ${escapeHtml(deal.parcelId)}</p>
+        <p style="font-size:12px;margin-top:20px"><strong>Summary:</strong> ${fmt(deal.askingPerAcre)}/ac asking (${fmt(deal.acreage * deal.askingPerAcre)} total).
+          Entitlement score <strong>${ent.score}/100</strong> (${escapeHtml(ent.bandLabel)}).
+          Recommended path: <strong>${escapeHtml(ROUTES[ent.recommendation]?.label || ent.recommendation)}</strong>.</p>
+        <h3 style="font-size:14px;margin-top:24px;font-family:Arial,sans-serif">Property</h3>
+        <table>
+          <tr><th>Owner</th><td>${ownerLine}</td></tr>
+          <tr><th>Zoning</th><td>${escapeHtml(deal.zoning)}</td></tr>
+          <tr><th>Flood</th><td>${deal.floodplain ? escapeHtml(deal.floodplain.zone) : '—'}${deal.floodplain?.inSpecialFloodHazardArea ? ' (SFHA)' : ''}</td></tr>
+          <tr><th>Utilities</th><td>${(deal.utilities || []).map((u) => `${u.type}: ${u.status}`).join(' · ')}</td></tr>
+        </table>
+        <h3 style="font-size:14px;margin-top:20px;font-family:Arial,sans-serif">Market</h3>
+        <p style="font-size:12px">${escapeHtml(compData.text || 'No comps on file')}</p>
+        ${sf ? `<p style="font-size:12px">Nearest SF: ${escapeHtml(sf.builder)} — ${escapeHtml(sf.name)} (${sf.distanceMi} mi)</p>` : ''}
+        ${platAlerts.length ? `<p style="font-size:12px">Plat alerts: ${platAlerts.map((p) => `${escapeHtml(p.name)} (${p.distanceMi} mi)`).join('; ')}</p>` : ''}
+        <h3 style="font-size:14px;margin-top:20px;font-family:Arial,sans-serif">Margin Analysis</h3>
+        <table>
+          <tr><th>Scenario</th><th>Gross</th><th>Net / Commission</th></tr>
+          ${margins.scenarios.map((s) => `
+            <tr${s.label === best.label ? ' style="background:#f9f6ef"' : ''}>
+              <td>${escapeHtml(s.label)}</td>
+              <td>${fmt(s.gross)}</td>
+              <td>${fmt(s.net)}</td>
+            </tr>
+          `).join('')}
+        </table>
+        ${view === 'internal' && deal.notes ? `<h3 style="font-size:14px;margin-top:20px;font-family:Arial,sans-serif">Notes</h3><p style="font-size:12px">${escapeHtml(deal.notes)}</p>` : ''}
+        <p style="font-size:10px;color:#999;margin-top:32px">Generated ${new Date().toLocaleString()} · Barn to Bank</p>`;
+    }
+
+    function openDealMemo(deal, view) {
+      document.getElementById('deal-memo-title-bar').textContent = `Deal Memo — ${deal.address} (${view})`;
+      document.getElementById('deal-memo-body').innerHTML = generateDealMemo(deal, view);
+      document.getElementById('deal-memo-overlay').classList.add('open');
+    }
+
+    function renderCompLake() {
+      const el = document.getElementById('comp-lake-list');
+      if (!el) return;
+      const recent = privateComps.slice(0, 12);
+      if (!recent.length) {
+        el.innerHTML = '<div class="silo-empty">No comps yet — log your first off-market sale.</div>';
+        return;
+      }
+      el.innerHTML = recent.map((c) => `
+        <div class="comp-row">
+          <div><strong>${escapeHtml(c.county)}</strong> · ${escapeHtml(c.submarket)}</div>
+          <div><span class="price">${fmt(c.pricePerAcre)}/ac</span> · ${fmtNum(c.acres)} ac · ${escapeHtml(c.buyer)} · ${escapeHtml(c.date)}</div>
+          ${c.notes ? `<div style="color:var(--text-muted);margin-top:4px">${escapeHtml(c.notes)}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderPlatAlerts() {
+      const el = document.getElementById('plat-alerts-feed');
+      if (!el) return;
+      const alerts = getPlatAlertsForDeals(deals);
+      if (!alerts.length) {
+        el.innerHTML = '<div class="silo-empty">No plat filings within 8 mi of pipeline deals.</div>';
+        return;
+      }
+      el.innerHTML = alerts.slice(0, 10).map((a) => `
+        <div class="alert-row">
+          <div><strong>${escapeHtml(a.name)}</strong> · ${escapeHtml(a.builder)}</div>
+          <div>${escapeHtml(a.status)} · filed ${escapeHtml(a.filedDate)} · ${a.lots} lots</div>
+          <div style="color:var(--orange);margin-top:4px">Near ${escapeHtml(a.dealAddress)} — ${a.distanceMi} mi</div>
+        </div>
+      `).join('');
+    }
+
+    function renderAuditLog() {
+      const el = document.getElementById('audit-log-list');
+      if (!el) return;
+      if (!auditLog.length) {
+        el.innerHTML = '<div class="silo-empty">No audit events yet — DNC scrubs and outreach actions are logged here.</div>';
+        return;
+      }
+      el.innerHTML = auditLog.slice(0, 25).map((a) => `
+        <div class="audit-row">
+          <div style="display:flex;justify-content:space-between;gap:8px">
+            <strong>${escapeHtml(a.type.replace(/_/g, ' '))}</strong>
+            <span style="color:var(--text-muted);font-family:var(--mono)">${formatDncTimestamp(a.ts)}</span>
+          </div>
+          <div>${escapeHtml(a.summary)}</div>
+          ${a.detail ? `<div style="color:var(--text-muted);margin-top:2px">${escapeHtml(a.detail)}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function updateSyncStatusText() {
+      const el = document.getElementById('sync-status-text');
+      if (!el) return;
+      const cfg = DATA_SOURCES.MOAT_SYNC;
+      let meta = {};
+      try {
+        meta = JSON.parse(localStorage.getItem(MOAT_SYNC_META_KEY) || '{}');
+      } catch { /* ignore */ }
+      if (cfg.supabaseUrl && cfg.supabaseAnonKey) {
+        el.textContent = meta.lastCloudSync
+          ? `Cloud sync · last ${formatDncTimestamp(meta.lastCloudSync)}`
+          : 'Cloud configured — tap Cloud Sync to push/pull';
+        el.className = 'sync-status live';
+      } else {
+        el.textContent = meta.lastBundleImport
+          ? `Local + bundle import ${formatDncTimestamp(meta.lastBundleImport)}`
+          : 'Local only — export bundle to share with Jack';
+        el.className = 'sync-status local';
+      }
+    }
+
+    function renderMoatPanels() {
+      renderCompLake();
+      renderPlatAlerts();
+      renderAuditLog();
+      updateSyncStatusText();
+    }
+
+    const MoatStore = {
+      buildBundle() {
+        return {
+          version: DATA_SOURCES.MOAT_SYNC.bundleVersion || 1,
+          exportedAt: new Date().toISOString(),
+          teamId: DATA_SOURCES.MOAT_SYNC.teamId,
+          deals,
+          comps: privateComps.filter((c) => c.source !== 'seed'),
+          audit: auditLog,
+          outreach: {
+            scrubByDealId: outreachWizard.scrubByDealId,
+            dncComplete: outreachWizard.dncComplete,
+            textQueue: outreachWizard.textQueue,
+            mailQueue: outreachWizard.mailQueue,
+          },
+        };
+      },
+
+      exportBundle() {
+        const bundle = this.buildBundle();
+        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `barn-to-bank-moat-${new Date().toISOString().slice(0, 10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        appendOutreachAudit({ type: 'bundle_export', summary: `Exported moat bundle (${deals.length} deals, ${bundle.comps.length} comps)` });
+        showToast('Moat bundle exported');
+      },
+
+      async importBundle(file) {
+        const text = await file.text();
+        const bundle = JSON.parse(text);
+        if (!bundle.deals || !Array.isArray(bundle.deals)) throw new Error('Invalid bundle — missing deals array');
+
+        const existingIds = new Set(deals.map((d) => d.id));
+        bundle.deals.forEach((d) => {
+          if (!d?.id) return;
+          const idx = deals.findIndex((x) => x.id === d.id);
+          if (idx >= 0) deals[idx] = d;
+          else if (!existingIds.has(d.id)) deals.unshift(d);
+        });
+
+        if (Array.isArray(bundle.comps)) {
+          bundle.comps.forEach((c) => {
+            if (!c?.id) c.id = `comp-import-${Date.now()}-${Math.random()}`;
+            const idx = privateComps.findIndex((x) => x.id === c.id);
+            if (idx >= 0) privateComps[idx] = c;
+            else privateComps.unshift({ ...c, source: c.source || 'import' });
+          });
+          savePrivateComps();
+        }
+
+        if (Array.isArray(bundle.audit)) {
+          auditLog = [...bundle.audit, ...auditLog].slice(0, 500);
+          saveAuditLog();
+        }
+
+        if (bundle.outreach) {
+          outreachWizard.scrubByDealId = bundle.outreach.scrubByDealId || outreachWizard.scrubByDealId;
+          outreachWizard.dncComplete = !!bundle.outreach.dncComplete;
+          outreachWizard.textQueue = bundle.outreach.textQueue || outreachWizard.textQueue;
+          outreachWizard.mailQueue = bundle.outreach.mailQueue || outreachWizard.mailQueue;
+          saveOutreachState();
+        }
+
+        deals.forEach(applyMoatToDeal);
+        saveDeals();
+        try {
+          localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify({ lastBundleImport: new Date().toISOString() }));
+        } catch { /* ignore */ }
+
+        appendOutreachAudit({
+          type: 'bundle_import',
+          summary: `Imported moat bundle (${bundle.deals.length} deals)`,
+        });
+        renderAll();
+        renderOutreachQueues();
+        showToast('Moat bundle imported');
+      },
+
+      async cloudSync() {
+        const cfg = DATA_SOURCES.MOAT_SYNC;
+        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
+          showToast('Cloud sync not configured — export/import bundle instead', 'warn');
+          return;
+        }
+        const bundle = this.buildBundle();
+        const row = {
+          team_id: cfg.teamId,
+          payload: bundle,
+          updated_at: bundle.exportedAt,
+        };
+        try {
+          const res = await fetch(`${cfg.supabaseUrl.replace(/\/$/, '')}/rest/v1/${cfg.tableName}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: cfg.supabaseAnonKey,
+              Authorization: `Bearer ${cfg.supabaseAnonKey}`,
+              Prefer: 'resolution=merge-duplicates',
+            },
+            body: JSON.stringify(row),
+          });
+          if (!res.ok) throw new Error(`Supabase ${res.status}`);
+          const ts = new Date().toISOString();
+          try {
+            localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify({ lastCloudSync: ts }));
+          } catch { /* ignore */ }
+          appendOutreachAudit({ type: 'cloud_sync', summary: 'Cloud sync push complete' });
+          updateSyncStatusText();
+          showToast('Cloud sync complete');
+        } catch (err) {
+          showToast(`Cloud sync failed: ${err.message}`, 'warn');
+        }
+      },
+    };
+
+    function openCompModal() {
+      document.getElementById('comp-modal-overlay').classList.add('open');
+      document.getElementById('lc-submarket')?.focus();
+    }
+
+    function closeCompModal() {
+      document.getElementById('comp-modal-overlay').classList.remove('open');
+      document.getElementById('log-comp-form')?.reset();
+    }
+
+    function scrollToMoatIntel() {
+      if (isMobileLayout()) {
+        setMobilePanel('intel');
+      } else {
+        document.getElementById('moat-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     // =========================================================================
@@ -5661,6 +6500,7 @@
       renderHeader();
       renderPipeline();
       renderSilos();
+      renderMoatPanels();
     }
 
     function renderHeader() {
@@ -5728,6 +6568,7 @@
       if (!deal.ownerContact) deal.ownerContact = await fetchForewarnOwnerContact(deal);
       deal.bottlenecked = computeBottlenecked(deal);
       if (!deal.dealRecord) await buildSeedDealRecord(deal);
+      applyMoatToDeal(deal);
       return deal;
     }
 
@@ -5843,7 +6684,10 @@
           <td>${d.county}</td>
           <td class="mono">${fmtNum(d.acreage)}</td>
           <td class="mono">${fmt(d.askingPerAcre)}</td>
-          <td><span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span></td>
+          <td>
+            <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+            ${d.entitlement ? scorePillHtml(d.entitlement) : ''}
+          </td>
           <td>
             <select class="route-select ${ROUTES[d.route].class}" data-route-select="${d.id}" onclick="event.stopPropagation()">
               ${Object.entries(ROUTES).map(([k, v]) =>
@@ -5866,9 +6710,11 @@
             </div>
             <div class="deal-card-header-right">
               <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+              ${d.entitlement ? scorePillHtml(d.entitlement) : ''}
               <button type="button" class="btn-remove-deal" data-remove-deal="${d.id}" title="Remove deal" aria-label="Remove deal">×</button>
             </div>
           </div>
+          ${d.compBand ? `<div class="comp-band" style="margin-bottom:8px">Comp: <strong>${fmt(d.compBand.avg)}/ac</strong> · ${d.compBand.deltaPct >= 0 ? '+' : ''}${d.compBand.deltaPct}%</div>` : ''}
           <div class="deal-card-metrics">
             <div class="deal-card-metric">
               <div class="label">Acres</div>
@@ -5936,6 +6782,7 @@
       document.getElementById('modal-sub').textContent = `${deal.parcelId} · ${deal.county} County · ${fmtNum(deal.acreage)} acres`;
 
       document.getElementById('modal-body').innerHTML = `
+        ${renderEntitlementCard(deal)}
         <div class="modal-section">
           <h4>Enriched Property Data</h4>
           <div class="detail-grid">
@@ -5981,6 +6828,11 @@
         </div>
 
         <div class="modal-section">
+          <h4>Outreach CRM</h4>
+          ${renderOutreachCrmFields(deal)}
+        </div>
+
+        <div class="modal-section">
           <h4>Relationship / Contact</h4>
           <div class="contact-row">
             <input type="text" id="modal-seller" placeholder="Seller name" value="${deal.sellerName}">
@@ -6022,6 +6874,8 @@
         </div>
 
         <div class="modal-footer-actions">
+          <button type="button" class="btn btn-primary" id="modal-memo-internal">Internal Memo</button>
+          <button type="button" class="btn btn-ghost" id="modal-memo-client">Client Memo</button>
           <button type="button" class="btn-danger" id="modal-remove-deal">Remove from Pipeline</button>
           <button type="button" class="btn btn-ghost" id="modal-close-footer">Close</button>
         </div>
@@ -6076,15 +6930,24 @@
         deal.lastContact = document.getElementById('modal-last-contact').value;
         deal.callReminder = document.getElementById('modal-reminder').checked;
         deal.notes = document.getElementById('modal-notes').value;
+        const crm = ensureOutreachCrm(deal);
+        crm.status = document.getElementById('modal-crm-status')?.value || crm.status;
+        crm.sequence = document.getElementById('modal-crm-sequence')?.value || crm.sequence;
+        crm.touches = parseInt(document.getElementById('modal-crm-touches')?.value, 10) || 0;
+        const outcome = document.getElementById('modal-crm-outcome')?.value;
+        crm.outcome = outcome || null;
         saveDeals();
       };
 
-      ['modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes'].forEach(id => {
+      ['modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes',
+        'modal-crm-status', 'modal-crm-sequence', 'modal-crm-touches', 'modal-crm-outcome'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', save);
         if (el && el.tagName === 'TEXTAREA') el.addEventListener('input', save);
       });
 
+      document.getElementById('modal-memo-internal')?.addEventListener('click', () => openDealMemo(deal, 'internal'));
+      document.getElementById('modal-memo-client')?.addEventListener('click', () => openDealMemo(deal, 'client'));
       document.getElementById('modal-remove-deal')?.addEventListener('click', () => {
         if (removeDeal(deal.id)) closeModal();
       });
@@ -6172,7 +7035,7 @@
       mobilePanel = panel;
       const main = document.getElementById('main-layout');
       if (!main) return;
-      main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach');
+      main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach', 'panel-intel');
       if (isMobileLayout()) main.classList.add('panel-' + panel);
       document.querySelectorAll('#mobile-nav button').forEach((btn) => {
         btn.classList.toggle('active', btn.dataset.panel === panel);
@@ -6203,7 +7066,7 @@
         if (isMobileLayout()) {
           applyMobileViewDefaults();
         } else {
-          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach');
+          main.classList.remove('panel-intake', 'panel-pipeline', 'panel-silos', 'panel-outreach', 'panel-intel');
         }
       };
       if (MOBILE_MQ.addEventListener) MOBILE_MQ.addEventListener('change', onMqChange);
@@ -6476,11 +7339,15 @@
     // Init
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
+      initPrivateComps();
+      loadAuditLog();
       deals = initDeals();
       await Promise.all(deals.map(async (d) => {
         if (!d.ownerContact) d.ownerContact = await fetchForewarnOwnerContact(d);
         d.bottlenecked = computeBottlenecked(d);
-        return buildSeedDealRecord(d);
+        await buildSeedDealRecord(d);
+        applyMoatToDeal(d);
+        return d;
       }));
       saveDeals();
       loadOutreachState();
@@ -6499,6 +7366,49 @@
       });
       document.getElementById('feature-request-form').addEventListener('submit', submitFeatureRequest);
       document.getElementById('fr-export').addEventListener('click', exportFeatureRequests);
+
+      document.getElementById('moat-sync-btn')?.addEventListener('click', scrollToMoatIntel);
+      document.getElementById('moat-export-bundle')?.addEventListener('click', () => MoatStore.exportBundle());
+      document.getElementById('moat-import-bundle')?.addEventListener('click', () => {
+        document.getElementById('moat-import-file')?.click();
+      });
+      document.getElementById('moat-cloud-sync')?.addEventListener('click', () => MoatStore.cloudSync());
+      document.getElementById('moat-import-file')?.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+          await MoatStore.importBundle(file);
+        } catch (err) {
+          showToast(`Import failed: ${err.message}`, 'warn');
+        }
+        e.target.value = '';
+      });
+      document.getElementById('log-comp-open')?.addEventListener('click', openCompModal);
+      document.getElementById('comp-modal-close')?.addEventListener('click', closeCompModal);
+      document.getElementById('comp-modal-overlay')?.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('comp-modal-overlay')) closeCompModal();
+      });
+      document.getElementById('log-comp-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        addComp({
+          county: document.getElementById('lc-county').value,
+          submarket: document.getElementById('lc-submarket').value.trim(),
+          acres: document.getElementById('lc-acres').value,
+          pricePerAcre: document.getElementById('lc-price').value,
+          buyer: document.getElementById('lc-buyer').value.trim(),
+          date: document.getElementById('lc-date').value.trim(),
+          notes: document.getElementById('lc-notes').value.trim(),
+          offMarket: document.getElementById('lc-offmarket').value === 'yes',
+        });
+        deals.forEach(applyMoatToDeal);
+        saveDeals();
+        renderAll();
+        closeCompModal();
+        showToast('Comp saved to Comp Lake');
+      });
+      document.getElementById('deal-memo-close')?.addEventListener('click', () => {
+        document.getElementById('deal-memo-overlay').classList.remove('open');
+      });
 
       document.getElementById('build-outreach-open').addEventListener('click', openOutreachWizard);
       document.getElementById('outreach-modal-close').addEventListener('click', closeOutreachWizard);
@@ -6654,7 +7564,10 @@
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         if (document.getElementById('quick-add-overlay').classList.contains('open')) closeQuickAddModal();
-        else if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
+        else if (document.getElementById('comp-modal-overlay').classList.contains('open')) closeCompModal();
+        else if (document.getElementById('deal-memo-overlay').classList.contains('open')) {
+          document.getElementById('deal-memo-overlay').classList.remove('open');
+        } else if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
         else if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
         else closeModal();
       });
