@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Barn to Bank — Texas Land Origination</title>
-  <meta name="description" content="Barn to Bank — intake, enrich, and route Texas land deals from farm to funded. Automation 1 enrichment, pipeline, and three-silo routing.">
+  <meta name="description" content="Barn to Bank turns Texas land leads into routed deals — enrich parcels, score entitlement, log off-market comps, outreach with DNC compliance, and sync your team moat.">
   <meta name="theme-color" content="#0c0b09">
   <meta property="og:title" content="Barn to Bank — Texas Land Origination">
-  <meta property="og:description" content="Intake, enrich, and route land deals — develop, sell, or retail.">
+  <meta property="og:description" content="From raw tract to funded deal — enrichment, routing, outreach, and team intel built for Texas land.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a1714'/%3E%3Cpath d='M6 22V12l10-6 10 6v10' stroke='%23d4b56a' stroke-width='1.5' fill='none' stroke-linejoin='round'/%3E%3Cpath d='M12 22v-6h8v6' stroke='%23d4b56a' stroke-width='1.5' fill='none'/%3E%3Cpath d='M6 22h20' stroke='%236d9a72' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M18 10l4-3 4 5' stroke='%23ecd08a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -316,8 +316,38 @@
       margin-top: 8px;
       font-size: 14px;
       color: var(--text-secondary);
-      max-width: 540px;
+      max-width: 560px;
       line-height: 1.6;
+    }
+    .page-hero .value-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      max-width: 560px;
+    }
+    .page-hero .value-list li {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+    .page-hero .value-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+    .section-blurb {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: -4px 0 14px;
+      max-width: 640px;
     }
 
     .panel-card {
@@ -2437,7 +2467,13 @@
       .main.panel-intel .pipeline-cards,
       .main.panel-intel .silos,
       .main.panel-intel .outreach-section,
-      .main.panel-intel #pipeline-hero { display: none !important; }
+      .main.panel-intel #pipeline-hero,
+      .main.panel-intel #outreach-hero { display: none !important; }
+      .main.panel-outreach #pipeline-hero,
+      .main.panel-pipeline #outreach-hero,
+      .main.panel-pipeline #moat-hero,
+      .main.panel-silos #outreach-hero,
+      .main.panel-silos #moat-hero { display: none !important; }
       .main.panel-intel .moat-section { margin-top: 0; }
       .owner-contact-row { grid-template-columns: 1fr; }
       .mail-label-grid { grid-template-columns: 1fr; }
@@ -2573,7 +2609,7 @@
       </div>
       <div class="logo-text">
         <h1><span class="brand-serif">Barn to</span> <span class="brand-sans">Bank</span></h1>
-        <span class="tagline">Texas land · farm to funded</span>
+        <span class="tagline">Raw tract → routed deal → funded</span>
       </div>
     </div>
     <div class="header-right">
@@ -2621,18 +2657,19 @@
     <!-- INTAKE -->
     <aside class="sidebar">
       <div class="partner-welcome" id="partner-welcome">
-        <strong>Welcome to Barn to Bank</strong>
-        <span class="partner-welcome-sub">Intake, enrich, and route deals — no install required.</span>
+        <strong>Why Barn to Bank?</strong>
+        <span class="partner-welcome-sub">Maps show parcels. This tool runs <em>origination</em> — from a lead to a defensible develop, flip, or retail call. Built for Texas: non-disclosure comps, CCN/sewer bottlenecks, ag exemptions, and builder adjacency.</span>
         <ol class="partner-welcome-steps">
-          <li><span class="step-num">1</span><span>Pick a <strong>county</strong> and enter an <strong>address</strong> or parcel #</span></li>
-          <li><span class="step-num">2</span><span>Sign in to <strong>id.land</strong> below for full parcel data</span></li>
-          <li><span class="step-num">3</span><span><strong>Run Automation 1</strong> → review → <strong>Add to Pipeline</strong></span></li>
-          <li><span class="step-num">4</span><span>Use <strong>Feature Request</strong> for ideas or customizations</span></li>
+          <li><span class="step-num">1</span><span><strong>Intake</strong> — one address or parcel → jurisdiction, flood, utilities, comps, owner contact</span></li>
+          <li><span class="step-num">2</span><span><strong>Route</strong> — entitlement score + three silos: develop, direct sale, or retail</span></li>
+          <li><span class="step-num">3</span><span><strong>Outreach</strong> — DNC-scrubbed texts and mail; bottlenecked tracts stay out of queue</span></li>
+          <li><span class="step-num">4</span><span><strong>Intel</strong> — log off-market comps, plat alerts, team sync via Cloud Sync</span></li>
         </ol>
         <button type="button" class="partner-welcome-dismiss" id="partner-welcome-dismiss">Got it — let’s go</button>
       </div>
       <div class="panel-card panel-card-accent">
       <div class="section-title">Intake — The Net</div>
+      <p class="section-blurb">Drop an address or APN. Automation 1 builds a deal record from county GIS, FEMA, PUC utilities, private comps, and nearby SF communities — so you’re not juggling five tabs.</p>
       <form class="intake-form" id="intake-form">
         <div class="form-group">
           <label for="intake-type">Lookup Type</label>
@@ -2708,7 +2745,12 @@
       <div class="page-hero" id="pipeline-hero">
         <div class="page-hero-eyebrow">Pipeline</div>
         <h2>Your land opportunities</h2>
-        <p>Every enriched deal in one view — triage into develop, direct sale, or retail brokerage.</p>
+        <p>Every enriched tract in one view. Entitlement scores and comp bands tell you where to spend time — before you write an LOI or pick up the phone.</p>
+        <ul class="value-list">
+          <li><strong>Develop</strong> when utilities and SF spillover support entitlement</li>
+          <li><strong>Sell</strong> when comps support a builder flip but sewer is the bottleneck</li>
+          <li><strong>Retail</strong> when the tract is smaller or the path is brokerage commission</li>
+        </ul>
       </div>
       <div class="pipeline-toolbar">
         <div class="section-title" style="margin:0">Active Deals</div>
@@ -2744,6 +2786,7 @@
       <!-- SILO ROUTING -->
       <div class="silos">
         <div class="section-title">Three-Silo Routing</div>
+        <p class="section-blurb">Not every ranch tract is a development play. Assign each deal to the path with the best margin — and keep develop, flip, and retail lanes separate so nothing slips through.</p>
         <div class="silo-grid" id="silo-grid">
           <div class="silo-lane lane-develop" data-route="DEVELOP">
             <div class="silo-header">
@@ -2780,6 +2823,11 @@
 
       <!-- OWNER OUTREACH -->
       <div class="outreach-section" id="outreach-section">
+        <div class="page-hero" id="outreach-hero" style="margin-bottom:18px;padding-bottom:16px">
+          <div class="page-hero-eyebrow">Outreach</div>
+          <h2>Reach owners — legally</h2>
+          <p>Forewarn contact on enriched deals only. Entitlement-bottlenecked tracts are filtered out. Every number passes Federal DNC scrub before a text can queue.</p>
+        </div>
         <div class="compliance-banner" id="compliance-banner">
           <strong>TCPA / DNC Compliance Required</strong> — Contacting numbers on the Federal Do Not Call Registry without consent can result in fines of <strong>$500–$50,000+ per violation</strong>. Every phone number must pass a Federal DNC Registry scrub before any text or call. Barn to Bank blocks un-scrubbed and failed numbers from the text queue.
           <div class="fine-print">DNC scrubbing is mandatory · No bypass · Printed direct mail is exempt from DNC but must still comply with state solicitation rules</div>
@@ -2818,8 +2866,14 @@
       <div class="moat-section" id="moat-section">
         <div class="page-hero" id="moat-hero">
           <div class="page-hero-eyebrow">Moat Intelligence</div>
-          <h2>Team intel &amp; cloud sync</h2>
-          <p>Comp lake, plat alerts, outreach audit trail — sync with Jack via <strong>Cloud Sync</strong> (Supabase).</p>
+          <h2>The moat compounds</h2>
+          <p>Spreadsheets don’t learn. Every comp you log, deal you enrich, and outreach touch you record makes the next underwriting faster and more accurate — for you and your team.</p>
+          <ul class="value-list">
+            <li><strong>Comp Lake</strong> — off-market sales Texas MLS won’t show; pricing power stacks over time</li>
+            <li><strong>Plat alerts</strong> — filings near your deals signal where builders are moving</li>
+            <li><strong>Audit log</strong> — TCPA trail for every DNC scrub and queued contact</li>
+            <li><strong>Cloud Sync</strong> — share pipeline, comps, and outreach with Jack in one click</li>
+          </ul>
         </div>
         <div class="sync-bar" id="sync-bar">
           <div>
@@ -2842,10 +2896,12 @@
           </div>
           <div class="moat-card">
             <h3>Plat &amp; Development Alerts</h3>
+            <p style="font-size:10px;color:var(--text-muted);margin-bottom:10px">Preliminary and final plats near pipeline deals — adjacency is often the whole thesis.</p>
             <div id="plat-alerts-feed"></div>
           </div>
           <div class="moat-card" style="grid-column:1/-1">
             <h3>Outreach Audit Log <span style="font-size:9px;color:var(--text-muted);font-weight:500">TCPA trail</span></h3>
+            <p style="font-size:10px;color:var(--text-muted);margin-bottom:10px">Every DNC scrub, queued text, and cloud sync — timestamped proof you did it right.</p>
             <div id="audit-log-list"></div>
           </div>
         </div>
@@ -6569,7 +6625,7 @@
         <div class="empty-state">
           <div class="empty-state-icon">${EMPTY_PIPELINE_SVG}</div>
           <h3>Your pipeline is empty</h3>
-          <p>Run <strong>Automation 1</strong> on a property in Intake, or quick-add a deal manually.</p>
+          <p>Start with one tract — Intake enriches it, entitlement score routes it, and Intel syncs comps with your team. Run <strong>Automation 1</strong> or quick-add a deal.</p>
           <div class="empty-state-actions">
             <button type="button" class="btn btn-primary" data-empty-add-intake>+ From Intake</button>
             <button type="button" class="btn btn-ghost" data-empty-quick-add>+ Quick Add</button>
@@ -6805,7 +6861,11 @@
 
         const body = document.getElementById(cfg.body);
         if (items.length === 0) {
-          const hints = { DEVELOP: 'Assign deals to Develop via the route dropdown', SELL: 'Assign deals to Direct Sale via the route dropdown', RETAIL: 'Assign deals to Retail via the route dropdown' };
+          const hints = {
+            DEVELOP: 'Entitled tracts with utility path — assign via route dropdown',
+            SELL: 'Comp-supported flips where entitlement is the bottleneck',
+            RETAIL: 'Smaller tracts or brokerage commission plays',
+          };
           body.innerHTML = `<div class="silo-empty"><span class="silo-empty-icon">↓</span>${hints[route]}</div>`;
         } else {
           body.innerHTML = items.map(d => `
