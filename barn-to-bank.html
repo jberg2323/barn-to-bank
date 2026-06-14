@@ -2048,8 +2048,11 @@
     };
 
     // =========================================================================
-    // State (in-memory only — no localStorage)
+    // State — persisted in localStorage per browser
     // =========================================================================
+    const DEALS_STORAGE_KEY = 'barn-to-bank-deals';
+    const SAMPLE_DEAL_IDS = new Set(['deal-001', 'deal-002', 'deal-003', 'deal-004', 'deal-005']);
+
     let deals = [];
     let pendingEnrichment = null;
     let activeDealId = null;
@@ -2064,172 +2067,24 @@
       RETAIL:  { label: 'Retail',            class: 'route-retail' },
     };
 
-    // =========================================================================
-    // Seed data — realistic Texas land deals
-    // =========================================================================
-    function seedDeals() {
-      return [
-        {
-          id: 'deal-001',
-          address: '4820 County Rd 404',
-          city: 'Taylor',
-          county: 'Williamson',
-          parcelId: 'R-12345-678',
-          acreage: 142.5,
-          zoning: 'AG / Rural Residential',
-          askingPerAcre: 18500,
-          enrichmentStatus: 'enriched',
-          route: 'DEVELOP',
-          owner: 'Henderson Family Trust',
-          taxHistory: [
-            { year: 2025, assessed: 2187500, taxes: 48210 },
-            { year: 2024, assessed: 2050000, taxes: 45100 },
-            { year: 2023, assessed: 1925000, taxes: 42380 },
-          ],
-          utilities: [
-            { type: 'Electric', status: 'available', detail: 'Bluebonnet EC — 0.3mi S on CR 404' },
-            { type: 'Water', status: 'partial', detail: 'Municipal — 1.2mi E, extension required' },
-            { type: 'Sewer', status: 'none', detail: 'Septic required; no MUD within 3mi' },
-          ],
-          lat: 30.570, lng: -97.409,
-          nearbyCommunities: [],
-          nearbyDevExcluded: [],
-          nearbyDev: '',
-          sellerName: 'Robert Henderson',
-          lastContact: '2026-05-18',
-          callReminder: true,
-          notes: 'Seller motivated — estate settlement. Preliminary plat discussion with city planner 4/2026. Needs rezone to PD for density.',
-          margin: { entitledValuePerAcre: 42000, flipValuePerAcre: 28000, retailCommissionPct: 3 },
-        },
-        {
-          id: 'deal-002',
-          address: '3100 FM 2571',
-          city: 'Smithville',
-          county: 'Bastrop',
-          parcelId: 'B-00987-432',
-          acreage: 58.2,
-          zoning: 'A-1 Agricultural',
-          askingPerAcre: 22000,
-          enrichmentStatus: 'enriched',
-          route: 'SELL',
-          owner: 'McAllister Cattle Co LLC',
-          taxHistory: [
-            { year: 2025, assessed: 1124000, taxes: 24890 },
-            { year: 2024, assessed: 1058000, taxes: 23420 },
-            { year: 2023, assessed: 998000, taxes: 22090 },
-          ],
-          utilities: [
-            { type: 'Electric', status: 'available', detail: 'Bastrop Coop — on property' },
-            { type: 'Water', status: 'available', detail: 'Bastrop County WCID #2 — line at FM frontage' },
-            { type: 'Sewer', status: 'none', detail: 'On-site treatment; LCRA wastewater study pending' },
-          ],
-          lat: 30.005, lng: -97.159,
-          nearbyCommunities: [],
-          nearbyDevExcluded: [],
-          nearbyDev: '',
-          sellerName: 'James McAllister',
-          lastContact: '2026-04-02',
-          callReminder: true,
-          notes: 'Builder LOI from Meritage at $32k/acre contingent on plat approval. McAllister wants cash close by August.',
-          margin: { entitledValuePerAcre: 38000, flipValuePerAcre: 32000, retailCommissionPct: 3 },
-        },
-        {
-          id: 'deal-003',
-          address: '8900 University Blvd',
-          city: 'Sugar Land',
-          county: 'Fort Bend',
-          parcelId: 'FB-55432-109',
-          acreage: 24.8,
-          zoning: 'SF-1 Single Family',
-          askingPerAcre: 95000,
-          enrichmentStatus: 'enriched',
-          route: 'RETAIL',
-          owner: 'Patel Holdings LP',
-          taxHistory: [
-            { year: 2025, assessed: 2236000, taxes: 52100 },
-            { year: 2024, assessed: 2108000, taxes: 49120 },
-            { year: 2023, assessed: 1985000, taxes: 46250 },
-          ],
-          utilities: [
-            { type: 'Electric', status: 'available', detail: 'CenterPoint — on site' },
-            { type: 'Water', status: 'available', detail: 'City of Sugar Land — 12" main at University Blvd' },
-            { type: 'Sewer', status: 'available', detail: 'City of Sugar Land — stub at property line' },
-          ],
-          lat: 29.625, lng: -95.635,
-          nearbyCommunities: [],
-          nearbyDevExcluded: [],
-          nearbyDev: '',
-          sellerName: 'Raj Patel',
-          lastContact: '2026-06-01',
-          callReminder: false,
-          notes: 'Fully entitled 48-lot subdivision potential. Seller prefers retail listing through KW. Commission split discussed.',
-          margin: { entitledValuePerAcre: 125000, flipValuePerAcre: 110000, retailCommissionPct: 3 },
-        },
-        {
-          id: 'deal-004',
-          address: '12400 RM 150',
-          city: 'Driftwood',
-          county: 'Hays',
-          parcelId: 'H-77821-334',
-          acreage: 215.0,
-          zoning: 'RR Rural Residential',
-          askingPerAcre: 14500,
-          enrichmentStatus: 'enriched',
-          route: 'DEVELOP',
-          owner: 'Bar W Ranch Partnership',
-          taxHistory: [
-            { year: 2025, assessed: 2847500, taxes: 62840 },
-            { year: 2024, assessed: 2680000, taxes: 59120 },
-            { year: 2023, assessed: 2520000, taxes: 55580 },
-          ],
-          utilities: [
-            { type: 'Electric', status: 'available', detail: 'Pedernales EC — 0.8mi N on RM 150' },
-            { type: 'Water', status: 'partial', detail: 'Aqua Texas MUD — 2.4mi; well rights confirmed' },
-            { type: 'Sewer', status: 'none', detail: 'No central sewer; ETJ of Dripping Springs 4.2mi' },
-          ],
-          lat: 30.135, lng: -98.025,
-          nearbyCommunities: [],
-          nearbyDevExcluded: [],
-          nearbyDev: '',
-          sellerName: 'William &amp; Susan Barrow',
-          lastContact: '2026-03-22',
-          callReminder: true,
-          notes: 'Large tract — phased entitlement strategy. Dripping Springs ISD impact fees estimated $4.2M. Conservation easement on 40ac SW corner.',
-          margin: { entitledValuePerAcre: 35000, flipValuePerAcre: 22000, retailCommissionPct: 3 },
-        },
-        {
-          id: 'deal-005',
-          address: '6200 Old Pearsall Rd',
-          city: 'San Antonio',
-          county: 'Bexar',
-          parcelId: 'BX-33109-887',
-          acreage: 87.3,
-          zoning: 'R-4 Residential',
-          askingPerAcre: 31000,
-          enrichmentStatus: 'enriched',
-          route: 'SELL',
-          owner: 'Garcia Family Irrevocable Trust',
-          taxHistory: [
-            { year: 2025, assessed: 2456300, taxes: 54200 },
-            { year: 2024, assessed: 2310000, taxes: 50980 },
-            { year: 2023, assessed: 2175000, taxes: 47990 },
-          ],
-          utilities: [
-            { type: 'Electric', status: 'available', detail: 'CPS Energy — pole line on Old Pearsall' },
-            { type: 'Water', status: 'available', detail: 'SAWS — 8" main 200ft from frontage' },
-            { type: 'Sewer', status: 'partial', detail: 'SAWS trunk 0.5mi; extension agreement draft' },
-          ],
-          lat: 29.318, lng: -98.585,
-          nearbyCommunities: [],
-          nearbyDevExcluded: [],
-          nearbyDev: '',
-          sellerName: 'Maria Garcia',
-          lastContact: '2026-05-30',
-          callReminder: false,
-          notes: 'KB Home verbal at $42k/acre. Garcia trust needs 1031 exchange — timeline flexible to Q4. Floodplain study on 12ac eastern portion.',
-          margin: { entitledValuePerAcre: 52000, flipValuePerAcre: 42000, retailCommissionPct: 3 },
-        },
-      ];
+    function loadPersistedDeals() {
+      try {
+        const raw = localStorage.getItem(DEALS_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.filter((d) => d && d.id && !SAMPLE_DEAL_IDS.has(d.id));
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDeals() {
+      try {
+        localStorage.setItem(DEALS_STORAGE_KEY, JSON.stringify(deals));
+      } catch (e) {
+        console.warn('Could not persist deals:', e);
+      }
     }
 
     // =========================================================================
@@ -3022,8 +2877,7 @@
 
     function matchKnownIntake(query, type, county) {
       const q = query.toLowerCase().trim();
-      const seeds = seedDeals();
-      return seeds.find(d => {
+      return deals.find(d => {
         if (d.county !== county) return false;
         if (type === 'parcel') return d.parcelId.toLowerCase() === q || d.parcelId.toLowerCase().includes(q);
         return d.address.toLowerCase().includes(q.split(',')[0].trim().toLowerCase())
@@ -4213,6 +4067,7 @@
           if (deal) {
             deal.route = sel.value;
             sel.className = `route-select ${ROUTES[deal.route].class}`;
+            saveDeals();
             renderAll();
           }
         });
@@ -4225,6 +4080,7 @@
         deal.lastContact = document.getElementById('modal-last-contact').value;
         deal.callReminder = document.getElementById('modal-reminder').checked;
         deal.notes = document.getElementById('modal-notes').value;
+        saveDeals();
       };
 
       ['modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes'].forEach(id => {
@@ -4608,8 +4464,9 @@
     // Init
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
-      deals = seedDeals();
+      deals = loadPersistedDeals();
       await Promise.all(deals.map(d => buildSeedDealRecord(d)));
+      saveDeals();
       renderAll();
       updateLandIdConnectStatus();
       updateFeatureRequestBadge();
@@ -4697,6 +4554,7 @@
           id: 'deal-' + Date.now(),
         };
         deals.unshift(newDeal);
+        saveDeals();
         pendingEnrichment = null;
         document.getElementById('enrichment-result').classList.remove('visible');
         document.getElementById('intake-query').value = '';
