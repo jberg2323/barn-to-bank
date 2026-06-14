@@ -1026,6 +1026,105 @@
     }
     .landid-link:hover { background: rgba(88,166,255,0.18); }
     .landid-link.muted { opacity: 0.7; border-style: dashed; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-feature-request {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      background: rgba(163,113,247,0.12);
+      border: 1px solid rgba(163,113,247,0.45);
+      border-radius: var(--radius);
+      color: var(--purple);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: background 0.15s;
+    }
+    .btn-feature-request:hover { background: rgba(163,113,247,0.22); }
+
+    .fr-badge {
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 8px;
+      background: var(--purple);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 16px;
+      text-align: center;
+    }
+    .fr-badge.hidden { display: none; }
+
+    .fr-modal-panel { max-width: 520px; }
+
+    .fr-success {
+      display: none;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: rgba(63,185,80,0.12);
+      border: 1px solid rgba(63,185,80,0.35);
+      border-radius: var(--radius);
+      color: var(--green);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .fr-success.visible { display: block; }
+
+    .fr-queue {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .fr-queue h4 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .fr-queue-item {
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .fr-queue-item .fr-meta {
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      margin-top: 4px;
+    }
+    .fr-queue-empty {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .fr-actions-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .fr-actions-row .btn { flex: 1; min-width: 120px; }
   </style>
 </head>
 <body>
@@ -1038,18 +1137,26 @@
         <span>Land Origination &amp; Triage</span>
       </div>
     </div>
-    <div class="header-stats">
-      <div class="header-stat">
-        <div class="label">Active Deals</div>
-        <div class="value" id="hdr-deals">0</div>
+    <div class="header-right">
+      <div class="header-actions">
+        <button type="button" class="btn-feature-request" id="feature-request-open" title="Submit a feature request or customization">
+          <span>Feature Request</span>
+          <span class="fr-badge hidden" id="fr-badge">0</span>
+        </button>
       </div>
-      <div class="header-stat">
-        <div class="label">Total Acres</div>
-        <div class="value" id="hdr-acres">0</div>
-      </div>
-      <div class="header-stat">
-        <div class="label">Pipeline Value</div>
-        <div class="value" id="hdr-value">$0</div>
+      <div class="header-stats">
+        <div class="header-stat">
+          <div class="label">Active Deals</div>
+          <div class="value" id="hdr-deals">0</div>
+        </div>
+        <div class="header-stat">
+          <div class="label">Total Acres</div>
+          <div class="value" id="hdr-acres">0</div>
+        </div>
+        <div class="header-stat">
+          <div class="label">Pipeline Value</div>
+          <div class="value" id="hdr-value">$0</div>
+        </div>
       </div>
     </div>
   </header>
@@ -1174,6 +1281,71 @@
     </section>
   </main>
 
+  <!-- FEATURE REQUEST MODAL -->
+  <div class="modal-overlay" id="fr-modal-overlay">
+    <div class="modal-panel fr-modal-panel" id="fr-modal-panel">
+      <div class="modal-header">
+        <div>
+          <h2>Feature Request</h2>
+          <div class="sub">Submit ideas &amp; customizations for Barn to Bank</div>
+        </div>
+        <button class="modal-close" id="fr-modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="fr-success" id="fr-success"></div>
+        <form id="feature-request-form">
+          <div class="form-group">
+            <label for="fr-name">Your name</label>
+            <input type="text" id="fr-name" placeholder="Jack" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="fr-email">Email (optional)</label>
+            <input type="email" id="fr-email" placeholder="jack@company.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="fr-type">Request type</label>
+            <select id="fr-type" required>
+              <option value="feature">New feature</option>
+              <option value="customization">Customization / workflow change</option>
+              <option value="data">Data source or county</option>
+              <option value="ui">UI / layout</option>
+              <option value="bug">Bug report</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fr-priority">Priority</label>
+            <select id="fr-priority" required>
+              <option value="nice">Nice to have</option>
+              <option value="important">Important</option>
+              <option value="blocking">Blocking / urgent</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fr-title">Short title</label>
+            <input type="text" id="fr-title" placeholder="e.g. Add Hunt County to intake dropdown" required maxlength="120">
+          </div>
+          <div class="form-group">
+            <label for="fr-description">What do you need?</label>
+            <textarea class="notes-field" id="fr-description" rows="5" placeholder="Describe the feature, customization, or problem. Include examples, counties, or deal types if relevant." required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fr-context">Context (auto-filled, editable)</label>
+            <input type="text" id="fr-context" placeholder="Current screen / county / deal">
+          </div>
+          <div class="fr-actions-row">
+            <button type="submit" class="btn btn-primary" id="fr-submit">Submit Request</button>
+            <button type="button" class="btn btn-ghost" id="fr-export">Export All (.json)</button>
+          </div>
+        </form>
+        <div class="fr-queue" id="fr-queue-wrap">
+          <h4>Submitted requests (this browser)</h4>
+          <div id="fr-queue-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- DEAL DETAIL MODAL -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal-panel" id="modal-panel">
@@ -1204,6 +1376,14 @@
       // Set true to upgrade MOCK fields to LIVE where Tier 1/2 APIs succeed
       USE_LIVE_APIS: true,
       SIMULATE_DELAY_MS: 350,
+
+      // Feature requests — Jack (or anyone) submits via header button
+      FEATURE_REQUESTS: {
+        defaultSubmitter: 'Jack',
+        ownerEmail: '', // e.g. jeremy@company.com — opens mailto on submit if set
+        githubRepo: 'jberg2323/barn-to-bank', // pre-fills GitHub new-issue form
+        webhookUrl: '', // optional POST endpoint (Slack, Zapier, Formspree, etc.)
+      },
 
       // ── TIER 1: Free public APIs ─────────────────────────────────────────
       // No keys required. Flood zones, CCN boundaries, municipal limits.
@@ -3778,6 +3958,218 @@
     }
 
     // =========================================================================
+    // Feature requests (partner intake)
+    // =========================================================================
+    const FEATURE_REQUEST_STORAGE_KEY = 'barn-to-bank-feature-requests';
+    const FR_NAME_STORAGE_KEY = 'barn-to-bank-fr-submitter-name';
+
+    const FR_TYPE_LABELS = {
+      feature: 'New feature',
+      customization: 'Customization',
+      data: 'Data source / county',
+      ui: 'UI / layout',
+      bug: 'Bug report',
+      other: 'Other',
+    };
+
+    const FR_PRIORITY_LABELS = {
+      nice: 'Nice to have',
+      important: 'Important',
+      blocking: 'Blocking / urgent',
+    };
+
+    function loadFeatureRequests() {
+      try {
+        const raw = localStorage.getItem(FEATURE_REQUEST_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFeatureRequests(list) {
+      try {
+        localStorage.setItem(FEATURE_REQUEST_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {
+        console.warn('Could not persist feature requests:', e);
+      }
+      updateFeatureRequestBadge();
+      renderFeatureRequestQueue();
+    }
+
+    function buildFeatureRequestContext() {
+      const county = document.getElementById('intake-county')?.value || '';
+      const query = document.getElementById('intake-query')?.value?.trim() || '';
+      const parts = [];
+      if (county) parts.push(`County: ${county}`);
+      if (query) parts.push(`Intake: ${query}`);
+      if (pendingEnrichment?.address) parts.push(`Last enrichment: ${pendingEnrichment.address}`);
+      if (activeDealId) {
+        const deal = deals.find(d => d.id === activeDealId);
+        if (deal) parts.push(`Open deal: ${fullAddress(deal)}`);
+      }
+      return parts.join(' · ') || 'Barn to Bank — general';
+    }
+
+    function formatFeatureRequestBody(req) {
+      return [
+        `**Submitted by:** ${req.name}${req.email ? ` (${req.email})` : ''}`,
+        `**Type:** ${FR_TYPE_LABELS[req.type] || req.type}`,
+        `**Priority:** ${FR_PRIORITY_LABELS[req.priority] || req.priority}`,
+        `**Context:** ${req.context}`,
+        '',
+        '## Description',
+        req.description,
+        '',
+        '---',
+        `Request ID: ${req.id}`,
+        `Submitted: ${req.submittedAt}`,
+        'App: Barn to Bank (barn-to-bank.html)',
+      ].join('\n');
+    }
+
+    function updateFeatureRequestBadge() {
+      const badge = document.getElementById('fr-badge');
+      if (!badge) return;
+      const count = loadFeatureRequests().length;
+      badge.textContent = String(count);
+      badge.classList.toggle('hidden', count === 0);
+    }
+
+    function renderFeatureRequestQueue() {
+      const list = document.getElementById('fr-queue-list');
+      if (!list) return;
+      const requests = loadFeatureRequests().slice().reverse();
+      if (!requests.length) {
+        list.innerHTML = '<div class="fr-queue-empty">No requests yet — Jack can submit the first one above.</div>';
+        return;
+      }
+      list.innerHTML = requests.slice(0, 8).map(r => `
+        <div class="fr-queue-item">
+          <strong>${escapeHtml(r.title)}</strong>
+          <div>${escapeHtml(FR_TYPE_LABELS[r.type] || r.type)} · ${escapeHtml(FR_PRIORITY_LABELS[r.priority] || r.priority)} · ${escapeHtml(r.name)}</div>
+          <div class="fr-meta">${escapeHtml(r.submittedAt)} · ${escapeHtml(r.id)}</div>
+        </div>
+      `).join('');
+    }
+
+    function openFeatureRequestModal() {
+      const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+      const savedName = localStorage.getItem(FR_NAME_STORAGE_KEY) || cfg.defaultSubmitter || '';
+      document.getElementById('fr-name').value = savedName;
+      document.getElementById('fr-email').value = '';
+      document.getElementById('fr-type').value = 'feature';
+      document.getElementById('fr-priority').value = 'important';
+      document.getElementById('fr-title').value = '';
+      document.getElementById('fr-description').value = '';
+      document.getElementById('fr-context').value = buildFeatureRequestContext();
+      document.getElementById('fr-success').classList.remove('visible');
+      document.getElementById('fr-success').textContent = '';
+      renderFeatureRequestQueue();
+      document.getElementById('fr-modal-overlay').classList.add('open');
+      document.getElementById('fr-title').focus();
+    }
+
+    function closeFeatureRequestModal() {
+      document.getElementById('fr-modal-overlay').classList.remove('open');
+    }
+
+    async function submitFeatureRequest(e) {
+      e.preventDefault();
+      const btn = document.getElementById('fr-submit');
+      const successEl = document.getElementById('fr-success');
+      const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+
+      const req = {
+        id: 'fr-' + Date.now(),
+        name: document.getElementById('fr-name').value.trim(),
+        email: document.getElementById('fr-email').value.trim(),
+        type: document.getElementById('fr-type').value,
+        priority: document.getElementById('fr-priority').value,
+        title: document.getElementById('fr-title').value.trim(),
+        description: document.getElementById('fr-description').value.trim(),
+        context: document.getElementById('fr-context').value.trim(),
+        submittedAt: new Date().toISOString(),
+      };
+
+      if (!req.name || !req.title || !req.description) return;
+
+      btn.disabled = true;
+      successEl.classList.remove('visible');
+
+      try {
+        localStorage.setItem(FR_NAME_STORAGE_KEY, req.name);
+        const list = loadFeatureRequests();
+        list.push(req);
+        saveFeatureRequests(list);
+
+        const body = formatFeatureRequestBody(req);
+        const clipboardText = `${req.title}\n\n${body}`;
+
+        let copied = false;
+        try {
+          await navigator.clipboard.writeText(clipboardText);
+          copied = true;
+        } catch { /* clipboard may be blocked on file:// */ }
+
+        if (cfg.webhookUrl) {
+          try {
+            await fetch(cfg.webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(req),
+            });
+          } catch (err) {
+            console.warn('Feature request webhook failed:', err);
+          }
+        }
+
+        const issueTitle = `[${FR_TYPE_LABELS[req.type] || req.type}] ${req.title}`;
+        if (cfg.githubRepo) {
+          const ghUrl = `https://github.com/${cfg.githubRepo}/issues/new?` + new URLSearchParams({
+            title: issueTitle,
+            body,
+          });
+          window.open(ghUrl, '_blank', 'noopener');
+        } else if (cfg.ownerEmail) {
+          const mailUrl = `mailto:${encodeURIComponent(cfg.ownerEmail)}?` + new URLSearchParams({
+            subject: `Barn to Bank: ${issueTitle}`,
+            body: clipboardText,
+          });
+          window.location.href = mailUrl;
+        }
+
+        const channels = [];
+        if (cfg.githubRepo) channels.push('GitHub issue draft');
+        if (cfg.ownerEmail && !cfg.githubRepo) channels.push('email');
+        if (cfg.webhookUrl) channels.push('webhook');
+        if (copied) channels.push('clipboard');
+
+        successEl.textContent = channels.length
+          ? `✓ Request saved (${req.id}). ${channels.join(' + ')} ready for review.`
+          : `✓ Request saved locally (${req.id}). Share the exported JSON with Jeremy.`;
+        successEl.classList.add('visible');
+
+        document.getElementById('fr-title').value = '';
+        document.getElementById('fr-description').value = '';
+        document.getElementById('fr-context').value = buildFeatureRequestContext();
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function exportFeatureRequests() {
+      const requests = loadFeatureRequests();
+      const blob = new Blob([JSON.stringify(requests, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `barn-to-bank-feature-requests-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // =========================================================================
     // Init
     // =========================================================================
     document.addEventListener('DOMContentLoaded', async () => {
@@ -3785,6 +4177,15 @@
       await Promise.all(deals.map(d => buildSeedDealRecord(d)));
       renderAll();
       updateLandIdConnectStatus();
+      updateFeatureRequestBadge();
+
+      document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
+      document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
+      document.getElementById('fr-modal-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('fr-modal-overlay')) closeFeatureRequestModal();
+      });
+      document.getElementById('feature-request-form').addEventListener('submit', submitFeatureRequest);
+      document.getElementById('fr-export').addEventListener('click', exportFeatureRequests);
 
       document.getElementById('landid-signin').addEventListener('click', async () => {
         const btn = document.getElementById('landid-signin');
@@ -3881,7 +4282,9 @@
         if (e.target === document.getElementById('modal-overlay')) closeModal();
       });
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key !== 'Escape') return;
+        if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
+        else closeModal();
       });
     });
   </script>
