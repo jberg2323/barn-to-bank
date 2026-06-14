@@ -6,6 +6,7 @@
   "scripts": {
     "connect-landid": "node scripts/landid-connect.mjs",
     "connect-landid-mcp": "node scripts/mcp-landid-connect.mjs",
+    "provision-supabase-mcp": "node scripts/mcp-supabase-provision.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

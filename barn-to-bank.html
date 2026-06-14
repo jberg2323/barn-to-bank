@@ -2812,7 +2812,7 @@
         <div class="sync-bar" id="sync-bar">
           <div>
             <div class="section-title" style="margin:0 0 6px">Team Moat Sync</div>
-            <span class="sync-status local" id="sync-status-text">Local only — export bundle to share with Jack</span>
+            <span class="sync-status local" id="sync-status-text">Checking Supabase sync…</span>
           </div>
           <div class="sync-actions">
             <button type="button" class="btn-sync" id="moat-export-bundle">Export Bundle</button>
@@ -3082,15 +3082,15 @@
         webhookUrl: '', // optional POST endpoint (Slack, Zapier, Formspree, etc.)
       },
 
-      // Team moat sync — optional Supabase; fallback is export/import JSON bundle
+      // Team moat sync — Supabase via /api/moat-sync (credentials server-side on Vercel)
       MOAT_SYNC: {
-        enabled: false,
-        supabaseUrl: '',       // SUPABASE_URL from secret store
-        supabaseAnonKey: '',   // SUPABASE_ANON_KEY from secret store
+        enabled: true,
+        apiUrl: '/api/moat-sync',
+        configUrl: '/api/moat-config',
         teamId: 'barn-to-bank-team',
-        tableName: 'moat_bundles',
         bundleVersion: 1,
-        secretStoreNote: 'Provision SUPABASE_URL and SUPABASE_ANON_KEY via deployment pipeline — never commit keys to this file.',
+        projectRef: 'nbtzhpuwyvdkmrpzhocy',
+        secretStoreNote: 'SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY live in Vercel env — never in this HTML file.',
       },
 
       // ── INTEGRATIONS (credentials from secret store only — never hardcode) ──
@@ -6328,6 +6328,24 @@
       `).join('');
     }
 
+    let moatCloudEnabled = false;
+
+    async function fetchMoatCloudConfig() {
+      const cfg = DATA_SOURCES.MOAT_SYNC;
+      if (!cfg.configUrl) return { enabled: false, teamId: cfg.teamId };
+      try {
+        const res = await fetch(cfg.configUrl, { cache: 'no-store' });
+        if (!res.ok) return { enabled: false, teamId: cfg.teamId };
+        const data = await res.json();
+        moatCloudEnabled = !!data.enabled;
+        if (data.teamId) cfg.teamId = data.teamId;
+        return data;
+      } catch {
+        moatCloudEnabled = false;
+        return { enabled: false, teamId: cfg.teamId };
+      }
+    }
+
     function updateSyncStatusText() {
       const el = document.getElementById('sync-status-text');
       if (!el) return;
@@ -6336,15 +6354,16 @@
       try {
         meta = JSON.parse(localStorage.getItem(MOAT_SYNC_META_KEY) || '{}');
       } catch { /* ignore */ }
-      if (cfg.supabaseUrl && cfg.supabaseAnonKey) {
+      if (moatCloudEnabled || cfg.enabled) {
         el.textContent = meta.lastCloudSync
-          ? `Cloud sync · last ${formatDncTimestamp(meta.lastCloudSync)}`
-          : 'Cloud configured — tap Cloud Sync to push/pull';
+          ? `Supabase live · last sync ${formatDncTimestamp(meta.lastCloudSync)}`
+          : 'Supabase connected — tap Cloud Sync to merge with team';
         el.className = 'sync-status live';
+      } else if (meta.lastBundleImport) {
+        el.textContent = `Local + bundle import ${formatDncTimestamp(meta.lastBundleImport)}`;
+        el.className = 'sync-status local';
       } else {
-        el.textContent = meta.lastBundleImport
-          ? `Local + bundle import ${formatDncTimestamp(meta.lastBundleImport)}`
-          : 'Local only — export bundle to share with Jack';
+        el.textContent = 'Local only — export bundle to share with Jack';
         el.className = 'sync-status local';
       }
     }
@@ -6387,10 +6406,8 @@
         showToast('Moat bundle exported');
       },
 
-      async importBundle(file) {
-        const text = await file.text();
-        const bundle = JSON.parse(text);
-        if (!bundle.deals || !Array.isArray(bundle.deals)) throw new Error('Invalid bundle — missing deals array');
+      applyBundle(bundle, { source = 'import' } = {}) {
+        if (!bundle?.deals || !Array.isArray(bundle.deals)) throw new Error('Invalid bundle — missing deals array');
 
         const existingIds = new Set(deals.map((d) => d.id));
         bundle.deals.forEach((d) => {
@@ -6411,7 +6428,8 @@
         }
 
         if (Array.isArray(bundle.audit)) {
-          auditLog = [...bundle.audit, ...auditLog].slice(0, 500);
+          const seen = new Set(auditLog.map((a) => a.id));
+          auditLog = [...bundle.audit.filter((a) => a?.id && !seen.has(a.id)), ...auditLog].slice(0, 500);
           saveAuditLog();
         }
 
@@ -6425,10 +6443,15 @@
 
         deals.forEach(applyMoatToDeal);
         saveDeals();
+      },
+
+      async importBundle(file) {
+        const text = await file.text();
+        const bundle = JSON.parse(text);
+        this.applyBundle(bundle, { source: 'file' });
         try {
           localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify({ lastBundleImport: new Date().toISOString() }));
         } catch { /* ignore */ }
-
         appendOutreachAudit({
           type: 'bundle_import',
           summary: `Imported moat bundle (${bundle.deals.length} deals)`,
@@ -6440,38 +6463,58 @@
 
       async cloudSync() {
         const cfg = DATA_SOURCES.MOAT_SYNC;
-        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
-          showToast('Cloud sync not configured — export/import bundle instead', 'warn');
+        if (!cfg.apiUrl) {
+          showToast('Cloud sync API not configured', 'warn');
           return;
         }
-        const bundle = this.buildBundle();
-        const row = {
-          team_id: cfg.teamId,
-          payload: bundle,
-          updated_at: bundle.exportedAt,
-        };
+        const btn = document.getElementById('moat-cloud-sync');
+        const prevLabel = btn?.textContent;
+        if (btn) { btn.disabled = true; btn.textContent = 'Syncing…'; }
         try {
-          const res = await fetch(`${cfg.supabaseUrl.replace(/\/$/, '')}/rest/v1/${cfg.tableName}`, {
+          await fetchMoatCloudConfig();
+          if (!moatCloudEnabled && !cfg.enabled) {
+            showToast('Cloud sync not available — deploy API routes to Vercel', 'warn');
+            return;
+          }
+          const localBundle = this.buildBundle();
+          const res = await fetch(cfg.apiUrl, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              apikey: cfg.supabaseAnonKey,
-              Authorization: `Bearer ${cfg.supabaseAnonKey}`,
-              Prefer: 'resolution=merge-duplicates',
-            },
-            body: JSON.stringify(row),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              teamId: cfg.teamId,
+              bundle: localBundle,
+              updatedBy: 'barn-to-bank-client',
+            }),
           });
-          if (!res.ok) throw new Error(`Supabase ${res.status}`);
-          const ts = new Date().toISOString();
+          const data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || `Sync failed (${res.status})`);
+          if (data.bundle) this.applyBundle(data.bundle, { source: 'cloud' });
+          const ts = data.updatedAt || new Date().toISOString();
           try {
             localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify({ lastCloudSync: ts }));
           } catch { /* ignore */ }
-          appendOutreachAudit({ type: 'cloud_sync', summary: 'Cloud sync push complete' });
+          appendOutreachAudit({
+            type: 'cloud_sync',
+            summary: `Supabase sync — ${data.bundle?.deals?.length || 0} deals${data.merged ? ' (merged)' : ''}`,
+          });
+          renderAll();
+          renderOutreachQueues();
           updateSyncStatusText();
-          showToast('Cloud sync complete');
+          showToast(data.merged ? 'Cloud sync merged with team data' : 'Cloud sync complete');
         } catch (err) {
           showToast(`Cloud sync failed: ${err.message}`, 'warn');
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = prevLabel || 'Cloud Sync'; }
         }
+      },
+
+      async pullCloud() {
+        const cfg = DATA_SOURCES.MOAT_SYNC;
+        if (!cfg.apiUrl) return null;
+        const res = await fetch(`${cfg.apiUrl}?teamId=${encodeURIComponent(cfg.teamId)}`, { cache: 'no-store' });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'Pull failed');
+        return data.bundle;
       },
     };
 
@@ -7351,6 +7394,7 @@
       }));
       saveDeals();
       loadOutreachState();
+      await fetchMoatCloudConfig();
       renderAll();
       renderOutreachQueues();
       updateLandIdConnectStatus();
