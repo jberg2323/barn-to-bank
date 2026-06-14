@@ -52,6 +52,7 @@ function isProtectedPath(pathname) {
   if (pathname === '/api/leads') return true;
   if (pathname === '/api/moat-sync') return true;
   if (pathname === '/api/moat-config') return true;
+  if (pathname === '/api/dnc-scrub') return true;
   return false;
 }
 
@@ -89,5 +90,6 @@ export const config = {
     '/api/leads',
     '/api/moat-sync',
     '/api/moat-config',
+    '/api/dnc-scrub',
   ],
 };

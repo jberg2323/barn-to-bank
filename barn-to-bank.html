@@ -3061,7 +3061,7 @@
         </div>
         <div class="compliance-banner" id="compliance-banner">
           <strong>TCPA / DNC Compliance Required</strong> — Contacting numbers on the Federal Do Not Call Registry without consent can result in fines of <strong>$500–$50,000+ per violation</strong>. Every phone number must pass a Federal DNC Registry scrub before any text or call. Barn to Bank blocks un-scrubbed and failed numbers from the text queue.
-          <div class="fine-print">DNC scrubbing is mandatory · No bypass · Printed direct mail is exempt from DNC but must still comply with state solicitation rules</div>
+          <div class="fine-print">Live scrub via DNCScrub (Contact Center Compliance) · DNC scrubbing is mandatory · No bypass · Printed direct mail is exempt from DNC but must still comply with state solicitation rules</div>
         </div>
         <div class="outreach-toolbar">
           <div class="section-title" style="margin:0">Owner Outreach</div>
@@ -3405,14 +3405,13 @@
           secretStoreNote: 'FOREWARN_API_KEY and FOREWARN_API_SECRET must be provisioned from a secret store. Do not paste production keys into this HTML file or commit them to git.',
         },
         DNC_REGISTRY: {
-          provider: 'Federal DNC Registry Scrub Service',
+          provider: 'DNCScrub (Contact Center Compliance)',
           purpose: 'Mandatory phone scrub before SMS/voice outreach (TCPA compliance)',
           mandatory: true,
-          apiKey: '',       // Load from secret store
-          baseUrl: '',      // Configure per your DNC scrub vendor
+          baseUrl: '/api/dnc-scrub',
           violationFineMinUsd: 500,
           violationFineMaxUsd: 50000,
-          secretStoreNote: 'DNC_REGISTRY_API_KEY must come from a secret store. Scrub results are logged with timestamps; un-scrubbed numbers cannot enter the text queue.',
+          secretStoreNote: 'Set DNC_SCRUB_API_KEY in Vercel (loginId from dncscrub.com → User Admin → Get API Key). Keys never live in this file.',
         },
       },
 
@@ -5849,22 +5848,31 @@
 
     async function runDncRegistryScrub(phones) {
       const cfg = DATA_SOURCES.INTEGRATIONS.DNC_REGISTRY;
-      await delay(600 + phones.length * 120);
-      const ts = new Date().toISOString();
-      return phones.map((p) => {
-        const num = p.number || p;
-        const digits = String(num).replace(/\D/g, '');
-        const blocked = digits.endsWith('0199') || digits.endsWith('9999');
-        return {
-          number: num,
-          status: blocked ? 'blocked' : 'cleared',
-          scrubbedAt: ts,
-          label: blocked
-            ? 'DNC — DO NOT CONTACT'
-            : `Federal DNC Registry scrub — cleared [${formatDncTimestamp(ts)}]`,
-          provider: cfg.provider,
-        };
+      const list = (phones || []).map((p) => p.number || p).filter(Boolean);
+      if (!list.length) return [];
+
+      const res = await fetch(cfg.baseUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phones: list }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        const msg = data.error || `DNC scrub failed (${res.status})`;
+        throw new Error(msg);
+      }
+      return (data.results || []).map((r) => ({
+        number: r.number,
+        status: r.status,
+        scrubbedAt: r.scrubbedAt,
+        label: r.label,
+        provider: data.provider || cfg.provider,
+        resultCode: r.resultCode,
+        reason: r.reason,
+        lineType: r.lineType,
+        live: data.live,
+      }));
     }
 
     function getDealPhones(deal) {
@@ -5873,19 +5881,45 @@
 
     async function scrubDealContacts(dealIds) {
       const results = {};
+      const allPhones = [];
+      const dealPhoneLists = {};
+
+      dealIds.forEach((id) => {
+        const deal = deals.find((d) => d.id === id);
+        if (!deal) return;
+        const phones = getDealPhones(deal);
+        dealPhoneLists[id] = phones;
+        phones.forEach((num) => { if (!allPhones.includes(num)) allPhones.push(num); });
+      });
+
+      const scrubbedAll = await runDncRegistryScrub(allPhones);
+      const scrubByPhone = new Map(scrubbedAll.map((s) => [s.number, s]));
+
       for (const id of dealIds) {
         const deal = deals.find((d) => d.id === id);
         if (!deal) continue;
-        const scrubbed = await runDncRegistryScrub(getDealPhones(deal));
+        const phones = dealPhoneLists[id] || [];
+        const scrubbed = phones.map((num) => scrubByPhone.get(num) || {
+          number: num,
+          status: 'blocked',
+          scrubbedAt: new Date().toISOString(),
+          label: 'DNC scrub missing — DO NOT CONTACT',
+          provider: DATA_SOURCES.INTEGRATIONS.DNC_REGISTRY.provider,
+        });
         results[id] = scrubbed;
-        deal.dncScrub = { phones: scrubbed, completedAt: scrubbed[0]?.scrubbedAt || new Date().toISOString() };
+        deal.dncScrub = {
+          phones: scrubbed,
+          completedAt: scrubbed[0]?.scrubbedAt || new Date().toISOString(),
+          provider: scrubbed[0]?.provider,
+          live: scrubbed[0]?.live,
+        };
         const cleared = scrubbed.filter((s) => s.status === 'cleared').length;
         const blocked = scrubbed.filter((s) => s.status === 'blocked').length;
         appendOutreachAudit({
           type: 'dnc_scrub',
           dealId: id,
           summary: `DNC scrub: ${deal.address} — ${cleared} cleared, ${blocked} blocked`,
-          detail: scrubbed.map((s) => `${s.number}: ${s.status}`).join('; '),
+          detail: scrubbed.map((s) => `${s.number}: ${s.status}${s.resultCode ? ` (${s.resultCode})` : ''}${s.reason ? ` — ${s.reason}` : ''}`).join('; '),
         });
       }
       outreachWizard.scrubByDealId = results;
@@ -6116,8 +6150,14 @@
       document.getElementById('outreach-run-dnc')?.addEventListener('click', async () => {
         const btn = document.getElementById('outreach-run-dnc');
         if (btn) { btn.disabled = true; btn.textContent = 'Scrubbing…'; }
-        await scrubDealContacts(outreachWizard.selectedIds);
-        renderOutreachWizardBody();
+        try {
+          await scrubDealContacts(outreachWizard.selectedIds);
+          showToast('Federal DNC scrub complete');
+        } catch (err) {
+          showToast(err.message || 'DNC scrub failed', 'warn');
+        } finally {
+          renderOutreachWizardBody();
+        }
       });
 
       document.getElementById('outreach-step2-next')?.addEventListener('click', () => {
