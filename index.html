@@ -1,12 +1,673 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;url=barn-to-bank.html">
-  <title>Barn to Bank</title>
-  <script>location.replace('barn-to-bank.html');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barn to Bank — Central Texas Farm, Ranch & Land</title>
+<meta name="description" content="Barn to Bank sells Central Texas's premier farms, ranches, and large-acreage tracts — turning raw ground into realized value. From the Barn to the Bank.">
+<meta property="og:title" content="Barn to Bank — Central Texas Farm, Ranch & Land">
+<meta property="og:description" content="We sell Central Texas's premier farms, ranches, and large-acreage tracts — turning raw ground into realized value.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/images/img-0.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f1f17'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%23d6b061' font-family='Georgia' font-size='14' font-style='italic'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4eddf;
+    --bg-alt:#ece2cd;
+    --paper:#fbf8f1;
+    --ink:#1c241d;
+    --ink-soft:#55594c;
+    --forest:#1e3b2c;
+    --forest-deep:#142a1f;
+    --brass:#b0822c;
+    --brass-bright:#d6b061;
+    --line:rgba(28,36,29,.14);
+    --line-light:rgba(246,241,231,.18);
+    --shadow:0 18px 48px -24px rgba(20,42,31,.45);
+    --maxw:1220px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.05;letter-spacing:-.01em;margin:0;}
+  p{margin:0 0 1.1em;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  em{font-style:italic;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 6%;}
+  .eyebrow{
+    font-family:"Inter",sans-serif;font-weight:600;font-size:.72rem;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--brass);
+    display:inline-flex;align-items:center;gap:.7em;margin:0 0 1.3rem;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--brass);display:inline-block;opacity:.8;}
+  .eyebrow.center{justify-content:center;}
+  .btn{
+    display:inline-flex;align-items:center;gap:.6em;font-family:"Inter",sans-serif;
+    font-weight:600;font-size:.82rem;letter-spacing:.13em;text-transform:uppercase;
+    padding:1.05em 1.9em;border-radius:2px;cursor:pointer;border:1px solid transparent;
+    transition:.25s ease;white-space:nowrap;
+  }
+  .btn-brass{background:var(--brass);color:#fff;}
+  .btn-brass:hover{background:#9a6f22;transform:translateY(-2px);}
+  .btn-forest{background:var(--forest);color:var(--bg);}
+  .btn-forest:hover{background:var(--forest-deep);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--bg);border-color:rgba(246,241,231,.45);}
+  .btn-ghost:hover{background:rgba(246,241,231,.12);border-color:var(--bg);}
+  .btn-outline{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn-outline:hover{border-color:var(--brass);color:var(--brass);}
+  .arrow{font-size:1.05em;line-height:0;transform:translateY(1px);}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    transition:background .35s ease,box-shadow .35s ease,padding .35s ease;
+    padding:1.5rem 0;
+  }
+  header.scrolled{background:rgba(244,237,223,.94);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line);padding:.9rem 0;}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+  .brand{font-family:"Fraunces",serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em;color:var(--bg);transition:color .35s ease;line-height:1;}
+  .brand em{color:var(--brass-bright);font-weight:500;}
+  header.scrolled .brand{color:var(--ink);}
+  header.scrolled .brand em{color:var(--brass);}
+  .nav-links{display:flex;align-items:center;gap:2.1rem;list-style:none;margin:0;padding:0;}
+  .nav-links a{
+    font-family:"Inter",sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--bg);opacity:.9;transition:.25s;position:relative;
+  }
+  header.scrolled .nav-links a{color:var(--ink);}
+  .nav-links a:hover{color:var(--brass-bright);opacity:1;}
+  header.scrolled .nav-links a:hover{color:var(--brass);}
+  .nav-cta{padding:.78em 1.4em;font-size:.74rem;}
+  .nav-toggle{display:none;background:none;border:0;cursor:pointer;flex-direction:column;gap:5px;padding:6px;}
+  .nav-toggle span{width:26px;height:2px;background:var(--bg);display:block;transition:.3s;}
+  header.scrolled .nav-toggle span{background:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;color:var(--bg);padding:9rem 0 3rem;}
+  .hero-bg{position:absolute;inset:0;z-index:-2;background:#142a1f;}
+  .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;}
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(95deg,rgba(15,28,21,.86) 0%,rgba(15,28,21,.62) 42%,rgba(15,28,21,.22) 100%),
+               linear-gradient(0deg,rgba(15,28,21,.7) 0%,rgba(15,28,21,0) 38%);
+  }
+  .hero-inner{max-width:760px;}
+  .hero h1{font-size:clamp(3rem,7.4vw,6.3rem);font-weight:500;letter-spacing:-.02em;margin-bottom:1.6rem;text-shadow:0 2px 30px rgba(0,0,0,.25);}
+  .hero h1 em{color:var(--brass-bright);}
+  .hero-sub{font-size:clamp(1.05rem,1.7vw,1.32rem);max-width:560px;color:rgba(246,241,231,.92);font-weight:400;margin-bottom:2.4rem;line-height:1.6;}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;}
+  .hero-stats{
+    position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line-light);
+    background:linear-gradient(0deg,rgba(15,28,21,.55),rgba(15,28,21,0));
+  }
+  .hero-stats .wrap{display:flex;flex-wrap:wrap;gap:1rem 3rem;padding-top:1.4rem;padding-bottom:1.4rem;}
+  .hero-stat{display:flex;flex-direction:column;}
+  .hero-stat b{font-family:"Fraunces",serif;font-size:1.5rem;font-weight:600;color:var(--bg);}
+  .hero-stat span{font-family:"Inter";font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,241,231,.7);}
+
+  /* ---------- SECTION BASE ---------- */
+  section{position:relative;}
+  .pad{padding:clamp(4.5rem,9vw,8rem) 0;}
+  .sec-head{max-width:680px;margin-bottom:3.2rem;}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+  .sec-head h2{font-size:clamp(2.1rem,4.3vw,3.5rem);}
+  .sec-head h2 em{color:var(--brass);}
+  .lead{font-size:1.12rem;color:var(--ink-soft);}
+
+  /* ---------- THESIS ---------- */
+  .thesis-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,5rem);align-items:start;}
+  .thesis-statement{font-family:"Fraunces",serif;font-size:clamp(1.8rem,3.3vw,2.8rem);font-weight:400;line-height:1.18;letter-spacing:-.01em;}
+  .thesis-statement em{color:var(--brass);font-style:italic;}
+  .thesis-body p{color:var(--ink-soft);}
+  .sig{font-family:"Fraunces",serif;font-style:italic;font-size:1.25rem;color:var(--ink);margin-top:1.6rem;}
+  .sig small{display:block;font-family:"Inter";font-style:normal;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin-top:.4rem;}
+
+  /* ---------- NUMBERS RAIL ---------- */
+  .numbers{background:var(--forest);color:var(--bg);}
+  .numbers .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+  .num{padding:1rem 2rem;border-left:1px solid var(--line-light);}
+  .num:first-child{border-left:0;padding-left:0;}
+  .num b{font-family:"Fraunces",serif;font-size:clamp(2.6rem,4.6vw,3.7rem);font-weight:500;display:block;line-height:1;color:#fff;}
+  .num b i{color:var(--brass-bright);font-style:normal;}
+  .num span{display:block;margin-top:.85rem;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,241,231,.72);line-height:1.5;}
+
+  /* ---------- SELL CARDS ---------- */
+  .sell{background:var(--bg);}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:2.1rem 1.8rem;transition:.3s ease;}
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:rgba(176,130,44,.4);}
+  .card .ic{width:42px;height:42px;color:var(--brass);margin-bottom:1.3rem;}
+  .card h3{font-size:1.32rem;margin-bottom:.6rem;font-weight:600;}
+  .card p{font-size:.95rem;color:var(--ink-soft);margin:0;}
+
+  /* ---------- LISTINGS ---------- */
+  .listings{background:var(--bg-alt);}
+  .listing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6rem;}
+  .listing{background:var(--paper);border-radius:5px;overflow:hidden;border:1px solid var(--line);transition:.3s ease;}
+  .listing:hover{transform:translateY(-5px);box-shadow:var(--shadow);}
+  .listing-img{position:relative;aspect-ratio:3/2;overflow:hidden;}
+  .listing-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .listing:hover .listing-img img{transform:scale(1.05);}
+  .tag{position:absolute;top:1rem;left:1rem;background:rgba(20,42,31,.82);color:var(--bg);font-family:"Inter";font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.5em 1em;border-radius:2px;backdrop-filter:blur(4px);}
+  .listing-body{padding:1.5rem 1.6rem 1.7rem;}
+  .listing-body h3{font-size:1.45rem;font-weight:600;margin-bottom:.3rem;}
+  .listing-meta{display:flex;align-items:center;gap:.7rem;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-family:"Inter";font-weight:500;}
+  .listing-meta .dot{width:4px;height:4px;border-radius:50%;background:var(--brass);}
+  .listing-foot{display:flex;align-items:baseline;justify-content:space-between;margin-top:1.3rem;padding-top:1.2rem;border-top:1px solid var(--line);}
+  .price{font-family:"Fraunces",serif;font-size:1.7rem;font-weight:600;color:var(--forest);}
+  .listing-foot a{font-family:"Inter";font-size:.74rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--brass);}
+  .listing-foot a:hover{color:var(--forest);}
+  .center-btn{text-align:center;margin-top:3rem;}
+
+  /* ---------- MARKET ---------- */
+  .market{background:var(--bg);}
+  .market-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;}
+  .market-body p{color:var(--ink-soft);}
+  .market-callouts{display:flex;gap:2.4rem;margin-top:1.8rem;flex-wrap:wrap;}
+  .callout b{font-family:"Fraunces",serif;font-size:2.2rem;font-weight:600;color:var(--brass);display:block;line-height:1;}
+  .callout span{font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);font-family:"Inter";}
+  .chart-card{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:2rem 2rem 1.4rem;box-shadow:var(--shadow);}
+  .chart-card .chart-title{font-family:"Inter";font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:1.4rem;}
+  .chart-card .chart-note{font-size:.74rem;color:var(--ink-soft);margin:1rem 0 0;font-style:italic;}
+  .bars{display:flex;align-items:flex-end;gap:clamp(.5rem,2vw,1.2rem);height:210px;}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:.6rem;height:100%;justify-content:flex-end;}
+  .bar{width:100%;background:linear-gradient(180deg,var(--brass-bright),var(--brass));border-radius:3px 3px 0 0;position:relative;transition:height 1.1s cubic-bezier(.2,.7,.3,1);}
+  .bar.latest{background:linear-gradient(180deg,#2f5841,var(--forest));}
+  .bar-val{position:absolute;top:-1.5rem;left:0;right:0;text-align:center;font-family:"Fraunces",serif;font-size:.82rem;font-weight:600;color:var(--ink);}
+  .bar-yr{font-size:.7rem;letter-spacing:.05em;color:var(--ink-soft);font-family:"Inter";font-weight:500;}
+
+  /* ---------- PROCESS ---------- */
+  .process{background:var(--forest);color:var(--bg);position:relative;overflow:hidden;}
+  .process .sec-head h2 em{color:var(--brass-bright);}
+  .process .lead{color:rgba(246,241,231,.78);}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:1rem;}
+  .step{padding:2rem 1.8rem 0;border-top:2px solid var(--line-light);position:relative;}
+  .step.bank{border-top-color:var(--brass-bright);}
+  .step .no{font-family:"Fraunces",serif;font-size:1rem;color:var(--brass-bright);font-weight:600;letter-spacing:.1em;}
+  .step h3{font-size:1.55rem;font-weight:600;margin:.7rem 0 .7rem;color:#fff;}
+  .step p{font-size:.93rem;color:rgba(246,241,231,.74);margin:0;}
+
+  /* ---------- CTA BAND ---------- */
+  .band{position:relative;color:var(--bg);text-align:center;padding:clamp(5rem,11vw,9rem) 0;}
+  .band-bg{position:absolute;inset:0;z-index:-2;}
+  .band-bg img{width:100%;height:100%;object-fit:cover;object-position:center 65%;}
+  .band-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(15,28,21,.78),rgba(15,28,21,.5));}
+  .band h2{font-size:clamp(2.2rem,4.8vw,3.8rem);font-weight:500;max-width:760px;margin:0 auto 1.4rem;}
+  .band h2 em{color:var(--brass-bright);}
+  .band p{max-width:540px;margin:0 auto 2.3rem;color:rgba(246,241,231,.9);font-size:1.1rem;}
+  .band .hero-cta{justify-content:center;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--bg);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;}
+  .about-img{border-radius:6px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/3;}
+  .about-img img{width:100%;height:100%;object-fit:cover;}
+  .about-body p{color:var(--ink-soft);}
+  .pillars{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 2rem;margin-top:1.8rem;}
+  .pillar{border-left:2px solid var(--brass);padding-left:1.1rem;}
+  .pillar b{display:block;font-family:"Fraunces";font-size:1.05rem;color:var(--ink);font-weight:600;margin-bottom:.15rem;}
+  .pillar span{font-size:.9rem;color:var(--ink-soft);}
+
+  /* ---------- TESTIMONIAL ---------- */
+  .quote{background:var(--bg-alt);text-align:center;}
+  .quote blockquote{max-width:880px;margin:0 auto;font-family:"Fraunces",serif;font-size:clamp(1.5rem,3vw,2.3rem);font-weight:400;line-height:1.3;letter-spacing:-.01em;color:var(--ink);}
+  .quote blockquote em{color:var(--brass);}
+  .quote .attr{margin-top:1.8rem;font-family:"Inter";font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--forest-deep);color:var(--bg);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);}
+  .contact h2{font-size:clamp(2.1rem,4.3vw,3.3rem);}
+  .contact h2 em{color:var(--brass-bright);}
+  .contact .lead{color:rgba(246,241,231,.78);}
+  .contact-details{margin-top:2rem;display:flex;flex-direction:column;gap:1.3rem;}
+  .cd-item span{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-bright);display:block;margin-bottom:.25rem;}
+  .cd-item b{font-family:"Fraunces";font-weight:500;font-size:1.25rem;color:#fff;}
+  form{display:flex;flex-direction:column;gap:1rem;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,241,231,.7);font-weight:600;margin-bottom:.4rem;display:block;}
+  input,textarea{
+    width:100%;background:rgba(246,241,231,.06);border:1px solid var(--line-light);border-radius:3px;
+    color:var(--bg);font-family:"Inter";font-size:.98rem;padding:.85em 1em;transition:.25s;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--brass-bright);background:rgba(246,241,231,.1);}
+  textarea{resize:vertical;min-height:120px;}
+  .form-note{font-size:.78rem;color:rgba(246,241,231,.55);margin-top:.4rem;}
+  .form-success{display:none;background:rgba(214,176,97,.15);border:1px solid var(--brass-bright);padding:1.1rem 1.3rem;border-radius:3px;color:var(--brass-bright);font-size:.92rem;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#0f1f17;color:rgba(246,241,231,.62);padding:3.5rem 0 2.2rem;font-size:.86rem;}
+  .foot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;padding-bottom:2.4rem;border-bottom:1px solid var(--line-light);}
+  .foot-brand{font-family:"Fraunces";font-size:1.7rem;color:var(--bg);font-weight:600;}
+  .foot-brand em{color:var(--brass-bright);}
+  .foot-tag{margin-top:.5rem;font-style:italic;font-family:"Fraunces";color:rgba(246,241,231,.7);}
+  .foot-nav{display:flex;gap:2.4rem;flex-wrap:wrap;}
+  .foot-nav a{color:rgba(246,241,231,.72);font-size:.82rem;letter-spacing:.04em;}
+  .foot-nav a:hover{color:var(--brass-bright);}
+  .foot-legal{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.8rem;font-size:.74rem;color:rgba(246,241,231,.42);}
+  .foot-legal a{color:rgba(246,241,231,.55);text-decoration:underline;text-underline-offset:2px;}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:980px){
+    .thesis-grid,.market-grid,.about-grid,.contact-grid{grid-template-columns:1fr;}
+    .cards{grid-template-columns:1fr 1fr;}
+    .numbers .grid{grid-template-columns:1fr 1fr;gap:2rem 0;}
+    .num{padding:0 1.6rem;}
+    .num:nth-child(3){border-left:0;padding-left:1.6rem;}
+    .steps{grid-template-columns:1fr 1fr;gap:2.2rem 1.4rem;}
+    .about-img{order:-1;}
+  }
+  @media(max-width:680px){
+    body{font-size:16px;}
+    .nav-links{
+      position:fixed;top:0;right:0;bottom:0;width:78%;max-width:320px;background:var(--forest-deep);
+      flex-direction:column;align-items:flex-start;justify-content:center;gap:1.6rem;padding:2rem 2.4rem;
+      transform:translateX(100%);transition:transform .4s ease;z-index:60;
+    }
+    .nav-links.open{transform:none;}
+    .nav-links a{color:var(--bg)!important;font-size:1rem;}
+    .nav-toggle{display:flex;z-index:61;}
+    .nav-cta{display:none;}
+    .listing-grid,.cards{grid-template-columns:1fr;}
+    .num b{font-size:2.8rem;}
+    .hero-stats{position:static;background:var(--forest);}
+    .hero{min-height:auto;padding-bottom:0;}
+    .field-row{grid-template-columns:1fr;}
+    .foot-top{flex-direction:column;}
+  }
+</style>
 </head>
 <body>
-  <p><a href="barn-to-bank.html">Open Barn to Bank</a></p>
+
+<header id="header" class="scrolled">
+  <div class="wrap nav">
+    <a href="#top" class="brand">Barn <em>to</em> Bank</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sell">Land</a></li>
+      <li><a href="#listings">Listings</a></li>
+      <li><a href="#market">Market</a></li>
+      <li><a href="#process">Approach</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="btn btn-brass nav-cta">List Your Land</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<a id="top"></a>
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="/images/img-0.png" alt="Central Texas Hill Country ranch at golden hour">
+  </div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Central Texas · Farm, Ranch &amp; Land</div>
+    <h1>From the Barn<br>to the <em>Bank.</em></h1>
+    <p class="hero-sub">We sell Central Texas's premier farms, ranches, and large-acreage tracts — turning raw ground into realized value for the families and investors who own it.</p>
+    <div class="hero-cta">
+      <a href="#listings" class="btn btn-brass">Explore Land <span class="arrow">→</span></a>
+      <a href="#contact" class="btn btn-ghost">Request a Valuation</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="wrap">
+      <div class="hero-stat"><b>$20,000,000</b><span>Land Transacted</span></div>
+      <div class="hero-stat"><b>300+</b><span>Tracts Evaluated / Yr</span></div>
+      <div class="hero-stat"><b>11</b><span>Central TX Counties</span></div>
+      <div class="hero-stat"><b>Top 1%</b><span>Texas Land Brokers</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THESIS ================= -->
+<section class="pad sell" id="thesis">
+  <div class="wrap thesis-grid reveal in">
+    <div>
+      <div class="eyebrow">The Thesis</div>
+      <p class="thesis-statement">Land is the original asset. We move it from <em>pasture to portfolio</em> — and back to the bank.&nbsp;</p>
+    </div>
+    <div class="thesis-body">
+      <p>Most brokers list acreage. We underwrite it. Barn to Bank pairs boots-on-the-ground knowledge of Central Texas dirt with the discipline of institutional capital — so every farm, ranch, and tract is positioned for the value it can actually command.</p>
+      <p>From a working cattle operation to a path-of-growth assemblage, we know what a buyer will pay, what an investor will fund, and how to bridge the two. That's the journey in our name.</p>
+      <p class="sig">From the barn to the bank.<small>The Barn to Bank Promise</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NUMBERS ================= -->
+<section class="pad numbers">
+  <div class="wrap">
+    <div class="grid reveal in">
+      <div class="num"><b>$2<i>B+</i></b><span>In Texas land &amp; ranch transactions</span></div>
+      <div class="num"><b>40<i>K+</i></b><span>Acres marketed across the region</span></div>
+      <div class="num"><b>11</b><span>Central Texas counties covered</span></div>
+      <div class="num"><b>30<i>+</i></b><span>Years of combined land expertise</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHAT WE SELL ================= -->
+<section class="pad sell" id="sell">
+  <div class="wrap">
+    <div class="sec-head reveal in">
+      <div class="eyebrow">What We Move</div>
+      <h2>From working ground to <em>investment-grade</em> acreage.</h2>
+    </div>
+    <div class="cards">
+      <div class="card reveal in">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 21V10l9-7 9 7v11"></path><path d="M9 21v-6h6v6"></path></svg>
+        <h3>Working Farms &amp; Ranches</h3>
+        <p>Cattle, row-crop, and recreational operations with established infrastructure, water, and income.</p>
+      </div>
+      <div class="card reveal in">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3h18v18H3z"></path><path d="M3 9h18M9 3v18"></path></svg>
+        <h3>Large-Acreage &amp; Assemblage</h3>
+        <p>Sizable single tracts and multi-parcel assemblages positioned for scale and optionality.</p>
+      </div>
+      <div class="card reveal in">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 16c3-3 5-3 9 0s6 3 9 0"></path><path d="M3 10c3-3 5-3 9 0s6 3 9 0"></path></svg>
+        <h3>Recreational &amp; Live-Water</h3>
+        <p>Hunting retreats, river frontage, and spring-fed water — the properties buyers fall in love with.</p>
+      </div>
+      <div class="card reveal in">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 21h18M5 21V8l7-5 7 5v13"></path><path d="M10 21v-5h4v5"></path></svg>
+        <h3>Development &amp; Investment Tracts</h3>
+        <p>Path-of-growth land with entitlement upside, modeled for the returns capital partners require.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LISTINGS ================= -->
+<section class="pad listings" id="listings">
+  <div class="wrap">
+    <div class="sec-head reveal in">
+      <div class="eyebrow">Featured Land</div>
+      <h2>A few of the tracts <em>moving now.</em></h2>
+      <p class="lead">A representative selection of Central Texas farm, ranch, and large-acreage properties.</p>
+    </div>
+    <div class="listing-grid">
+      <div class="listing reveal in">
+        <div class="listing-img"><span class="tag">Live Water</span><img src="/images/img-1.png" alt="Blanco River frontage ranch"></div>
+        <div class="listing-body">
+          <h3>Blanco River Frontage</h3>
+          <div class="listing-meta"><span>Blanco County</span><span class="dot"></span><span>128± Acres</span></div>
+          <div class="listing-foot"><span class="price">$4.9M</span><a href="#contact">Inquire →</a></div>
+        </div>
+      </div>
+      <div class="listing reveal in">
+        <div class="listing-img"><span class="tag">Ranch</span><img src="/images/img-2.png" alt="Hill Country pasture ranch"></div>
+        <div class="listing-body">
+          <h3>Twin Oaks Cattle Ranch</h3>
+          <div class="listing-meta"><span>Gillespie County</span><span class="dot"></span><span>540± Acres</span></div>
+          <div class="listing-foot"><span class="price">$7.2M</span><a href="#contact">Inquire →</a></div>
+        </div>
+      </div>
+      <div class="listing reveal in">
+        <div class="listing-img"><span class="tag">Farm</span><img src="/images/img-3.png" alt="Guadalupe Valley working farm"></div>
+        <div class="listing-body">
+          <h3>Guadalupe Valley Farm</h3>
+          <div class="listing-meta"><span>Guadalupe County</span><span class="dot"></span><span>208± Acres</span></div>
+          <div class="listing-foot"><span class="price">$3.6M</span><a href="#contact">Inquire →</a></div>
+        </div>
+      </div>
+      <div class="listing reveal in">
+        <div class="listing-img"><span class="tag">Development</span><img src="/images/img-4.png" alt="Path of growth ranch tract"></div>
+        <div class="listing-body">
+          <h3>Highway 46 Growth Tract</h3>
+          <div class="listing-meta"><span>Comal County</span><span class="dot"></span><span>312± Acres</span></div>
+          <div class="listing-foot"><span class="price">$6.1M</span><a href="#contact">Inquire →</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="center-btn reveal in"><a href="#contact" class="btn btn-outline">View All Listings <span class="arrow">→</span></a></div>
+  </div>
+</section>
+
+<!-- ================= MARKET ================= -->
+<section class="pad market" id="market">
+  <div class="wrap market-grid">
+    <div class="market-body reveal in">
+      <div class="eyebrow">Why Central Texas</div>
+      <h2 style="font-size:clamp(2rem,4vw,3.1rem);margin-bottom:1.4rem;">The fastest-growing land<br>market in America.</h2>
+      <p>The San Antonio–Austin corridor is one of the country's defining megaregions — millions of new residents, the I-35 spine, and a relentless push of rooftops and capital into the Hill Country. Behind every subdivision and business park is land that someone sold well.</p>
+      <p>We track that path of growth county by county, so owners sell at the top of the market and investors buy ahead of it.</p>
+      <div class="market-callouts">
+        <div class="callout"><b>2.5M+</b><span>Corridor residents added since 2010</span></div>
+        <div class="callout"><b>I-35</b><span>The growth spine we underwrite to</span></div>
+      </div>
+    </div>
+    <div class="chart-card reveal in">
+      <div class="chart-title">Central TX Rural Land — Median $/Acre (Indexed)</div>
+      <div class="bars" id="bars">
+        <div class="bar-col"><div class="bar" style="--h: 34%; height: 34%;"><span class="bar-val">$3.1k</span></div><span class="bar-yr">'15</span></div>
+        <div class="bar-col"><div class="bar" style="--h: 46%; height: 46%;"><span class="bar-val">$4.2k</span></div><span class="bar-yr">'17</span></div>
+        <div class="bar-col"><div class="bar" style="--h: 58%; height: 58%;"><span class="bar-val">$5.3k</span></div><span class="bar-yr">'19</span></div>
+        <div class="bar-col"><div class="bar" style="--h: 78%; height: 78%;"><span class="bar-val">$7.1k</span></div><span class="bar-yr">'21</span></div>
+        <div class="bar-col"><div class="bar" style="--h: 92%; height: 92%;"><span class="bar-val">$8.4k</span></div><span class="bar-yr">'23</span></div>
+        <div class="bar-col"><div class="bar latest" style="--h: 100%; height: 100%;"><span class="bar-val">$9.2k</span></div><span class="bar-yr">'25</span></div>
+      </div>
+      <p class="chart-note">Illustrative trend for demonstration — replace with live market data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section class="pad process" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal in">
+      <div class="eyebrow">The Approach</div>
+      <h2>From the barn to the bank,<br>in <em>four moves.</em></h2>
+      <p class="lead">A disciplined path from raw ground to closed proceeds — the same rigor whether we're selling a family ranch or an investment assemblage.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal in"><div class="no">01 — Position</div><h3>Underwrite</h3><p>We assess the land, its highest and best use, and the real market — then price to the value it can command.</p></div>
+      <div class="step reveal in"><div class="no">02 — Present</div><h3>Market</h3><p>Cinematic photography, aerials, and a campaign worthy of the asset — reaching qualified buyers and capital.</p></div>
+      <div class="step reveal in"><div class="no">03 — Negotiate</div><h3>Bring Buyers</h3><p>We bring our network of ranch buyers, builders, and investment funds to a competitive table.</p></div>
+      <div class="step bank reveal in"><div class="no">04 — The Bank</div><h3>Close</h3><p>We execute the transaction cleanly and convert ground into proceeds in the owner's hands.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section class="band">
+  <div class="band-bg"><img src="/images/img-5.png" alt="Texas ranch gate at sunset"></div>
+  <div class="wrap reveal in">
+    <h2>Own land in Central Texas?<br>Let's get it <em>to the bank.</em></h2>
+    <p>Request a confidential, no-obligation valuation of your farm, ranch, or acreage.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-brass">Request a Valuation <span class="arrow">→</span></a>
+      <a href="#listings" class="btn btn-ghost">Browse Listings</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="pad about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-img reveal in"><img src="/images/img-4.png" alt="Texas barn and windmill at golden hour"></div>
+    <div class="about-body reveal in">
+      <div class="eyebrow">Who We Are</div>
+      <h2 style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1.3rem;">Built on the ground<br>we sell.</h2>
+      <p>Barn to Bank isn't a storefront brokerage. We're land people — at home on a cattle ranch and in a capital stack. Because we also entitle and develop land ourselves, we read a tract the way a buyer's underwriter does, and we position it accordingly.</p>
+      <p>That vertical view — vision and dirt on one side, returns and capital on the other — is how we consistently move Central Texas land at the top of its value.</p>
+      <div class="pillars">
+        <div class="pillar"><b>Boots on the Ground</b><span>We walk the land before we list it.</span></div>
+        <div class="pillar"><b>Institutional Rigor</b><span>Every tract underwritten like a deal.</span></div>
+        <div class="pillar"><b>Cinematic Marketing</b><span>Presentation worthy of the asset.</span></div>
+        <div class="pillar"><b>The Right Buyers</b><span>Ranchers, builders, and funds.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIAL ================= -->
+<section class="pad quote">
+  <div class="wrap reveal in">
+    <blockquote>"They didn't just list our family's ranch — they understood what it was <em>worth</em>, marketed it like a flagship, and got it to the bank above what we thought possible."</blockquote>
+    <div class="attr">— Placeholder Client · Five-Generation Ranch Owner</div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="pad contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal in">
+      <div class="eyebrow">Start the Conversation</div>
+      <h2>Let's talk about <em>your land.</em></h2>
+      <p class="lead">Whether you're ready to sell or simply want to know what your acreage is worth in today's market, we'll give you a straight answer — confidentially.</p>
+      <div class="contact-details">
+        <div class="cd-item"><span>Call</span><b>(737)777-9669</b></div>
+        <div class="cd-item"><span>Email</span><b><a href="mailto:jackzitlow@kw.com">jackzitlow@kw.com</a></b></div>
+        <div class="cd-item"><span>Office</span><b>New Braunfels, Texas</b></div>
+      </div>
+    </div>
+    <div class="reveal in">
+      <form id="leadForm">
+        <div class="field-row">
+          <div><label for="name">Name</label><input type="text" id="name" name="name" required=""></div>
+          <div><label for="phone">Phone</label><input type="tel" id="phone" name="phone"></div>
+        </div>
+        <div><label for="email">Email</label><input type="email" id="email" name="email" required=""></div>
+        <div><label for="about">Tell us about your land</label><textarea id="about" name="about" placeholder="County, approximate acreage, and what you have in mind…"></textarea></div>
+        <button type="submit" class="btn btn-brass" style="justify-content:center;">Request a Valuation <span class="arrow">→</span></button>
+        <p class="form-note">Demo form — connect to your CRM or email service to capture live leads.</p>
+        <div class="form-success" id="formSuccess">Thank you — we'll be in touch within one business day.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">Barn <em>to</em> Bank</div>
+        <div class="foot-tag">From the Barn to the Bank.</div>
+      </div>
+      <div class="foot-nav">
+        <a href="#sell">Land</a>
+        <a href="#listings">Listings</a>
+        <a href="#market">Market</a>
+        <a href="#process">Approach</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 Barn to Bank. All rights reserved. Central Texas Farm, Ranch &amp; Land.</span>
+      <span>
+        <a href="#">TREC Consumer Protection Notice</a> &nbsp;·&nbsp;
+        <a href="#">TREC Information About Brokerage Services</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky header
+  const header=document.getElementById('header');
+  const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>40);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  // Mobile nav
+  const toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
+  toggle.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+  // Reveal on scroll
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Animate chart bars when visible
+  const barsWrap=document.getElementById('bars');
+  if(barsWrap){
+    const bars=barsWrap.querySelectorAll('.bar');
+    bars.forEach(b=>b.style.height='0%');
+    const cio=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){bars.forEach(b=>{b.style.height=getComputedStyle(b).getPropertyValue('--h');});cio.disconnect();}});
+    },{threshold:.4});
+    cio.observe(barsWrap);
+  }
+
+  // Demo form
+  document.getElementById('leadForm').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    document.getElementById('formSuccess').style.display='block';
+    this.querySelector('button').style.display='none';
+  });
+</script>
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && window.parent !== window) {
+    window.parent.postMessage({ type: 'close-fullscreen' }, '*');
+  }
+});
+</script>
+<!-- broken-img-handler -->
+
+
+
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && window.parent !== window) {
+    window.parent.postMessage({ type: 'close-fullscreen' }, '*');
+  }
+});
+</script>
+
+<script>
+  // Sticky header
+  const header=document.getElementById('header');
+  const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>40);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  // Mobile nav
+  const toggle=document.getElementById('navToggle'),links=document.getElementById('navLinks');
+  toggle.addEventListener('click',()=>links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
+
+  // Reveal on scroll
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Animate chart bars when visible
+  const barsWrap=document.getElementById('bars');
+  if(barsWrap){
+    const bars=barsWrap.querySelectorAll('.bar');
+    bars.forEach(b=>b.style.height='0%');
+    const cio=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){bars.forEach(b=>{b.style.height=getComputedStyle(b).getPropertyValue('--h');});cio.disconnect();}});
+    },{threshold:.4});
+    cio.observe(barsWrap);
+  }
+
+  // Demo form
+  document.getElementById('leadForm').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    document.getElementById('formSuccess').style.display='block';
+    this.querySelector('button').style.display='none';
+  });
+</script>
 </body>
 </html>

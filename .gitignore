@@ -5,3 +5,10 @@ node_modules/
 .env
 .env.*
 !.env.example
+reference-*.html
+reference-*.png
+iframe-*.html
+iframe-*.png
+raw-source.html
+local-preview.png
+public-site.html
