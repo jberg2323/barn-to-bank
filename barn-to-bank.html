@@ -1080,6 +1080,7 @@
             <option value="Bexar">Bexar</option>
             <option value="Guadalupe">Guadalupe</option>
             <option value="Travis">Travis</option>
+            <option value="Smith">Smith (Tyler)</option>
           </select>
         </div>
         <div class="section-title" style="margin-top:14px">id.land Connection</div>
@@ -1300,6 +1301,7 @@
           'Round Rock': { water: 'City of Round Rock', sewer: 'City of Round Rock' },
           'Austin': { water: 'Austin Water', sewer: 'Austin Water' },
           'Taylor': { water: 'City of Taylor', sewer: 'City of Taylor' },
+          'Tyler': { water: 'City of Tyler Water Utilities', sewer: 'City of Tyler Wastewater' },
         },
       },
       COUNTY_GIS: {
@@ -1335,6 +1337,16 @@
             landUse: 'PropUse',
           },
         },
+        Smith: {
+          url: 'https://gis.cityoftyler.net/arcgis/rest/services/Tax_Parcels/MapServer/0',
+          situsField: 'ADDRESS',
+          parcelFields: ['PARCELID', 'ACCOUNT', 'PIN'],
+          fields: {
+            parcelId: 'PARCELID', acres: 'CALC_ACRE',
+            situs: 'ADDRESS', zoning: 'Type', landUse: 'Type',
+            streetNum: 'NUMBER', streetName: 'STREET', city: 'POSTAL_CITY',
+          },
+        },
         // Counties below: id.land (with token) or REGRID_API_KEY until public CAD REST is confirmed
         Bastrop:    null,
         Hays:       null,
@@ -1349,6 +1361,7 @@
         Bexar: '/us/tx/bexar-county',
         Guadalupe: '/us/tx/guadalupe-county',
         Travis: '/us/tx/travis-county',
+        Smith: '/us/tx/smith-county',
       },
       // Radius scan for new-build FOR-SALE SF communities (excludes Waterloo BTR)
       COMMUNITY_RADIUS: {
@@ -1386,6 +1399,8 @@
       { county: 'Hays', submarket: 'Dripping Springs ETJ', acres: 200, pricePerAcre: 15800, buyer: 'Toll Brothers', date: '2026-02', notes: 'Phased close, Headwaters comp' },
       { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 90, pricePerAcre: 38500, buyer: 'KB Home', date: '2026-04', notes: 'Verbal LOI, Mission del Lago spillover' },
       { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 16, pricePerAcre: 105000, buyer: 'Private investor', date: '2025-12', notes: 'Commercial pad adjacent' },
+      { county: 'Smith', submarket: 'Tyler / South Loop', acres: 48, pricePerAcre: 22400, buyer: 'DR Horton', date: '2026-02', notes: 'Off-market, FM 756 corridor' },
+      { county: 'Smith', submarket: 'Tyler / Lindale ETJ', acres: 112, pricePerAcre: 16800, buyer: 'Lennar', date: '2025-10', notes: 'Estate tract; timber exemption' },
     ];
 
     // Spatial engine reference nodes (swap for live utility / commercial GIS)
@@ -1394,11 +1409,13 @@
         { name: 'CPS Energy substation', county: 'Bexar', lat: 29.310, lng: -98.590, type: 'electric' },
         { name: 'Bluebonnet EC line', county: 'Williamson', lat: 30.565, lng: -97.405, type: 'electric' },
         { name: 'Pedernales EC', county: 'Hays', lat: 30.130, lng: -98.020, type: 'electric' },
+        { name: 'Oncor Tyler substation', county: 'Smith', lat: 32.352, lng: -95.301, type: 'electric' },
       ],
       commercial: [
         { name: 'H-E-B Plus corridor', county: 'Bexar', lat: 29.330, lng: -98.560, type: 'commercial' },
         { name: 'H-E-B Georgetown', county: 'Williamson', lat: 30.640, lng: -97.680, type: 'commercial' },
         { name: 'Bastrop retail node', county: 'Bastrop', lat: 30.010, lng: -97.170, type: 'commercial' },
+        { name: 'Broadway Square — Tyler', county: 'Smith', lat: 32.351, lng: -95.301, type: 'commercial' },
       ],
     };
 
@@ -1503,6 +1520,19 @@
         nearestSfMi: 5.2,
         nearestCommercial: 'Austin metro commercial',
         nearestCommercialMi: 3.9,
+      },
+      Smith: {
+        jurisdiction: 'ETJ — Tyler (unincorporated)',
+        floodZone: 'Zone X (minimal flood hazard)',
+        waterCcn: 'North East Texas MUD #1 (CCN 10142)',
+        sewerCcn: 'No wastewater CCN within 2 mi — septic anticipated',
+        distWaterMi: 1.4, distSewerMi: 2.6, distPowerMi: 0.2,
+        providers: 'Oncor Electric · North East Texas MUD #1',
+        deedNotes: 'Warranty deed recorded 2020; timber exemption active',
+        nearestSf: 'DR Horton — Tyler South corridor',
+        nearestSfMi: 2.8,
+        nearestCommercial: 'Broadway Square — Tyler',
+        nearestCommercialMi: 4.1,
       },
     };
 
@@ -3384,6 +3414,7 @@
       const cities = {
         Williamson: 'Taylor', Bastrop: 'Smithville', 'Fort Bend': 'Sugar Land',
         Hays: 'Driftwood', Bexar: 'San Antonio', Guadalupe: 'Seguin', Travis: 'Austin',
+        Smith: 'Tyler',
       };
       const match = query.match(/,\s*([^,]+)\s*TX/i);
       return match ? match[1].trim() : (cities[county] || 'Unknown');
