@@ -315,6 +315,21 @@
       background: linear-gradient(90deg, var(--accent-dim), transparent);
     }
 
+    .logo .kw-credit {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    .logo .kw-credit strong {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
     .header-stats {
       display: flex;
       gap: 8px;
@@ -688,6 +703,74 @@
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+    }
+
+    .pipeline-filters {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    .pipeline-search {
+      flex: 1 1 200px;
+      min-width: 160px;
+      font: inherit;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+    }
+
+    .pipeline-search:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+      border-color: var(--accent);
+    }
+
+    .pipeline-filter-select {
+      font: inherit;
+      font-size: 11px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-deep);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .pipeline-filter-count {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .deal-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      color: var(--accent-bright);
+      margin-right: 4px;
+      margin-top: 3px;
+    }
+
+    .deal-portfolio-label {
+      font-size: 10px;
+      color: var(--purple);
+      font-weight: 600;
+      margin-top: 2px;
     }
 
     .btn-add-deal {
@@ -1064,6 +1147,71 @@
 
     .deal-card-metric .value.accent {
       color: var(--accent-bright);
+    }
+
+    .deal-card-contract {
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+    }
+    .deal-card-contract-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      line-height: 1.4;
+    }
+    .deal-card-contract-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .deal-card-contract-total strong {
+      font-family: var(--mono);
+      color: var(--accent-bright);
+      font-size: 12px;
+    }
+    .deal-card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .btn-card-contract {
+      flex: 1;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--accent-soft);
+      color: var(--accent-bright);
+      cursor: pointer;
+      transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    .btn-card-contract:hover {
+      background: var(--accent-glow);
+      border-color: var(--border-strong);
+    }
+    .modal-section-deal-terms {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      box-shadow: var(--shadow-sm);
     }
 
     /* Silo routing */
@@ -2146,6 +2294,21 @@
       padding: 4px 8px;
       min-height: 0;
     }
+    .website-leads-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--land);
+      color: #0f1a12;
+      font-size: 9px;
+      font-weight: 700;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
     .website-leads-header {
       display: flex;
       align-items: center;
@@ -2348,6 +2511,329 @@
     }
     .landid-link:hover { background: rgba(88,166,255,0.18); }
     .landid-link.muted { opacity: 0.7; border-style: dashed; }
+
+    .parcel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 6px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(114, 168, 120, 0.14);
+      border: 1px solid rgba(114, 168, 120, 0.35);
+      color: var(--land);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    .parcel-list { display: flex; flex-direction: column; gap: 8px; }
+    .parcel-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      padding: 10px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+    .parcel-row-primary { border-color: rgba(212, 181, 106, 0.28); }
+    .parcel-row-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .parcel-row-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      font-family: var(--mono);
+    }
+    .parcel-row-price {
+      font-size: 10px;
+      color: var(--accent-bright);
+      font-family: var(--mono);
+      margin-top: 4px;
+    }
+    .contract-lines { display: flex; flex-direction: column; gap: 10px; }
+    .contract-line-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.15fr .62fr .72fr .82fr 28px;
+      gap: 8px;
+      align-items: end;
+    }
+    .contract-line-row .btn-remove-deal {
+      margin-bottom: 2px;
+      align-self: end;
+    }
+    .contract-line-parcel-hint {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-family: var(--mono);
+    }
+    .file-upload-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border-subtle);
+      background: var(--bg-deep);
+    }
+    .file-upload-zone input[type="file"] {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .file-upload-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .attachment-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .attachment-chip {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+    .contract-line-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+    }
+    .contract-line-total strong {
+      font-family: var(--mono);
+      color: var(--accent-bright);
+      font-size: 14px;
+    }
+    .status-under-contract { background: rgba(114, 168, 120, 0.18); color: var(--land); }
+    .status-negotiating { background: rgba(232, 168, 88, 0.18); color: var(--orange); }
+    .status-closed { background: rgba(114, 168, 120, 0.28); color: #9fd4a5; }
+    .parcel-row-actions { display: flex; gap: 6px; align-items: flex-start; }
+    .parcel-add-form {
+      margin-top: 10px;
+      padding: 12px;
+      background: var(--bg-deep);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .parcel-add-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width: 640px) { .parcel-add-grid { grid-template-columns: 1fr; } }
+
+    .landid-assets { display: flex; flex-direction: column; gap: 12px; }
+    .landid-asset-card {
+      padding: 10px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+    .landid-asset-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .landid-asset-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .landid-asset-type {
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(88, 166, 255, 0.12);
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+    .modal-panel.has-landid-tour {
+      width: min(980px, 96vw);
+    }
+
+    .landid-presentation {
+      margin-bottom: 4px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-deep);
+      box-shadow: var(--shadow-sm);
+    }
+    .landid-presentation-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-deep) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .landid-presentation-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .landid-presentation-logo {
+      font-family: var(--serif);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .landid-presentation-logo em {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .landid-presentation-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .landid-presentation-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .landid-presentation-actions .btn-ghost {
+      font-size: 10px;
+      padding: 6px 10px;
+      min-height: 0;
+    }
+    .landid-presentation-embed {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      background: #0c0b09;
+    }
+    .landid-presentation-embed iframe {
+      display: block;
+      width: 100%;
+      height: 520px;
+      border: 0;
+      background: #0c0b09;
+    }
+    .landid-presentation-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+    }
+    .landid-tour-tab {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-deep);
+      color: var(--text-secondary);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+    .landid-tour-tab.active {
+      border-color: var(--border-strong);
+      color: var(--accent-bright);
+      background: var(--accent-soft);
+    }
+    .landid-presentation-empty {
+      padding: 18px 14px 14px;
+    }
+    .landid-presentation-empty p {
+      margin: 0 0 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .landid-embed-wrap {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-panel);
+    }
+    .landid-embed-wrap iframe {
+      display: block;
+      width: 100%;
+      min-height: 320px;
+      border: 0;
+      background: #0c0b09;
+    }
+
+    .landid-fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      display: none;
+      flex-direction: column;
+      background: rgba(8, 7, 5, 0.94);
+    }
+    .landid-fullscreen-overlay.open { display: flex; }
+    .landid-fullscreen-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .landid-fullscreen-toolbar span {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .landid-fullscreen-body {
+      flex: 1;
+      min-height: 0;
+    }
+    .landid-fullscreen-body iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #0c0b09;
+    }
+    .landid-asset-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .landid-asset-add {
+      margin-top: 10px;
+      padding: 12px;
+      background: var(--bg-deep);
+      border: 1px dashed rgba(88, 166, 255, 0.35);
+      border-radius: var(--radius-sm);
+    }
 
     .header-right {
       display: flex;
@@ -2619,6 +3105,23 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
+    .mobile-nav-util {
+      display: none;
+      flex: 0 0 auto;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 8px 10px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
     .mobile-nav-exit:hover {
       background: var(--accent-glow);
       border-color: var(--accent);
@@ -2742,7 +3245,40 @@
         display: none;
       }
 
-      .mobile-nav-exit { display: inline-flex; }
+      .mobile-nav-exit,
+      .mobile-nav-util { display: inline-flex; align-items: center; justify-content: center; }
+
+      .mobile-nav {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+      }
+
+      .landid-presentation-embed { min-height: min(52vh, 360px); }
+      .landid-presentation-embed iframe { height: min(52vh, 360px); }
+      .landid-presentation-head { flex-wrap: wrap; gap: 8px; }
+      .landid-presentation-actions { width: 100%; justify-content: flex-start; }
+      .landid-presentation-actions .btn-ghost {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 12px;
+      }
+      .landid-tour-tab { min-height: 36px; padding: 8px 12px; }
+      .landid-fullscreen-toolbar {
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        flex-wrap: wrap;
+      }
+      .landid-fullscreen-toolbar .btn { min-height: 44px; }
+
+      .website-leads-header .btn { min-height: 44px; padding: 8px 12px; font-size: 11px; }
+      .lead-actions { flex-direction: column; align-items: stretch; gap: 6px; }
+      .lead-actions .btn {
+        width: 100%;
+        min-height: 44px;
+        font-size: 12px;
+        justify-content: center;
+      }
+      .lead-row { padding: 12px; }
 
       .btn-share-link,
       .btn-feature-request {
@@ -2907,6 +3443,25 @@
         flex-direction: column;
       }
       .fr-actions-row .btn { width: 100%; min-width: 0; }
+
+      .partner-welcome { font-size: 11px; }
+      .partner-welcome-steps { margin-top: 8px; }
+      .pipeline-actions { width: 100%; }
+      .pipeline-actions .btn-add-deal { min-height: 44px; flex: 1; }
+      .view-toggle { width: 100%; }
+      .view-toggle button { flex: 1; min-height: 44px; }
+      .silo-header { flex-wrap: wrap; gap: 8px; }
+      .panel-card { padding: 12px; }
+      #intake-submit { min-height: 48px; font-size: 14px; }
+      .contract-line-row { grid-template-columns: 1fr 1fr; }
+      .contract-line-row .btn-remove-deal { grid-column: 2; justify-self: end; }
+    }
+
+    @media (max-width: 900px) and (min-width: 641px) {
+      .lead-actions { flex-wrap: wrap; }
+      .lead-actions .btn { min-height: 44px; }
+      .landid-presentation-embed iframe { height: 420px; }
+      .landid-presentation-embed { min-height: 420px; }
     }
   </style>
 </head>
@@ -2935,6 +3490,7 @@
       <div class="logo-text">
         <h1><span class="brand-serif">Barn to</span> <span class="brand-sans">Bank</span></h1>
         <span class="tagline">Raw tract → routed deal → funded</span>
+        <span class="kw-credit"><strong>Jack Zitlow</strong> · Keller Williams</span>
       </div>
     </div>
     </a>
@@ -2956,8 +3512,8 @@
           <span class="fr-badge hidden" id="fr-badge">0</span>
         </button>
         <button type="button" class="btn-sync" id="moat-sync-btn" title="Open Intel, comps, plat alerts, team sync">Intel</button>
-        <button type="button" class="btn-sync primary" id="moat-cloud-sync-header" title="Sync pipeline with Supabase">
-          <span class="hide-mobile">Cloud Sync</span><span class="show-mobile">Sync</span>
+        <button type="button" class="btn-sync primary" id="moat-cloud-sync-header" title="Force sync now (auto-sync runs in background)">
+          <span class="hide-mobile">Sync Now</span><span class="show-mobile">Sync</span>
         </button>
       </div>
       <div class="header-stats">
@@ -2985,6 +3541,7 @@
       <button type="button" data-panel="silos">Silos</button>
       <button type="button" data-panel="outreach">Outreach</button>
       <button type="button" data-panel="intel">Intel</button>
+      <button type="button" class="mobile-nav-util" id="mobile-sign-out" title="Sign out">Out</button>
     </div>
   </nav>
 
@@ -3028,6 +3585,12 @@
             <option value="Comal">Comal</option>
             <option value="Bexar">Bexar</option>
             <option value="Guadalupe">Guadalupe</option>
+            <option value="Gillespie">Gillespie</option>
+            <option value="Blanco">Blanco</option>
+            <option value="Burnet">Burnet</option>
+            <option value="Bandera">Bandera</option>
+            <option value="Kendall">Kendall</option>
+            <option value="Llano">Llano</option>
             <option value="Fort Bend">Fort Bend</option>
             <option value="Smith">Smith (Tyler)</option>
           </select>
@@ -3040,7 +3603,7 @@
 
       <div class="panel-card" id="website-leads-panel">
         <div class="website-leads-header">
-          <div class="section-title" style="margin-top:0">Website Leads</div>
+          <div class="section-title" style="margin-top:0">Website Leads<span class="website-leads-badge" id="website-leads-badge" hidden></span></div>
           <button type="button" class="btn btn-ghost" id="website-leads-refresh" style="font-size:9px;padding:4px 8px;">Refresh</button>
         </div>
         <p class="section-blurb" style="margin-top:-6px">Inquiries from the public site at <a href="/" target="_blank" rel="noopener" style="color:var(--accent)">barntobank.com</a> land here. Adopt into pipeline or dismiss.</p>
@@ -3080,6 +3643,12 @@
         <div class="enrichment-source" id="enrichment-source"></div>
         <div class="enrichment-grid" id="enrichment-grid"></div>
         <div class="enrichment-warn" id="enrichment-warn"></div>
+        <div class="form-group" id="enrich-target-wrap" style="display:none;margin-top:10px">
+          <label for="enrich-target-deal">Add to</label>
+          <select id="enrich-target-deal" style="width:100%">
+            <option value="">New deal in pipeline</option>
+          </select>
+        </div>
         <button type="button" class="btn btn-primary" style="margin-top:12px;width:100%" id="add-to-pipeline">+ Add to Pipeline</button>
       </div>
     </aside>
@@ -3098,6 +3667,22 @@
       </div>
       <div class="pipeline-toolbar">
         <div class="section-title" style="margin:0">Active Deals</div>
+        <div class="pipeline-filters">
+          <input type="search" class="pipeline-search" id="pipeline-search" placeholder="Search address, portfolio, owner, tags, notes…" autocomplete="off">
+          <select class="pipeline-filter-select" id="pipeline-filter-county" aria-label="Filter by county">
+            <option value="">All counties</option>
+          </select>
+          <select class="pipeline-filter-select" id="pipeline-filter-route" aria-label="Filter by route">
+            <option value="">All routes</option>
+            <option value="DEVELOP">Develop</option>
+            <option value="SELL">Sell</option>
+            <option value="RETAIL">Retail</option>
+          </select>
+          <select class="pipeline-filter-select" id="pipeline-filter-portfolio" aria-label="Filter by portfolio">
+            <option value="">All portfolios</option>
+          </select>
+          <span class="pipeline-filter-count" id="pipeline-filter-count"></span>
+        </div>
         <div class="pipeline-actions">
           <button type="button" class="btn-add-deal" id="pipeline-add-intake" title="Run Automation 1 intake">+ From Intake</button>
           <button type="button" class="btn-add-deal" id="pipeline-quick-add" title="Add a deal manually">+ Quick Add</button>
@@ -3232,7 +3817,7 @@
             <li><strong>Comp Lake</strong>, off market sales Texas MLS won’t show; pricing power stacks over time</li>
             <li><strong>Plat alerts</strong>, filings near your deals signal where builders are moving</li>
             <li><strong>Audit log</strong>, TCPA trail for every DNC scrub and queued contact</li>
-            <li><strong>Cloud Sync</strong>, share pipeline, comps, and outreach with Jack in one click</li>
+            <li><strong>Auto-sync</strong>, pipeline, comps, and outreach stay shared with Jack in the background</li>
           </ul>
         </div>
         <div class="sync-bar" id="sync-bar">
@@ -3243,7 +3828,7 @@
           <div class="sync-actions">
             <button type="button" class="btn-sync" id="moat-export-bundle">Export Bundle</button>
             <button type="button" class="btn-sync" id="moat-import-bundle">Import Bundle</button>
-            <button type="button" class="btn-sync" id="moat-cloud-sync">Cloud Sync</button>
+            <button type="button" class="btn-sync" id="moat-cloud-sync">Sync Now</button>
           </div>
         </div>
         <input type="file" id="moat-import-file" accept=".json,application/json" hidden>
@@ -3388,6 +3973,14 @@
             <label for="fr-context">Context (auto filled, editable)</label>
             <input type="text" id="fr-context" placeholder="Current screen / county / deal">
           </div>
+          <div class="form-group">
+            <label for="fr-attachments">Screenshot or PDF (optional)</label>
+            <div class="file-upload-zone">
+              <input type="file" id="fr-attachments" accept="application/pdf,image/png,image/jpeg,image/jpg,image/webp,image/gif" multiple>
+              <div class="file-upload-hint">Up to 2 files, 2MB each. Helps the team see exactly what you mean.</div>
+              <div class="attachment-preview" id="fr-attachment-preview"></div>
+            </div>
+          </div>
           <div class="fr-actions-row">
             <button type="submit" class="btn btn-primary" id="fr-submit">Submit Request</button>
             <button type="button" class="btn btn-ghost" id="fr-export">Export All (.json)</button>
@@ -3432,9 +4025,23 @@
               <option value="Comal">Comal</option>
               <option value="Bexar">Bexar</option>
               <option value="Guadalupe">Guadalupe</option>
+              <option value="Gillespie">Gillespie</option>
+              <option value="Blanco">Blanco</option>
+              <option value="Burnet">Burnet</option>
+              <option value="Bandera">Bandera</option>
+              <option value="Kendall">Kendall</option>
+              <option value="Llano">Llano</option>
               <option value="Fort Bend">Fort Bend</option>
               <option value="Smith">Smith (Tyler)</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label for="qa-project">Project / portfolio name</label>
+            <input type="text" id="qa-project" placeholder="e.g. Heimer — Guadalupe off market">
+          </div>
+          <div class="form-group">
+            <label for="qa-tags">Tags (comma separated)</label>
+            <input type="text" id="qa-tags" placeholder="off-market, heimer, coda">
           </div>
           <div class="form-group">
             <label for="qa-acres">Acres</label>
@@ -3463,6 +4070,19 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="landid-fullscreen-overlay" id="landid-fullscreen-overlay" aria-hidden="true">
+    <div class="landid-fullscreen-toolbar">
+      <span id="landid-fullscreen-title">LandID presentation</span>
+      <div style="display:flex;gap:8px">
+        <a class="btn btn-ghost" id="landid-fullscreen-open" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Open in id.land ↗</a>
+        <button type="button" class="btn btn-ghost" id="landid-fullscreen-close">Close</button>
+      </div>
+    </div>
+    <div class="landid-fullscreen-body">
+      <iframe id="landid-fullscreen-frame" title="LandID presentation" loading="lazy"></iframe>
+    </div>
+  </div>
 
   <!-- DEAL DETAIL MODAL -->
   <div class="modal-overlay" id="modal-overlay">
@@ -3505,7 +4125,8 @@
       // Feature requests, Jack (or anyone) submits via header button
       FEATURE_REQUESTS: {
         defaultSubmitter: 'Jack',
-        ownerEmail: 'jeremy@cto.com', // opens mailto draft on submit
+        apiUrl: '/api/feature-requests', // persisted to Supabase (team-visible)
+        ownerEmail: 'jeremy@cto.com', // mailto fallback if cloud save fails
         githubRepo: '', // set to 'user/repo' to also pre-fill GitHub issues
         webhookUrl: '', // optional POST endpoint (Slack, Zapier, Formspree, etc.)
       },
@@ -3756,6 +4377,7 @@
       { county: 'Bexar', submarket: 'South SA / Pearsall', acres: 16, pricePerAcre: 105000, buyer: 'Private investor', date: '2025-12', notes: 'Commercial pad adjacent' },
       { county: 'Smith', submarket: 'Tyler / South Loop', acres: 48, pricePerAcre: 22400, buyer: 'DR Horton', date: '2026-02', notes: 'Off market, FM 756 corridor' },
       { county: 'Smith', submarket: 'Tyler / Lindale ETJ', acres: 112, pricePerAcre: 16800, buyer: 'Lennar', date: '2025-10', notes: 'Estate tract; timber exemption' },
+      { county: 'Guadalupe', submarket: 'Seguin / Voigt corridor', acres: 112, pricePerAcre: 62857, buyer: 'Under contract', date: '2026-06', notes: 'Voigt Ranch: 104 ac @ $60K/ac ($6.24M) + 8 ac @ $100K/ac ($800K) = $7.04M' },
     ];
 
     // Plat filings seed, swap for county clerk / HBA feed
@@ -3930,6 +4552,7 @@
     // State, persisted in localStorage per browser
     // =========================================================================
     const DEALS_STORAGE_KEY = 'barn-to-bank-deals';
+    const DELETED_DEALS_STORAGE_KEY = 'barn-to-bank-deleted-deals';
     const OUTREACH_STORAGE_KEY = 'barn-to-bank-outreach';
     const COMPS_STORAGE_KEY = 'barn-to-bank-comps';
     const AUDIT_STORAGE_KEY = 'barn-to-bank-audit';
@@ -3980,12 +4603,58 @@
       }
     }
 
+    let deletedDealIds = [];
+
+    function loadDeletedDealIds() {
+      try {
+        const raw = localStorage.getItem(DELETED_DEALS_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed.filter((x) => x?.id) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveDeletedDealIds() {
+      try {
+        localStorage.setItem(DELETED_DEALS_STORAGE_KEY, JSON.stringify(deletedDealIds));
+      } catch (e) {
+        console.warn('Could not persist deleted deal tombstones:', e);
+      }
+    }
+
+    function markDealUpdated(deal) {
+      if (!deal) return deal;
+      deal.updatedAt = new Date().toISOString();
+      return deal;
+    }
+
+    function tombstoneDeal(id) {
+      if (!id) return;
+      const ts = new Date().toISOString();
+      const existing = deletedDealIds.find((x) => x.id === id);
+      if (existing) existing.deletedAt = ts;
+      else deletedDealIds.push({ id, deletedAt: ts });
+      deletedDealIds = deletedDealIds.slice(-500);
+      saveDeletedDealIds();
+    }
+
+    function clearDealTombstone(id) {
+      deletedDealIds = deletedDealIds.filter((x) => x.id !== id);
+      saveDeletedDealIds();
+    }
+
+    let suppressAutoCloudSync = false;
+    let onDealsSavedHook = null;
+
     function saveDeals() {
       try {
         localStorage.setItem(DEALS_STORAGE_KEY, JSON.stringify(deals));
       } catch (e) {
         console.warn('Could not persist deals:', e);
       }
+      if (!suppressAutoCloudSync) onDealsSavedHook?.();
     }
 
     /** Texas seed parcels, Bastrop, Caldwell, Comal, Bexar */
@@ -4000,6 +4669,89 @@
         mailingAddress,
         fetchedAt: new Date().toISOString(),
       };
+    }
+
+    function getVoigtAnchorDeal() {
+      const guadalupeMock = MOCK_ENRICHMENT_BY_COUNTY.Guadalupe;
+      return {
+        id: 'deal-guadalupe-voigt',
+        projectName: 'Voigt Ranch',
+        address: 'Voigt Ranch Tract',
+        city: 'Seguin',
+        county: 'Guadalupe',
+        parcelId: 'Voigt',
+        acreage: 112,
+        zoning: 'A-1 Agricultural',
+        askingPerAcre: 62857,
+        dealStage: 'under_contract',
+        enrichmentStatus: 'enriched',
+        contractPrice: 7040000,
+        contractLines: [
+          { id: 'line-voigt-main', label: 'Under contract', acres: 104, pricePerAcre: 60000, amount: 6240000 },
+          { id: 'line-voigt-last', label: 'Last 8 acres', acres: 8, pricePerAcre: 100000, amount: 800000 },
+        ],
+        route: 'DEVELOP',
+        bottlenecked: false,
+        owner: 'Voigt Family Ranch LLC',
+        ownerContact: buildSeedOwnerContact('Voigt Family', [{ number: '(830) 555-4400' }], 'Seguin TX 78155'),
+        taxHistory: buildTaxHistory(5984000, null),
+        utilities: [
+          { type: 'Electric', status: 'partial', detail: `Guadalupe EC, ${guadalupeMock.distPowerMi} mi` },
+          { type: 'Water', status: 'partial', detail: `GBRA, ${guadalupeMock.distWaterMi} mi` },
+          { type: 'Sewer', status: 'partial', detail: `${guadalupeMock.sewerCcn.split(',')[0].trim()}, ${guadalupeMock.distSewerMi} mi` },
+        ],
+        lat: 29.568, lng: -97.964,
+        sellerName: 'Voigt Family',
+        notes: '112 ac total. 104 ac under contract @ $60K/ac ($6.24M). Last 8 ac @ $100K/ac ($800K). Total $7.04M.\n\nJack confirmed 6/29/26: numbers correct as of today. Leave as-is for now. Briefing slide next week may shift acreage (more KB, less commercial). Log amendments in contract lines + Notes when pricing changes.',
+        dataSource: 'Guadalupe County CAD',
+        margin: { entitledValuePerAcre: 85000, flipValuePerAcre: 72000, retailCommissionPct: 3 },
+        parcels: [
+          { id: 'parcel-voigt-main', label: 'Main tract', address: 'Voigt Ranch', parcelId: 'Voigt-main', acreage: 104, city: 'Seguin', county: 'Guadalupe' },
+          { id: 'parcel-voigt-last', label: 'Last 8 acres', address: 'Voigt Ranch (remainder)', parcelId: 'Voigt-remainder', acreage: 8, city: 'Seguin', county: 'Guadalupe' },
+        ],
+      };
+    }
+
+    function isVoigtDeal(deal) {
+      const hay = [deal?.projectName, deal?.address, deal?.sellerName, deal?.parcelId, deal?.notes].filter(Boolean).join(' ');
+      return /voigt/i.test(hay) || deal?.id === 'deal-guadalupe-voigt';
+    }
+
+    function dealHasContractData(deal) {
+      normalizeDeal(deal);
+      if (deal.contractPrice > 0) return true;
+      return (deal.contractLines || []).some((line) => contractLineAmount(line) > 0);
+    }
+
+    function ensureAnchorDeals(list) {
+      const anchor = getVoigtAnchorDeal();
+      let existing = list.find((d) => d.id === anchor.id);
+      if (!existing) existing = list.find((d) => isVoigtDeal(d));
+      if (!existing) {
+        list.unshift(normalizeDeal({ ...anchor }));
+        return list;
+      }
+      if (!dealHasContractData(existing)) {
+        existing.dealStage = anchor.dealStage;
+        existing.contractLines = anchor.contractLines.map((line) => ({ ...line }));
+        existing.contractPrice = anchor.contractPrice;
+        existing.askingPerAcre = anchor.askingPerAcre;
+        existing.acreage = anchor.acreage;
+        if (!existing.projectName?.trim()) existing.projectName = anchor.projectName;
+        if (!existing.parcels?.length || existing.parcels.length === 1) {
+          existing.parcels = anchor.parcels.map((p) => ({ ...p }));
+        }
+        if (!existing.notes?.includes('7.04')) {
+          existing.notes = [existing.notes, anchor.notes].filter(Boolean).join('\n');
+        }
+        normalizeDeal(existing);
+      }
+      const jackConfirm = 'Jack confirmed 6/29/26';
+      if (!existing.notes?.includes(jackConfirm)) {
+        const confirmNote = 'Jack confirmed 6/29/26: numbers correct as of today. Leave as-is for now. Briefing slide next week may shift acreage (more KB, less commercial). Log amendments in contract lines + Notes when pricing changes.';
+        existing.notes = [existing.notes, confirmNote].filter(Boolean).join('\n\n');
+      }
+      return list;
     }
 
     function getSeedDeals() {
@@ -4118,12 +4870,20 @@
 
     const SEED_DEAL_IDS = new Set(getSeedDeals().map((d) => d.id));
 
+    function isDealTombstonedLocally(id) {
+      return deletedDealIds.some((x) => x.id === id);
+    }
+
+    function filterHiddenDeals(list) {
+      return (list || []).filter((d) => d?.id && !SAMPLE_DEAL_IDS.has(d.id) && !isDealTombstonedLocally(d.id));
+    }
+
     function initDeals() {
-      const loaded = loadPersistedDeals().filter((d) => d && d.id && !SAMPLE_DEAL_IDS.has(d.id));
-      const seeds = getSeedDeals();
-      if (loaded.length === 0) return seeds;
-      const missing = seeds.filter((s) => !loaded.some((d) => d.id === s.id));
-      return [...loaded, ...missing];
+      const loaded = filterHiddenDeals(loadPersistedDeals());
+      const hadPersistedData = localStorage.getItem(DEALS_STORAGE_KEY) != null;
+      // Demo seed tracts only on a true first visit (no saved pipeline yet).
+      if (!hadPersistedData && loaded.length === 0) return getSeedDeals();
+      return loaded;
     }
 
     function computeBottlenecked(deal) {
@@ -4916,6 +5676,818 @@
       return `<a class="landid-link${muted}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>`;
     }
 
+    function parcelFromFields(source, opts = {}) {
+      return {
+        id: opts.id || `parcel-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        label: opts.label || '',
+        address: source.address || '',
+        city: source.city || '',
+        parcelId: source.parcelId || '',
+        acreage: parseFloat(source.acreage) || 0,
+        lat: source.lat ?? null,
+        lng: source.lng ?? null,
+        landIdUrl: source.landIdUrl || null,
+        landIdParcelId: source.landIdParcelId || null,
+        landIdTourUrl: source.landIdTourUrl || null,
+        notes: source.notes || '',
+        pricePerAcre: parseFloat(source.pricePerAcre) || 0,
+        contractAmount: parseFloat(source.contractAmount) || 0,
+      };
+    }
+
+    function getDealParcels(deal) {
+      if (Array.isArray(deal.parcels) && deal.parcels.length) return deal.parcels;
+      return [parcelFromFields(deal, { id: `parcel-${deal.id || 'primary'}-0` })];
+    }
+
+    function syncDealAggregates(deal) {
+      const parcels = getDealParcels(deal);
+      deal.parcels = parcels;
+      deal.acreage = parcels.reduce((sum, p) => sum + (parseFloat(p.acreage) || 0), 0);
+
+      const primary = parcels[0];
+      if (!primary) return deal;
+
+      if (!deal.projectName) {
+        deal.address = primary.address || deal.address;
+        deal.city = primary.city || deal.city;
+      }
+      deal.parcelId = parcels.length > 1
+        ? parcels.map((p) => p.parcelId).filter(Boolean).join(' · ') || `${parcels.length} parcels`
+        : (primary.parcelId || deal.parcelId);
+
+      const withCoords = parcels.find((p) => p.lat != null && p.lng != null) || primary;
+      deal.lat = withCoords.lat ?? deal.lat ?? null;
+      deal.lng = withCoords.lng ?? deal.lng ?? null;
+      deal.landIdUrl = deal.landIdUrl || primary.landIdUrl || null;
+      deal.landIdParcelId = deal.landIdParcelId || primary.landIdParcelId || null;
+      syncContractTotals(deal);
+      return deal;
+    }
+
+    function parseTagsInput(raw) {
+      if (Array.isArray(raw)) return raw.map((t) => String(t).trim().toLowerCase()).filter(Boolean);
+      return String(raw || '')
+        .split(/[,;]+/)
+        .map((t) => t.trim().toLowerCase())
+        .filter(Boolean);
+    }
+
+    function dealSearchHaystack(deal) {
+      normalizeDeal(deal);
+      const tagStr = (deal.tags || []).join(' ');
+      const parcelIds = (deal.parcels || []).map((p) => p.parcelId).filter(Boolean).join(' ');
+      return [
+        deal.projectName,
+        deal.portfolioName,
+        deal.portfolioId,
+        deal.ownerKey,
+        deal.address,
+        deal.city,
+        deal.county,
+        deal.sellerName,
+        deal.owner,
+        deal.parcelId,
+        parcelIds,
+        deal.landIdParcelId,
+        deal.notes,
+        tagStr,
+      ].filter(Boolean).join(' ').toLowerCase();
+    }
+
+    function normalizeDeal(deal) {
+      if (!deal) return deal;
+      if (!Array.isArray(deal.landIdAssets)) deal.landIdAssets = [];
+      if (!Array.isArray(deal.tags)) deal.tags = parseTagsInput(deal.tags);
+      else deal.tags = parseTagsInput(deal.tags);
+      if (deal.portfolioName && !deal.portfolioId) {
+        deal.portfolioId = deal.portfolioName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+      if (!Array.isArray(deal.parcels) || !deal.parcels.length) {
+        deal.parcels = [parcelFromFields(deal, { id: `parcel-${deal.id || Date.now()}-primary` })];
+      }
+      return syncDealAggregates(deal);
+    }
+
+    function renderDealMetaHtml(deal) {
+      const bits = [];
+      if (deal.portfolioName) {
+        bits.push(`<div class="deal-portfolio-label">${escapeHtml(deal.portfolioName)}</div>`);
+      }
+      if (deal.tags?.length) {
+        bits.push(`<div>${deal.tags.slice(0, 4).map((t) => `<span class="deal-tag">${escapeHtml(t)}</span>`).join('')}${deal.tags.length > 4 ? `<span class="deal-tag">+${deal.tags.length - 4}</span>` : ''}</div>`);
+      }
+      return bits.join('');
+    }
+
+    const pipelineFilters = { query: '', county: '', route: '', portfolio: '' };
+
+    function getFilteredDeals() {
+      const q = pipelineFilters.query.trim().toLowerCase();
+      return deals.filter((d) => {
+        normalizeDeal(d);
+        if (pipelineFilters.county && d.county !== pipelineFilters.county) return false;
+        if (pipelineFilters.route && d.route !== pipelineFilters.route) return false;
+        if (pipelineFilters.portfolio) {
+          const pid = d.portfolioId || d.portfolioName || '';
+          if (pid !== pipelineFilters.portfolio) return false;
+        }
+        if (q && !dealSearchHaystack(d).includes(q)) return false;
+        return true;
+      });
+    }
+
+    function refreshPipelineFilterOptions() {
+      const countySel = document.getElementById('pipeline-filter-county');
+      const portfolioSel = document.getElementById('pipeline-filter-portfolio');
+      if (countySel) {
+        const prev = pipelineFilters.county;
+        const counties = [...new Set(deals.map((d) => d.county).filter(Boolean))].sort();
+        countySel.innerHTML = `<option value="">All counties</option>${counties.map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('')}`;
+        countySel.value = counties.includes(prev) ? prev : '';
+        pipelineFilters.county = countySel.value;
+      }
+      if (portfolioSel) {
+        const prev = pipelineFilters.portfolio;
+        const portfolios = [...new Map(
+          deals
+            .filter((d) => d.portfolioId || d.portfolioName)
+            .map((d) => [d.portfolioId || d.portfolioName, d.portfolioName || d.portfolioId]),
+        ).entries()].sort((a, b) => String(a[1]).localeCompare(String(b[1])));
+        portfolioSel.innerHTML = `<option value="">All portfolios</option>${portfolios.map(([id, name]) => `<option value="${escapeHtml(id)}">${escapeHtml(name)}</option>`).join('')}`;
+        portfolioSel.value = portfolios.some(([id]) => id === prev) ? prev : '';
+        pipelineFilters.portfolio = portfolioSel.value;
+      }
+      const countEl = document.getElementById('pipeline-filter-count');
+      if (countEl) {
+        const shown = getFilteredDeals().length;
+        countEl.textContent = shown === deals.length ? `${deals.length} deals` : `${shown} of ${deals.length}`;
+      }
+    }
+
+    function dealDisplayTitle(deal) {
+      if (deal.projectName?.trim()) return deal.projectName.trim();
+      if (deal.sellerName?.trim()) return deal.sellerName.trim();
+      const parcels = getDealParcels(deal);
+      if (parcels.length > 1) {
+        const lead = parcels[0].address || deal.address;
+        return `${lead} + ${parcels.length - 1} parcel${parcels.length > 2 ? 's' : ''}`;
+      }
+      return deal.address;
+    }
+
+    function dealParcelSummary(deal) {
+      const parcels = getDealParcels(deal);
+      const acres = fmtNum(deal.acreage);
+      if (parcels.length > 1) {
+        return `${parcels.length} parcels · ${acres} acres · ${deal.county} County`;
+      }
+      return `${deal.parcelId} · ${deal.county} County · ${acres} acres`;
+    }
+
+    function parcelCountBadge(deal) {
+      const count = getDealParcels(deal).length;
+      return count > 1 ? `<span class="parcel-badge">${count} parcels</span>` : '';
+    }
+
+    function parseLandIdTourUrl(raw) {
+      const text = String(raw || '').trim();
+      const iframeMatch = text.match(/src=['"]([^'"]+)['"]/i);
+      const candidate = iframeMatch ? iframeMatch[1] : text;
+      const match = candidate.match(/id\.land\/tour\/([a-f0-9-]+)/i);
+      if (!match) return null;
+      const tourId = match[1];
+      const viewUrl = `https://id.land/tour/${tourId}`;
+      const embedUrl = `${viewUrl}?published=true`;
+      return { type: 'tour', title: 'LandID tour', url: viewUrl, embedUrl, tourId };
+    }
+
+    function parseLandIdAssetInput(raw, title = '') {
+      const text = String(raw || '').trim();
+      if (!text) return null;
+
+      const tour = parseLandIdTourUrl(text);
+      if (tour) {
+        tour.title = title?.trim() || tour.title;
+        return tour;
+      }
+
+      if (/id\.land/i.test(text)) {
+        return {
+          type: 'link',
+          title: title?.trim() || 'LandID link',
+          url: text.replace(/^<|>$/g, ''),
+          embedUrl: null,
+        };
+      }
+
+      if (/^data:application\/pdf/i.test(text)) {
+        return {
+          type: 'pdf',
+          title: title?.trim() || 'Attached PDF',
+          url: text,
+          embedUrl: text,
+          source: 'upload',
+        };
+      }
+
+      if (/^data:image\//i.test(text)) {
+        return {
+          type: 'image',
+          title: title?.trim() || 'Attached image',
+          url: text,
+          embedUrl: null,
+          source: 'upload',
+        };
+      }
+
+      if (/\.pdf(\?|#|$)/i.test(text)) {
+        return {
+          type: 'pdf',
+          title: title?.trim() || 'PDF overlay',
+          url: text,
+          embedUrl: null,
+        };
+      }
+
+      return {
+        type: 'overlay',
+        title: title?.trim() || 'Map overlay',
+        url: text,
+        embedUrl: null,
+      };
+    }
+
+    const MAX_UPLOAD_BYTES = 2 * 1024 * 1024;
+    const MAX_FR_ATTACHMENTS = 2;
+
+    async function readUploadFile(file, maxBytes = MAX_UPLOAD_BYTES) {
+      if (!file) throw new Error('No file selected');
+      if (file.size > maxBytes) {
+        throw new Error(`File too large (${Math.round(file.size / 1024)}KB). Max ${Math.round(maxBytes / 1024)}KB.`);
+      }
+      const allowed = /^(application\/pdf|image\/(png|jpeg|jpg|webp|gif))$/i;
+      if (!allowed.test(file.type)) {
+        throw new Error('Use a PDF or image (PNG, JPG, WebP).');
+      }
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Could not read file'));
+        reader.readAsDataURL(file);
+      });
+      return {
+        name: file.name,
+        mime: file.type,
+        size: file.size,
+        dataUrl: String(dataUrl),
+      };
+    }
+
+    function assetOpenUrl(asset) {
+      if (!asset?.url) return '#';
+      return asset.url;
+    }
+
+    function addParcelToDeal(deal, source) {
+      normalizeDeal(deal);
+      const parcel = parcelFromFields(source);
+      deal.parcels.push(parcel);
+      syncDealAggregates(deal);
+      return parcel;
+    }
+
+    function removeParcelFromDeal(deal, parcelId) {
+      normalizeDeal(deal);
+      if (deal.parcels.length <= 1) return false;
+      deal.parcels = deal.parcels.filter((p) => p.id !== parcelId);
+      syncDealAggregates(deal);
+      return true;
+    }
+
+    function addLandIdAssetToDeal(deal, raw, title = '', forcedType = '') {
+      normalizeDeal(deal);
+      const parsed = parseLandIdAssetInput(raw, title);
+      if (!parsed) return null;
+      if (forcedType) {
+        parsed.type = forcedType;
+        if (forcedType !== 'tour') parsed.embedUrl = null;
+        if (forcedType === 'tour' && !parsed.embedUrl) {
+          const tour = parseLandIdTourUrl(raw);
+          if (tour) {
+            parsed.url = tour.url;
+            parsed.embedUrl = tour.embedUrl;
+          }
+        }
+      }
+      const asset = {
+        id: `asset-${Date.now()}`,
+        type: parsed.type,
+        title: parsed.title,
+        url: parsed.url,
+        embedUrl: parsed.embedUrl || null,
+        source: parsed.source || 'url',
+        fileName: parsed.fileName || null,
+        mime: parsed.mime || null,
+      };
+      deal.landIdAssets.unshift(asset);
+      return asset;
+    }
+
+    function removeLandIdAssetFromDeal(deal, assetId) {
+      if (!Array.isArray(deal.landIdAssets)) return false;
+      const removed = deal.landIdAssets.find((a) => a.id === assetId);
+      const before = deal.landIdAssets.length;
+      deal.landIdAssets = deal.landIdAssets.filter((a) => a.id !== assetId);
+      if (removed && deal.landIdTourUrl && (removed.url === deal.landIdTourUrl || removed.embedUrl === parseLandIdTourUrl(deal.landIdTourUrl)?.embedUrl)) {
+        const nextTour = collectDealLandIdTours(deal)[0];
+        deal.landIdTourUrl = nextTour?.url || '';
+      }
+      return deal.landIdAssets.length < before;
+    }
+
+    function collectDealLandIdTours(deal) {
+      normalizeDeal(deal);
+      const seen = new Set();
+      const tours = [];
+
+      const pushTour = (raw, title = 'LandID presentation', id = '') => {
+        const parsed = parseLandIdTourUrl(raw);
+        if (!parsed || seen.has(parsed.tourId)) return;
+        seen.add(parsed.tourId);
+        tours.push({
+          id: id || `tour-${parsed.tourId}`,
+          title: title?.trim() || 'LandID presentation',
+          url: parsed.url,
+          embedUrl: parsed.embedUrl,
+          tourId: parsed.tourId,
+        });
+      };
+
+      if (deal.landIdTourUrl) pushTour(deal.landIdTourUrl, deal.projectName || dealDisplayTitle(deal), 'primary-tour');
+
+      (deal.landIdAssets || []).forEach((asset) => {
+        if (asset.type !== 'tour') return;
+        pushTour(asset.embedUrl || asset.url, asset.title, asset.id);
+      });
+
+      getDealParcels(deal).forEach((parcel, idx) => {
+        if (!parcel.landIdTourUrl) return;
+        pushTour(
+          parcel.landIdTourUrl,
+          parcel.label || parcel.address || `Parcel ${idx + 1}`,
+          `parcel-tour-${parcel.id}`,
+        );
+      });
+
+      return tours;
+    }
+
+    function setDealPrimaryTour(deal, raw, title = '') {
+      const parsed = parseLandIdTourUrl(raw);
+      if (!parsed) return null;
+      normalizeDeal(deal);
+      deal.landIdTourUrl = parsed.url;
+      const existing = (deal.landIdAssets || []).find((a) => a.type === 'tour' && (
+        a.url === parsed.url || a.embedUrl === parsed.embedUrl
+      ));
+      if (!existing) {
+        deal.landIdAssets.unshift({
+          id: `asset-${Date.now()}`,
+          type: 'tour',
+          title: title?.trim() || deal.projectName || 'LandID presentation',
+          url: parsed.url,
+          embedUrl: parsed.embedUrl,
+        });
+      }
+      return parsed;
+    }
+
+    function renderLandIdPresentationEmbed(tour, { active = true } = {}) {
+      return `
+        <div class="landid-presentation-embed" data-tour-embed="${escapeHtml(tour.tourId)}"${active ? '' : ' hidden'}>
+          <iframe
+            loading="lazy"
+            frameborder="0"
+            title="${escapeHtml(tour.title)}"
+            src="${escapeHtml(tour.embedUrl)}"
+            allow="fullscreen"
+          ></iframe>
+        </div>`;
+    }
+
+    function renderDealLandIdPresentationHtml(deal) {
+      const tours = collectDealLandIdTours(deal);
+      const primary = tours[0];
+
+      if (!primary) {
+        return `
+          <div class="modal-section" style="margin-bottom:16px">
+            <div class="landid-presentation">
+              <div class="landid-presentation-head">
+                <div class="landid-presentation-brand">
+                  <span class="landid-presentation-logo">Land <em>id</em>®</span>
+                  <span class="landid-presentation-title">Presentation tour</span>
+                </div>
+              </div>
+              <div class="landid-presentation-empty">
+                <p>Paste a published LandID tour to show the interactive map presentation on this deal, same as presentation mode on id.land.</p>
+                <div class="form-group" style="margin-bottom:8px">
+                  <label for="landid-tour-url-input">LandID tour URL</label>
+                  <input type="text" class="landid-tour-url-input" id="landid-tour-url-input" placeholder="https://id.land/tour/b569b863-b023-4504-90e0-48e5cce9a7c3">
+                </div>
+                <button type="button" class="btn btn-primary landid-tour-url-submit" style="width:100%">Show Presentation</button>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      const tabs = tours.length > 1
+        ? `<div class="landid-presentation-tabs">
+            ${tours.map((t, idx) => `
+              <button type="button" class="landid-tour-tab${idx === 0 ? ' active' : ''}" data-tour-tab="${escapeHtml(t.tourId)}">
+                ${escapeHtml(t.title)}
+              </button>`).join('')}
+          </div>`
+        : '';
+
+      return `
+        <div class="modal-section" style="margin-bottom:16px">
+          <div class="landid-presentation" id="deal-landid-presentation">
+            <div class="landid-presentation-head">
+              <div class="landid-presentation-brand">
+                <span class="landid-presentation-logo">Land <em>id</em>®</span>
+                <span class="landid-presentation-title">${escapeHtml(primary.title)}</span>
+              </div>
+              <div class="landid-presentation-actions">
+                <a class="btn btn-ghost" href="${escapeHtml(primary.url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Open ↗</a>
+                <button type="button" class="btn btn-ghost" data-landid-fullscreen="${escapeHtml(primary.embedUrl)}" data-landid-title="${escapeHtml(primary.title)}" data-landid-open="${escapeHtml(primary.url)}">Fullscreen</button>
+              </div>
+            </div>
+            ${tours.map((t, idx) => renderLandIdPresentationEmbed(t, { active: idx === 0 })).join('')}
+            ${tabs}
+          </div>
+          <details style="margin-top:10px;font-size:11px;color:var(--text-muted)">
+            <summary style="cursor:pointer;font-weight:600;color:var(--text-secondary)">Change tour URL</summary>
+            <div style="margin-top:8px">
+              <input type="text" class="landid-tour-url-input" value="${escapeHtml(primary.url)}" placeholder="https://id.land/tour/…" style="width:100%;margin-bottom:8px">
+              <button type="button" class="btn btn-ghost landid-tour-url-submit" style="width:100%">Update Presentation</button>
+            </div>
+          </details>
+        </div>`;
+    }
+
+    function openLandIdFullscreen(embedUrl, title, openUrl) {
+      const overlay = document.getElementById('landid-fullscreen-overlay');
+      const frame = document.getElementById('landid-fullscreen-frame');
+      const titleEl = document.getElementById('landid-fullscreen-title');
+      const openEl = document.getElementById('landid-fullscreen-open');
+      if (!overlay || !frame) return;
+      frame.src = embedUrl;
+      if (titleEl) titleEl.textContent = title || 'LandID presentation';
+      if (openEl) openEl.href = openUrl || embedUrl.replace('?published=true', '');
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLandIdFullscreen() {
+      const overlay = document.getElementById('landid-fullscreen-overlay');
+      const frame = document.getElementById('landid-fullscreen-frame');
+      if (!overlay) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (frame) frame.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    function bindLandIdPresentationEvents(deal) {
+      document.querySelector('.landid-tour-url-submit')?.addEventListener('click', () => {
+        const raw = document.querySelector('.landid-tour-url-input')?.value?.trim();
+        if (!raw) {
+          showToast('Paste a LandID tour URL', 'warn');
+          return;
+        }
+        const parsed = setDealPrimaryTour(deal, raw, deal.projectName || dealDisplayTitle(deal));
+        if (!parsed) {
+          showToast('Could not parse that tour URL', 'warn');
+          return;
+        }
+        saveDeals();
+        renderModal(deal);
+        document.getElementById('modal-panel')?.classList.add('has-landid-tour');
+        showToast('LandID presentation loaded');
+      });
+
+      document.querySelectorAll('[data-landid-fullscreen]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          openLandIdFullscreen(btn.dataset.landidFullscreen, btn.dataset.landidTitle, btn.dataset.landidOpen);
+        });
+      });
+
+      document.querySelectorAll('[data-tour-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tourId = btn.dataset.tourTab;
+          document.querySelectorAll('.landid-tour-tab').forEach((t) => t.classList.toggle('active', t.dataset.tourTab === tourId));
+          document.querySelectorAll('[data-tour-embed]').forEach((el) => {
+            el.hidden = el.dataset.tourEmbed !== tourId;
+          });
+        });
+      });
+    }
+
+    function contractLineParcelLabel(deal, parcelId) {
+      if (!parcelId) return '';
+      const parcel = getDealParcels(deal).find((p) => p.id === parcelId);
+      if (!parcel) return '';
+      const name = parcel.label || parcel.address || parcel.parcelId || 'Parcel';
+      return `${name} · ${fmtNum(parcel.acreage)} ac`;
+    }
+
+    function contractLineParcelOptionsHtml(deal, line, idx) {
+      const parcels = getDealParcels(deal);
+      const opts = parcels.map((p) => {
+        const label = p.label || p.address || p.parcelId || `Parcel ${p.id.slice(-4)}`;
+        const selected = line.parcelId === p.id ? ' selected' : '';
+        return `<option value="${escapeHtml(p.id)}"${selected}>${escapeHtml(label)} (${fmtNum(p.acreage)} ac)</option>`;
+      }).join('');
+      return `
+        <select class="contract-line-parcel" data-line-idx="${idx}">
+          <option value="">Link parcel (optional)</option>
+          ${opts}
+        </select>
+        ${line.parcelId ? `<div class="contract-line-parcel-hint">${escapeHtml(contractLineParcelLabel(deal, line.parcelId))}</div>` : ''}`;
+    }
+
+    function addContractLineToDeal(deal, seed = {}) {
+      ensureContractLines(deal);
+      deal.contractLines.push({
+        id: seed.id || `line-${Date.now()}`,
+        label: seed.label || '',
+        acres: seed.acres ?? 0,
+        pricePerAcre: seed.pricePerAcre ?? 0,
+        amount: seed.amount ?? null,
+        parcelId: seed.parcelId || '',
+      });
+      return deal;
+    }
+
+    function removeContractLineFromDeal(deal, idx) {
+      ensureContractLines(deal);
+      if (deal.contractLines.length <= 1) return false;
+      deal.contractLines.splice(idx, 1);
+      syncContractLinesToParcels(deal);
+      syncContractTotals(deal);
+      return true;
+    }
+
+    function syncContractLinesToParcels(deal) {
+      const parcels = getDealParcels(deal);
+      parcels.forEach((p) => {
+        p.contractAmount = 0;
+        p.pricePerAcre = 0;
+      });
+      (deal.contractLines || []).forEach((line) => {
+        if (!line.parcelId) return;
+        const parcel = parcels.find((p) => p.id === line.parcelId);
+        if (!parcel) return;
+        const amount = contractLineAmount(line);
+        parcel.contractAmount = amount;
+        const acres = parseFloat(line.acres) || parseFloat(parcel.acreage) || 0;
+        parcel.pricePerAcre = acres > 0 ? Math.round(amount / acres) : (parseFloat(line.pricePerAcre) || 0);
+      });
+      deal.parcels = parcels;
+      return deal;
+    }
+
+    function renderDealTermsSectionHtml(deal) {
+      ensureContractLines(deal);
+      const lines = deal.contractLines;
+      const total = lines.reduce((sum, line) => sum + contractLineAmount(line), 0);
+      const blended = deal.acreage > 0 && total > 0 ? Math.round(total / deal.acreage) : (deal.askingPerAcre || 0);
+      const lineRows = lines.map((line, idx) => `
+        <div class="contract-line-row" data-contract-line="${idx}">
+          <div class="form-group" style="margin:0">
+            <label>Line ${idx + 1}</label>
+            <input type="text" class="contract-line-label" data-line-idx="${idx}" value="${escapeHtml(line.label || '')}" placeholder="Residential / EMS / Commercial">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Parcel</label>
+            ${contractLineParcelOptionsHtml(deal, line, idx)}
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Acres</label>
+            <input type="number" class="contract-line-acres" data-line-idx="${idx}" min="0" step="0.01" value="${line.acres ?? ''}">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>$/Acre</label>
+            <input type="number" class="contract-line-ppa" data-line-idx="${idx}" min="0" step="1000" value="${line.pricePerAcre ?? ''}">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label>Amount</label>
+            <input type="number" class="contract-line-amount" data-line-idx="${idx}" min="0" step="1000" value="${contractLineAmount(line) || ''}" placeholder="Auto">
+          </div>
+          ${lines.length > 1 ? `<button type="button" class="btn-remove-deal" data-remove-contract-line="${idx}" title="Remove line" aria-label="Remove line">×</button>` : '<span></span>'}
+        </div>`).join('');
+
+      return `
+        <div class="modal-section modal-section-deal-terms" id="modal-deal-terms">
+          <h4>Deal stage &amp; contract</h4>
+          <p style="font-size:11px;color:var(--text-muted);margin:0 0 10px;line-height:1.45">
+            Set pipeline stage and contract lines (acres, $/acre, amount). Saves automatically when you edit.
+          </p>
+          <div class="outreach-crm-grid" style="margin-bottom:12px">
+            <div class="form-group">
+              <label for="modal-deal-stage">Pipeline stage</label>
+              <select id="modal-deal-stage">
+                ${Object.entries(DEAL_STAGES).map(([k, v]) =>
+                  `<option value="${k}" ${pipelineStage(deal) === k ? 'selected' : ''}>${escapeHtml(v)}</option>`
+                ).join('')}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="modal-buyer">Buyer / counterparty</label>
+              <input type="text" id="modal-buyer" placeholder="KB Homes" value="${escapeHtml(deal.buyerName || '')}">
+            </div>
+          </div>
+          <div class="contract-lines" id="contract-lines-wrap">${lineRows}</div>
+          <button type="button" class="btn btn-ghost" id="contract-line-add" style="width:100%;margin-top:8px">+ Add contract line</button>
+          <div class="contract-line-total">
+            <span>Contract total · blended <strong>${fmt(blended)}/ac</strong> over ${fmtNum(deal.acreage)} ac</span>
+            <strong id="modal-contract-total-display">${fmt(total)}</strong>
+          </div>
+        </div>`;
+    }
+
+    function renderParcelsSectionHtml(deal) {
+      const parcels = getDealParcels(deal);
+      const rows = parcels.map((p, idx) => {
+        const links = [
+          p.landIdUrl ? `<a class="landid-link" style="margin-top:0" href="${escapeHtml(p.landIdUrl)}" target="_blank" rel="noopener noreferrer">Discover ↗</a>` : '',
+          p.landIdTourUrl ? `<a class="landid-link" style="margin-top:0" href="${escapeHtml(p.landIdTourUrl)}" target="_blank" rel="noopener noreferrer">Tour ↗</a>` : '',
+        ].filter(Boolean).join('');
+        const priceLine = p.pricePerAcre > 0 || p.contractAmount > 0
+          ? `<div class="parcel-row-price">${p.pricePerAcre > 0 ? `${fmt(p.pricePerAcre)}/ac` : ''}${p.contractAmount > 0 ? ` · ${fmt(p.contractAmount)}` : ''}</div>`
+          : '';
+        return `
+          <div class="parcel-row${idx === 0 ? ' parcel-row-primary' : ''}" data-parcel-id="${escapeHtml(p.id)}">
+            <div>
+              <div class="parcel-row-title">${escapeHtml(p.label || p.address || `Parcel ${idx + 1}`)}</div>
+              <div class="parcel-row-meta">
+                ${escapeHtml(p.parcelId || 'No parcel ID')} · ${fmtNum(p.acreage)} ac
+                ${p.city ? ` · ${escapeHtml(p.city)}` : ''}
+                ${p.notes ? `<br>${escapeHtml(p.notes)}` : ''}
+              </div>
+              ${priceLine}
+              ${links ? `<div class="landid-asset-links">${links}</div>` : ''}
+            </div>
+            <div class="parcel-row-actions">
+              ${parcels.length > 1 ? `<button type="button" class="btn-remove-deal" data-remove-parcel="${escapeHtml(p.id)}" title="Remove parcel">×</button>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+
+      return `
+        <div class="modal-section">
+          <h4>Parcels <span style="font-size:10px;color:var(--text-muted);font-weight:500">(${parcels.length})</span></h4>
+          <p style="font-size:11px;color:var(--text-muted);margin:0 0 10px;line-height:1.45">
+            Group multiple tracts under one deal. Acreage and pipeline totals roll up automatically.
+          </p>
+          <div class="form-group" style="margin-bottom:10px">
+            <label for="modal-project-name">Project / deal name (optional)</label>
+            <input type="text" id="modal-project-name" placeholder="e.g. ES FM 1044 — KB Homes" value="${escapeHtml(deal.projectName || '')}">
+          </div>
+          <div class="outreach-crm-grid" style="margin-bottom:10px">
+            <div class="form-group" style="margin:0">
+              <label for="modal-portfolio-name">Portfolio name</label>
+              <input type="text" id="modal-portfolio-name" placeholder="e.g. Heimer — Guadalupe off market" value="${escapeHtml(deal.portfolioName || '')}">
+            </div>
+            <div class="form-group" style="margin:0">
+              <label for="modal-owner-key">Owner key (LLC rollup)</label>
+              <input type="text" id="modal-owner-key" placeholder="e.g. heimer" value="${escapeHtml(deal.ownerKey || '')}">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:10px">
+            <label for="modal-tags">Tags (comma separated)</label>
+            <input type="text" id="modal-tags" placeholder="off-market, coda, lennar" value="${escapeHtml((deal.tags || []).join(', '))}">
+          </div>
+          <div class="parcel-list">${rows}</div>
+          <div class="parcel-add-form">
+            <div style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Add parcel</div>
+            <div class="parcel-add-grid">
+              <div class="form-group">
+                <label for="parcel-add-address">Address / tract label</label>
+                <input type="text" id="parcel-add-address" placeholder="FM 1044 North Tract">
+              </div>
+              <div class="form-group">
+                <label for="parcel-add-id">Parcel / APN</label>
+                <input type="text" id="parcel-add-id" placeholder="GCAD-12345">
+              </div>
+              <div class="form-group">
+                <label for="parcel-add-acres">Acres</label>
+                <input type="number" id="parcel-add-acres" min="0" step="0.1" placeholder="18.6">
+              </div>
+              <div class="form-group">
+                <label for="parcel-add-tour">LandID tour URL (optional)</label>
+                <input type="text" id="parcel-add-tour" placeholder="https://id.land/tour/b569b863-b023-4504-90e0-48e5cce9a7c3">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:8px">
+              <label for="parcel-add-notes">Notes</label>
+              <input type="text" id="parcel-add-notes" placeholder="Corner commercial, lot count, etc.">
+            </div>
+            <button type="button" class="btn btn-ghost" id="parcel-add-submit" style="margin-top:4px;width:100%">+ Add Parcel to Deal</button>
+          </div>
+        </div>`;
+    }
+
+    function renderLandIdAssetsSectionHtml(deal) {
+      normalizeDeal(deal);
+      const assets = (deal.landIdAssets || []).filter((a) => a.type !== 'tour');
+      const cards = assets.length
+        ? assets.map((asset) => `
+              <div class="landid-asset-card" data-asset-id="${escapeHtml(asset.id)}">
+                <div class="landid-asset-head">
+                  <span class="landid-asset-title">${escapeHtml(asset.title)}</span>
+                  <span style="display:flex;gap:6px;align-items:center">
+                    <span class="landid-asset-type">${escapeHtml(asset.type)}</span>
+                    <button type="button" class="btn-remove-deal" data-remove-asset="${escapeHtml(asset.id)}" title="Remove asset">×</button>
+                  </span>
+                </div>
+                <div class="landid-asset-links">
+                  <a class="landid-link" style="margin-top:0" href="${escapeHtml(assetOpenUrl(asset))}" target="_blank" rel="noopener noreferrer">Open ${escapeHtml(asset.type)} ↗</a>
+                  ${asset.fileName ? `<span class="attachment-chip">${escapeHtml(asset.fileName)}</span>` : ''}
+                </div>
+              </div>`).join('')
+        : '';
+
+      return `
+        <div class="modal-section">
+          <h4>PDFs &amp; Overlays</h4>
+          <p style="font-size:11px;color:var(--text-muted);margin:0 0 10px;line-height:1.45">
+            Upload a PDF or screenshot from your computer, or paste a hosted file URL. Stored on this deal for your team after Cloud Sync.
+          </p>
+          ${cards ? `<div class="landid-assets">${cards}</div>` : ''}
+          <div class="landid-asset-add">
+            <div class="parcel-add-grid">
+              <div class="form-group">
+                <label for="landid-asset-title">Title</label>
+                <input type="text" id="landid-asset-title" placeholder="Plat overlay PDF">
+              </div>
+              <div class="form-group">
+                <label for="landid-asset-type">Type (URL only)</label>
+                <select id="landid-asset-type">
+                  <option value="pdf">PDF</option>
+                  <option value="overlay">Overlay / map layer</option>
+                  <option value="link">Link</option>
+                </select>
+              </div>
+            </div>
+            <div class="file-upload-zone">
+              <div class="form-group" style="margin:0">
+                <label for="landid-asset-file">Upload PDF or screenshot</label>
+                <input type="file" id="landid-asset-file" accept="application/pdf,image/png,image/jpeg,image/jpg,image/webp,image/gif">
+              </div>
+              <div class="file-upload-hint">Max 2MB per file. PDF, PNG, JPG, or WebP.</div>
+            </div>
+            <div class="form-group" style="margin-top:8px">
+              <label for="landid-asset-url">Or paste hosted URL</label>
+              <input type="text" id="landid-asset-url" placeholder="https://…/plat.pdf">
+            </div>
+            <button type="button" class="btn btn-ghost" id="landid-asset-submit" style="width:100%">+ Attach PDF / Image</button>
+          </div>
+        </div>`;
+    }
+
+    function refreshEnrichTargetDeals() {
+      const wrap = document.getElementById('enrich-target-wrap');
+      const select = document.getElementById('enrich-target-deal');
+      const btn = document.getElementById('add-to-pipeline');
+      if (!wrap || !select || !btn) return;
+
+      if (!deals.length) {
+        wrap.style.display = 'none';
+        select.innerHTML = '<option value="">New deal in pipeline</option>';
+        btn.textContent = '+ Add to Pipeline';
+        return;
+      }
+
+      wrap.style.display = '';
+      select.innerHTML = [
+        '<option value="">New deal in pipeline</option>',
+        ...deals.map((d) => `<option value="${escapeHtml(d.id)}">Add parcel to: ${escapeHtml(dealDisplayTitle(d))}</option>`),
+      ].join('');
+
+      const syncLabel = () => {
+        btn.textContent = select.value ? '+ Add Parcel to Deal' : '+ Add to Pipeline';
+      };
+      syncLabel();
+      if (!select.dataset.bound) {
+        select.dataset.bound = '1';
+        select.addEventListener('change', syncLabel);
+      }
+    }
+
     // =========================================================================
     // Automation 1: Intake Enrichment
     // =========================================================================
@@ -5352,9 +6924,10 @@
 
     async function layerJurisdiction(lat, lng) {
       try {
-        const url = `https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x=${lng}&y=${lat}&benchmark=Public_AR_Current&vintage=Current_Current&format=json`;
-        const res = await fetch(url);
+        const url = `/api/geocode?type=coords&lat=${lat}&lng=${lng}`;
+        const res = await fetch(url, { credentials: 'same-origin' });
         const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'Geocode failed');
         const geo = data.result?.geographies || {};
         const place = geo['Incorporated Places']?.[0];
         const county = geo.Counties?.[0];
@@ -5742,9 +7315,10 @@
     async function geocodeParcel(deal) {
       const q = `${deal.address}, ${deal.city}, TX`;
       try {
-        const url = `https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${encodeURIComponent(q)}&benchmark=Public_AR_Current&format=json`;
-        const res = await fetch(url);
+        const url = `/api/geocode?type=address&address=${encodeURIComponent(q)}`;
+        const res = await fetch(url, { credentials: 'same-origin' });
         const data = await res.json();
+        if (!res.ok || !data.ok) return null;
         const match = data.result?.addressMatches?.[0];
         if (!match) return null;
         return { lat: match.coordinates.y, lng: match.coordinates.x };
@@ -5868,19 +7442,113 @@
     }
 
     function fullAddress(deal) {
-      return `${deal.address}, ${deal.city} TX`;
+      const title = dealDisplayTitle(deal);
+      const city = deal.city || getDealParcels(deal)[0]?.city || '';
+      return city ? `${title}, ${city} TX` : title;
+    }
+
+    const DEAL_STAGES = {
+      new: 'New',
+      enriched: 'Enriched',
+      negotiating: 'Negotiating',
+      under_contract: 'Under contract',
+      closed: 'Closed',
+      dead: 'Dead',
+    };
+
+    function pipelineStage(deal) {
+      return deal.dealStage || deal.enrichmentStatus || 'new';
     }
 
     function statusClass(status) {
+      if (status === 'under_contract') return 'status-under-contract';
+      if (status === 'negotiating') return 'status-negotiating';
+      if (status === 'closed') return 'status-closed';
       if (status === 'enriched') return 'status-enriched';
       if (status === 'pending') return 'status-pending';
+      if (status === 'dead') return 'status-dead';
       return 'status-new';
     }
 
     function statusLabel(status) {
-      if (status === 'enriched') return 'Enriched';
-      if (status === 'pending') return 'Pending';
-      return 'New';
+      return DEAL_STAGES[status] || (status === 'pending' ? 'Pending' : 'New');
+    }
+
+    function defaultContractLines(deal) {
+      if (Array.isArray(deal.contractLines) && deal.contractLines.length) return deal.contractLines;
+      const total = deal.contractPrice || (deal.acreage * deal.askingPerAcre) || 0;
+      if (!total) {
+        return [
+          { id: 'line-res', label: 'Residential', acres: deal.acreage || 0, pricePerAcre: deal.askingPerAcre || 0 },
+          { id: 'line-comm', label: 'Commercial', acres: 0, pricePerAcre: 0 },
+        ];
+      }
+      return [{ id: 'line-total', label: 'Contract', acres: deal.acreage || 0, pricePerAcre: deal.askingPerAcre || 0, amount: total }];
+    }
+
+    function contractLineAmount(line) {
+      const acres = parseFloat(line.acres) || 0;
+      const ppa = parseFloat(line.pricePerAcre) || 0;
+      if (line.amount != null && line.amount !== '') return parseFloat(line.amount) || 0;
+      return acres * ppa;
+    }
+
+    function dealDisplayPpa(deal) {
+      if (deal.contractPrice > 0 && deal.acreage > 0) return Math.round(deal.contractPrice / deal.acreage);
+      return deal.askingPerAcre || 0;
+    }
+
+    function renderContractCardSummary(deal) {
+      ensureContractLines(deal);
+      const lines = (deal.contractLines || []).filter((line) => contractLineAmount(line) > 0);
+      if (!lines.length && !deal.contractPrice) return '';
+      const lineHtml = lines.map((line) => {
+        const acres = parseFloat(line.acres) || 0;
+        const ppa = parseFloat(line.pricePerAcre) || 0;
+        const amount = contractLineAmount(line);
+        const label = line.label?.trim() || 'Contract line';
+        if (acres > 0 && ppa > 0) {
+          return `<div>${escapeHtml(label)} · ${fmtNum(acres, acres % 1 ? 1 : 0)} ac @ ${fmt(ppa)}/ac · ${fmt(amount)}</div>`;
+        }
+        return `<div>${escapeHtml(label)} · ${fmt(amount)}</div>`;
+      }).join('');
+      const total = deal.contractPrice || lines.reduce((sum, line) => sum + contractLineAmount(line), 0);
+      return `
+        <div class="deal-card-contract">
+          <div class="deal-card-contract-lines">${lineHtml || `<div>Contract · ${fmt(total)}</div>`}</div>
+          <div class="deal-card-contract-total"><span>Total</span><strong>${fmt(total)}</strong></div>
+        </div>`;
+    }
+
+    function dealAcquisitionCost(deal) {
+      normalizeDeal(deal);
+      if (deal.contractPrice > 0) return deal.contractPrice;
+      const lineTotal = (deal.contractLines || []).reduce((sum, line) => sum + contractLineAmount(line), 0);
+      if (lineTotal > 0) return lineTotal;
+      const parcelTotal = getDealParcels(deal).reduce((sum, p) => {
+        if (p.contractAmount > 0) return sum + p.contractAmount;
+        if (p.pricePerAcre > 0) return sum + (p.pricePerAcre * (parseFloat(p.acreage) || 0));
+        return sum;
+      }, 0);
+      if (parcelTotal > 0) return parcelTotal;
+      return (deal.acreage || 0) * (deal.askingPerAcre || 0);
+    }
+
+    function syncContractTotals(deal) {
+      const lines = deal.contractLines || [];
+      const total = lines.reduce((sum, line) => sum + contractLineAmount(line), 0);
+      deal.contractPrice = total > 0 ? Math.round(total) : (deal.contractPrice || 0);
+      if (deal.contractPrice > 0 && deal.acreage > 0) {
+        deal.askingPerAcre = Math.round(deal.contractPrice / deal.acreage);
+      }
+      return deal;
+    }
+
+    function ensureContractLines(deal) {
+      if (!Array.isArray(deal.contractLines) || !deal.contractLines.length) {
+        deal.contractLines = defaultContractLines(deal);
+      }
+      return deal.contractLines;
     }
 
     function utilityClass(status) {
@@ -5901,7 +7569,7 @@
     // Margin calculations
     // =========================================================================
     function calcMargins(deal) {
-      const cost = deal.acreage * deal.askingPerAcre;
+      const cost = dealAcquisitionCost(deal);
       const entitled = deal.acreage * deal.margin.entitledValuePerAcre;
       const flip = deal.acreage * deal.margin.flipValuePerAcre;
       const retailGross = deal.acreage * deal.margin.entitledValuePerAcre;
@@ -6297,7 +7965,7 @@
       });
       html += `</ul>
       <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Export CSV or print Avery labels from the <strong>Direct mail</strong> tab.</p>
-      <button type="button" class="btn btn-primary" id="outreach-wizard-done" style="width:100%">Done</button>`;
+      <button type="button" class="btn btn-primary" data-outreach-wizard-done style="width:100%">Done</button>`;
       return html;
     }
 
@@ -6341,7 +8009,7 @@
         ✓ Outreach queue ready, ${outreachWizard.textQueue.filter((t) => t.canSend).length} text(s) cleared · ${outreachWizard.mailQueue.length} mail piece(s)
       </p>
       <p style="font-size:11px;color:var(--text-muted)">View queues in the Owner Outreach section. Blocked numbers remain labeled <strong>DNC, DO NOT CONTACT</strong> and cannot be sent.</p>
-      <button type="button" class="btn btn-primary" id="outreach-wizard-done" style="width:100%">Done</button>`;
+      <button type="button" class="btn btn-primary" data-outreach-wizard-done style="width:100%">Done</button>`;
     }
 
     function openOutreachWizard() {
@@ -6425,9 +8093,11 @@
         renderOutreachWizardBody();
       });
 
-      document.getElementById('outreach-wizard-done')?.addEventListener('click', () => {
-        closeOutreachWizard();
-        if (isMobileLayout()) setMobilePanel('outreach');
+      document.querySelectorAll('[data-outreach-wizard-done]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          closeOutreachWizard();
+          if (isMobileLayout()) setMobilePanel('outreach');
+        });
       });
     }
 
@@ -6823,6 +8493,7 @@
     }
 
     function generateDealMemo(deal, view = 'internal') {
+      normalizeDeal(deal);
       const ent = deal.entitlement || computeEntitlementScore(deal);
       const margins = calcMargins(deal);
       const best = margins.scenarios.reduce((a, b) => (b.net > a.net ? b : a));
@@ -6833,10 +8504,32 @@
       const sf = deal.nearbyCommunities?.[0];
       const platAlerts = getPlatAlertsForDeals([deal]).slice(0, 3);
 
+      const parcels = getDealParcels(deal);
+      const parcelRows = parcels.length > 1
+        ? `<h3 style="font-size:14px;margin-top:20px;font-family:Arial,sans-serif">Parcels (${parcels.length})</h3>
+           <table>
+             <tr><th>Tract</th><th>Parcel ID</th><th>Acres</th></tr>
+             ${parcels.map((p) => `
+               <tr>
+                 <td>${escapeHtml(p.label || p.address)}</td>
+                 <td>${escapeHtml(p.parcelId || 'n/a')}</td>
+                 <td>${fmtNum(p.acreage)}</td>
+               </tr>`).join('')}
+           </table>`
+        : '';
+      const landIdRows = (deal.landIdAssets || []).length && view === 'internal'
+        ? `<h3 style="font-size:14px;margin-top:20px;font-family:Arial,sans-serif">LandID Maps</h3>
+           <ul style="font-size:12px;padding-left:18px">
+             ${deal.landIdAssets.map((a) => `<li>${escapeHtml(a.title)} (${escapeHtml(a.type)}): <a href="${escapeHtml(a.url)}">${escapeHtml(a.url)}</a></li>`).join('')}
+           </ul>`
+        : '';
+
       return `
         <div class="brand">Barn to Bank · Deal Memo · ${view === 'client' ? 'Client' : 'Internal'}</div>
-        <h1>${escapeHtml(deal.address)}</h1>
+        <h1>${escapeHtml(dealDisplayTitle(deal))}</h1>
         <p style="color:#666;font-size:13px">${escapeHtml(deal.city)}, ${escapeHtml(deal.county)} County · ${fmtNum(deal.acreage)} acres · ${escapeHtml(deal.parcelId)}</p>
+        ${parcelRows}
+        ${landIdRows}
         <p style="font-size:12px;margin-top:20px"><strong>Summary:</strong> ${fmt(deal.askingPerAcre)}/ac asking (${fmt(deal.acreage * deal.askingPerAcre)} total).
           Entitlement score <strong>${ent.score}/100</strong> (${escapeHtml(ent.bandLabel)}).
           Recommended path: <strong>${escapeHtml(ROUTES[ent.recommendation]?.label || ent.recommendation)}</strong>.</p>
@@ -6867,7 +8560,7 @@
     }
 
     function openDealMemo(deal, view) {
-      document.getElementById('deal-memo-title-bar').textContent = `Deal Memo: ${deal.address} (${view})`;
+      document.getElementById('deal-memo-title-bar').textContent = `Deal Memo: ${dealDisplayTitle(deal)} (${view})`;
       document.getElementById('deal-memo-body').innerHTML = generateDealMemo(deal, view);
       document.getElementById('deal-memo-overlay').classList.add('open');
     }
@@ -6926,6 +8619,12 @@
     }
 
     let moatCloudEnabled = false;
+    const AUTO_CLOUD_SYNC_INTERVAL_MS = 45000;
+    const AUTO_CLOUD_SYNC_DEBOUNCE_MS = 2000;
+
+    function dealCloudTimestamp(d) {
+      return String(d?.updatedAt || d?.lastContact || '');
+    }
 
     async function fetchMoatCloudConfig() {
       const cfg = DATA_SOURCES.MOAT_SYNC;
@@ -6953,8 +8652,8 @@
       } catch { /* ignore */ }
       if (moatCloudEnabled || cfg.enabled) {
         el.textContent = meta.lastCloudSync
-          ? `Supabase live · last sync ${formatDncTimestamp(meta.lastCloudSync)}`
-          : 'Supabase connected, tap Cloud Sync to merge with team';
+          ? `Auto-sync live · updated ${formatDncTimestamp(meta.lastCloudSync)}`
+          : 'Auto-sync connecting to team pipeline…';
         el.className = 'sync-status live';
       } else if (meta.lastBundleImport) {
         el.textContent = `Local + bundle import ${formatDncTimestamp(meta.lastBundleImport)}`;
@@ -6974,19 +8673,33 @@
 
     const LEADS_API = '/api/leads';
 
+    function updateWebsiteLeadsBadge() {
+      const badge = document.getElementById('website-leads-badge');
+      if (!badge) return;
+      const count = inboundLeads.filter((l) => l.status === 'new').length;
+      if (count > 0) {
+        badge.hidden = false;
+        badge.textContent = String(count);
+      } else {
+        badge.hidden = true;
+        badge.textContent = '';
+      }
+    }
+
     async function fetchWebsiteLeads() {
       const el = document.getElementById('website-leads-list');
       try {
-        const res = await fetch(LEADS_API, { cache: 'no-store' });
+        const res = await fetch(LEADS_API, { cache: 'no-store', credentials: 'same-origin' });
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.error || `Failed (${res.status})`);
         inboundLeads = (data.leads || []).filter((l) => l.status !== 'dismissed');
         inboundLeads.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
         renderWebsiteLeads();
+        updateWebsiteLeadsBadge();
         return inboundLeads;
       } catch (err) {
         if (el) {
-          el.innerHTML = `<div class="silo-empty">Could not load website leads, ${escapeHtml(err.message)}. Deploy with Supabase env vars on Vercel.</div>`;
+          el.innerHTML = `<div class="silo-empty">Could not load website leads — ${escapeHtml(err.message)}. Refresh after signing in.</div>`;
         }
         return [];
       }
@@ -6996,6 +8709,7 @@
       const res = await fetch(LEADS_API, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ id, status }),
       });
       const data = await res.json();
@@ -7008,19 +8722,23 @@
         );
       }
       renderWebsiteLeads();
+      updateWebsiteLeadsBadge();
     }
 
     function renderWebsiteLeads() {
       const el = document.getElementById('website-leads-list');
       if (!el) return;
       const active = inboundLeads.filter((l) => l.status !== 'dismissed' && l.status !== 'converted');
+      updateWebsiteLeadsBadge();
       if (!active.length) {
-        el.innerHTML = '<div class="silo-empty">No new website inquiries, leads from the public contact form appear here.</div>';
+        el.innerHTML = '<div class="silo-empty">No new website inquiries yet. Leads from barntobank.com contact form appear here — check each morning.</div>';
         return;
       }
       el.innerHTML = active.map((lead) => {
         const status = lead.status || 'new';
         const listing = lead.listing ? `<div class="lead-meta">Listing: ${escapeHtml(lead.listing)}</div>` : '';
+        const location = [lead.county, lead.acreage].filter(Boolean).map(escapeHtml).join(' · ');
+        const intent = lead.intent ? `<div class="lead-meta">Intent: ${escapeHtml(lead.intent)}</div>` : '';
         const contact = [lead.email, lead.phone].filter(Boolean).map(escapeHtml).join(' · ');
         const about = lead.about ? `<div class="lead-about">${escapeHtml(lead.about)}</div>` : '';
         const when = lead.createdAt ? formatDncTimestamp(lead.createdAt) : '';
@@ -7030,8 +8748,10 @@
               <strong>${escapeHtml(lead.name)}</strong>
               <span class="lead-badge ${escapeHtml(status)}">${escapeHtml(status)}</span>
             </div>
-            ${listing}
             <div class="lead-meta">${contact}${when ? ` · ${when}` : ''}</div>
+            ${location ? `<div class="lead-meta">${location}</div>` : ''}
+            ${intent}
+            ${listing}
             ${about}
             <div class="lead-actions">
               <button type="button" class="btn btn-primary" data-lead-adopt="${escapeHtml(lead.id)}">Adopt</button>
@@ -7071,23 +8791,30 @@
       if (!lead) return;
       const notes = [
         `Website lead (${lead.source || 'website'})`,
+        lead.intent ? `Intent: ${lead.intent}` : '',
+        lead.county ? `County: ${lead.county}` : '',
+        lead.acreage ? `Acreage: ${lead.acreage}` : '',
         lead.listing ? `Listing: ${lead.listing}` : '',
         lead.email ? `Email: ${lead.email}` : '',
         lead.phone ? `Phone: ${lead.phone}` : '',
         lead.about ? `About: ${lead.about}` : '',
       ].filter(Boolean).join('\n');
-      const mock = mockProfileFor('Williamson');
+      const county = lead.county || 'Williamson';
+      const acreage = parseFloat(String(lead.acreage || '').replace(/[^\d.]/g, '')) || 0;
+      const route = lead.intent === 'sell' ? 'SELL' : (lead.intent === 'valuation' ? 'RETAIL' : 'RETAIL');
+      const mock = mockProfileFor(county);
       const deal = {
         id: `deal-${Date.now()}`,
-        address: lead.listing || 'Website lead, address TBD',
+        address: lead.listing || (lead.county ? `${lead.county} County land` : 'Website lead, address TBD'),
         city: 'TBD',
-        county: 'Williamson',
+        county,
         parcelId: `WEB-${Math.floor(10000 + Math.random() * 89999)}`,
-        acreage: 0,
+        acreage,
         zoning: 'A-1 Agricultural',
         askingPerAcre: 0,
         enrichmentStatus: 'new',
-        route: 'RETAIL',
+        route,
+        tags: parseTagsInput(['website-lead', lead.intent].filter(Boolean)),
         owner: lead.name,
         sellerName: lead.name,
         taxHistory: buildTaxHistory(0, null),
@@ -7124,12 +8851,134 @@
     }
 
     const MoatStore = {
+      autoSyncTimer: null,
+      autoSyncInFlight: false,
+      autoSyncQueued: false,
+      autoSyncPollId: null,
+
+      scheduleAutoSync() {
+        clearTimeout(this.autoSyncTimer);
+        this.autoSyncTimer = setTimeout(() => {
+          this.autoSync({ silent: true }).catch(() => {});
+        }, AUTO_CLOUD_SYNC_DEBOUNCE_MS);
+      },
+
+      startAutoSyncPolling() {
+        if (this.autoSyncPollId) return;
+        this.autoSyncPollId = window.setInterval(() => {
+          if (document.visibilityState !== 'visible') return;
+          this.autoSync({ silent: true, pullOnly: true }).catch(() => {});
+        }, AUTO_CLOUD_SYNC_INTERVAL_MS);
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            this.autoSync({ silent: true, pullOnly: true }).catch(() => {});
+          }
+        });
+      },
+
+      mergeRemoteDeals(bundle) {
+        if (!bundle?.deals || !Array.isArray(bundle.deals)) return false;
+        let changed = false;
+        bundle.deals.forEach((remoteDeal) => {
+          if (!remoteDeal?.id || deletedDealIds.some((x) => x.id === remoteDeal.id)) return;
+          if (SEED_DEAL_IDS.has(remoteDeal.id)) return;
+          const idx = deals.findIndex((d) => d.id === remoteDeal.id);
+          if (idx >= 0) {
+            const localDeal = deals[idx];
+            if (dealCloudTimestamp(remoteDeal) > dealCloudTimestamp(localDeal)) {
+              deals[idx] = normalizeDeal({ ...remoteDeal });
+              applyMoatToDeal(deals[idx]);
+              changed = true;
+            }
+          } else {
+            deals.unshift(normalizeDeal({ ...remoteDeal }));
+            applyMoatToDeal(deals[0]);
+            changed = true;
+          }
+        });
+        return changed;
+      },
+
+      async autoSync({ silent = false, pullOnly = false } = {}) {
+        const cfg = DATA_SOURCES.MOAT_SYNC;
+        if (!cfg.apiUrl) return false;
+        if (this.autoSyncInFlight) {
+          this.autoSyncQueued = true;
+          return false;
+        }
+        this.autoSyncInFlight = true;
+        try {
+          await fetchMoatCloudConfig();
+          if (!moatCloudEnabled && !cfg.enabled) return false;
+
+          if (pullOnly) {
+            const remote = await this.pullCloud();
+            if (!remote) return false;
+            const changed = this.mergeRemoteDeals(remote);
+            if (changed) {
+              suppressAutoCloudSync = true;
+              saveDeals();
+              suppressAutoCloudSync = false;
+              renderAll();
+              renderOutreachQueues();
+              if (activeDealId) {
+                const active = deals.find((d) => d.id === activeDealId);
+                if (active) renderModal(active);
+              }
+              if (!silent) showToast('Pipeline updated from team');
+            }
+            return changed;
+          }
+
+          const localBundle = this.buildBundle();
+          const res = await fetch(cfg.apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              teamId: cfg.teamId,
+              bundle: localBundle,
+              updatedBy: 'barn-to-bank-auto-sync',
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || `Sync failed (${res.status})`);
+          if (data.bundle) {
+            suppressAutoCloudSync = true;
+            this.applyBundle(data.bundle, { source: 'cloud' });
+            suppressAutoCloudSync = false;
+          }
+          const ts = data.updatedAt || new Date().toISOString();
+          try {
+            const meta = JSON.parse(localStorage.getItem(MOAT_SYNC_META_KEY) || '{}');
+            meta.lastCloudSync = ts;
+            localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify(meta));
+          } catch { /* ignore */ }
+          renderAll();
+          renderOutreachQueues();
+          updateSyncStatusText();
+          if (!silent) {
+            showToast(data.merged ? 'Cloud sync merged with team data' : 'Cloud sync complete');
+          }
+          return true;
+        } catch (err) {
+          if (!silent) showToast(`Cloud sync failed: ${err.message}`, 'warn');
+          return false;
+        } finally {
+          this.autoSyncInFlight = false;
+          if (this.autoSyncQueued) {
+            this.autoSyncQueued = false;
+            this.scheduleAutoSync();
+          }
+        }
+      },
+
       buildBundle() {
         return {
           version: DATA_SOURCES.MOAT_SYNC.bundleVersion || 1,
           exportedAt: new Date().toISOString(),
           teamId: DATA_SOURCES.MOAT_SYNC.teamId,
-          deals,
+          deals: filterHiddenDeals(deals).map((d) => ({ ...d, updatedAt: d.updatedAt || d.lastContact || new Date().toISOString() })),
+          deletedDealIds,
           comps: privateComps.filter((c) => c.source !== 'seed'),
           audit: auditLog,
           outreach: {
@@ -7158,13 +9007,36 @@
       applyBundle(bundle, { source = 'import' } = {}) {
         if (!bundle?.deals || !Array.isArray(bundle.deals)) throw new Error('Invalid bundle, missing deals array');
 
-        const existingIds = new Set(deals.map((d) => d.id));
-        bundle.deals.forEach((d) => {
-          if (!d?.id) return;
-          const idx = deals.findIndex((x) => x.id === d.id);
-          if (idx >= 0) deals[idx] = d;
-          else if (!existingIds.has(d.id)) deals.unshift(d);
-        });
+        if (Array.isArray(bundle.deletedDealIds)) {
+          const tombMap = new Map(deletedDealIds.map((x) => [x.id, x]));
+          bundle.deletedDealIds.forEach((entry) => {
+            if (!entry?.id) return;
+            const prev = tombMap.get(entry.id);
+            if (!prev || String(entry.deletedAt || '') >= String(prev.deletedAt || '')) {
+              tombMap.set(entry.id, entry);
+            }
+          });
+          deletedDealIds = [...tombMap.values()].slice(-500);
+          saveDeletedDealIds();
+        }
+
+        if (source === 'cloud') {
+          const tombstoned = new Set(deletedDealIds.map((x) => x.id));
+          const cloudDeals = bundle.deals
+            .filter((d) => d?.id && !tombstoned.has(d.id) && !SEED_DEAL_IDS.has(d.id))
+            .map((d) => normalizeDeal({ ...d }));
+          const cloudIds = new Set(cloudDeals.map((d) => d.id));
+          const localOnly = deals.filter((d) => d?.id && !cloudIds.has(d.id) && !SEED_DEAL_IDS.has(d.id));
+          deals = [...cloudDeals, ...localOnly];
+        } else {
+          const existingIds = new Set(deals.map((d) => d.id));
+          bundle.deals.forEach((d) => {
+            if (!d?.id || deletedDealIds.some((x) => x.id === d.id)) return;
+            const idx = deals.findIndex((x) => x.id === d.id);
+            if (idx >= 0) deals[idx] = normalizeDeal({ ...d });
+            else if (!existingIds.has(d.id)) deals.unshift(normalizeDeal({ ...d }));
+          });
+        }
 
         if (Array.isArray(bundle.comps)) {
           bundle.comps.forEach((c) => {
@@ -7225,50 +9097,26 @@
       },
 
       async cloudSync() {
-        const cfg = DATA_SOURCES.MOAT_SYNC;
-        if (!cfg.apiUrl) {
-          showToast('Cloud sync API not configured', 'warn');
-          return;
-        }
         const btn = document.getElementById('moat-cloud-sync');
+        const headerBtn = document.getElementById('moat-cloud-sync-header');
         const prevLabel = btn?.textContent;
+        const prevHeader = headerBtn?.textContent;
         if (btn) { btn.disabled = true; btn.textContent = 'Syncing…'; }
+        if (headerBtn) { headerBtn.disabled = true; headerBtn.textContent = '…'; }
         try {
-          await fetchMoatCloudConfig();
-          if (!moatCloudEnabled && !cfg.enabled) {
+          const ok = await this.autoSync({ silent: false });
+          if (!ok && !moatCloudEnabled && !DATA_SOURCES.MOAT_SYNC.enabled) {
             showToast('Cloud sync not available, deploy API routes to Vercel', 'warn');
             return;
           }
-          const localBundle = this.buildBundle();
-          const res = await fetch(cfg.apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              teamId: cfg.teamId,
-              bundle: localBundle,
-              updatedBy: 'barn-to-bank-client',
-            }),
-          });
-          const data = await res.json();
-          if (!res.ok || !data.ok) throw new Error(data.error || `Sync failed (${res.status})`);
-          if (data.bundle) this.applyBundle(data.bundle, { source: 'cloud' });
-          const ts = data.updatedAt || new Date().toISOString();
-          try {
-            localStorage.setItem(MOAT_SYNC_META_KEY, JSON.stringify({ lastCloudSync: ts }));
-          } catch { /* ignore */ }
           appendOutreachAudit({
             type: 'cloud_sync',
-            summary: `Supabase sync, ${data.bundle?.deals?.length || 0} deals${data.merged ? ' (merged)' : ''}`,
+            summary: `Manual sync, ${deals.length} deals`,
           });
-          renderAll();
-          renderOutreachQueues();
-          updateSyncStatusText();
           await fetchWebsiteLeads();
-          showToast(data.merged ? 'Cloud sync merged with team data' : 'Cloud sync complete');
-        } catch (err) {
-          showToast(`Cloud sync failed: ${err.message}`, 'warn');
         } finally {
-          if (btn) { btn.disabled = false; btn.textContent = prevLabel || 'Cloud Sync'; }
+          if (btn) { btn.disabled = false; btn.textContent = prevLabel || 'Sync Now'; }
+          if (headerBtn) { headerBtn.disabled = false; headerBtn.textContent = prevHeader || 'Sync'; }
         }
       },
 
@@ -7301,15 +9149,17 @@
     // =========================================================================
     function renderAll() {
       renderHeader();
+      refreshPipelineFilterOptions();
       renderPipeline();
       renderSilos();
       renderMoatPanels();
       renderWebsiteLeads();
+      refreshEnrichTargetDeals();
     }
 
     function renderHeader() {
       const totalAcres = deals.reduce((s, d) => s + d.acreage, 0);
-      const totalValue = deals.reduce((s, d) => s + d.acreage * d.askingPerAcre, 0);
+      const totalValue = deals.reduce((s, d) => s + dealAcquisitionCost(d), 0);
       document.getElementById('hdr-deals').textContent = deals.length;
       document.getElementById('hdr-acres').textContent = fmtNum(totalAcres, 1);
       document.getElementById('hdr-value').textContent = fmt(totalValue);
@@ -7361,6 +9211,8 @@
     }
 
     function insertDeal(deal, { toastMsg } = {}) {
+      markDealUpdated(deal);
+      clearDealTombstone(deal.id);
       deals.unshift(deal);
       saveDeals();
       renderAll();
@@ -7369,6 +9221,8 @@
 
     async function finalizeNewDeal(deal) {
       deal.id = deal.id || `deal-${Date.now()}`;
+      normalizeDeal(deal);
+      markDealUpdated(deal);
       if (!deal.ownerContact) deal.ownerContact = await fetchForewarnOwnerContact(deal);
       deal.bottlenecked = computeBottlenecked(deal);
       if (!deal.dealRecord) await buildSeedDealRecord(deal);
@@ -7377,8 +9231,30 @@
     }
 
     async function addDealFromEnrichment(enriched) {
-      const deal = await finalizeNewDeal({ ...enriched, id: `deal-${Date.now()}` });
-      insertDeal(deal, { toastMsg: `Added ${deal.address} to pipeline` });
+      const deal = await finalizeNewDeal({ ...enriched, id: `deal-${Date.now()}`, parcels: [parcelFromFields(enriched)] });
+      insertDeal(deal, { toastMsg: `Added ${dealDisplayTitle(deal)} to pipeline` });
+      refreshEnrichTargetDeals();
+      return deal;
+    }
+
+    async function addParcelFromEnrichmentToDeal(dealId, enriched) {
+      const deal = deals.find((d) => d.id === dealId);
+      if (!deal) throw new Error('Deal not found');
+      normalizeDeal(deal);
+      const parcel = addParcelToDeal(deal, enriched);
+      const tour = enriched.landIdTourUrl || parseLandIdTourUrl(enriched.landIdUrl || '')?.url;
+      if (tour) parcel.landIdTourUrl = typeof tour === 'string' ? tour : tour.url;
+      deal.notes = [deal.notes, `Added parcel ${parcel.parcelId || parcel.address} (${fmtNum(parcel.acreage)} ac) via intake.`]
+        .filter(Boolean)
+        .join('\n')
+        .trim();
+      markDealUpdated(deal);
+      deal.bottlenecked = computeBottlenecked(deal);
+      applyMoatToDeal(deal);
+      saveDeals();
+      renderAll();
+      if (activeDealId === deal.id) renderModal(deal);
+      showToast(`Added parcel to ${dealDisplayTitle(deal)}`);
       return deal;
     }
 
@@ -7387,12 +9263,18 @@
       const acreage = parseFloat(form.acres) || 0;
       const askingPerAcre = parseFloat(form.price) || 0;
       const owner = form.owner?.trim() || 'Owner of record, verify via CAD';
+      const portfolioName = form.project?.trim() || '';
+      const tags = parseTagsInput(form.tags || '');
       const mock = mockProfileFor(county);
       const deal = {
         id: `deal-${Date.now()}`,
         address: form.address.trim(),
         city: form.city.trim(),
         county,
+        projectName: portfolioName || '',
+        portfolioName,
+        portfolioId: portfolioName ? portfolioName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : '',
+        tags,
         parcelId: `${county.slice(0, 2).toUpperCase()}-${Math.floor(10000 + Math.random() * 89999)}`,
         acreage,
         zoning: 'A-1 Agricultural',
@@ -7432,6 +9314,7 @@
     function removeDeal(id) {
       const deal = deals.find((d) => d.id === id);
       if (!deal || !confirmRemoveDeal(deal)) return false;
+      tombstoneDeal(id);
       deals = deals.filter((d) => d.id !== id);
       purgeOutreachForDeal(id);
       saveDeals();
@@ -7452,14 +9335,21 @@
     }
 
     function renderPipeline() {
-      const tbody = document.getElementById('pipeline-tbody');
       const cards = document.getElementById('pipeline-cards');
       const tableWrap = document.getElementById('pipeline-table-wrap');
+      const visible = getFilteredDeals();
+      refreshPipelineFilterOptions();
 
       if (!deals.length) {
-        tbody.innerHTML = '';
-        cards.innerHTML = emptyPipelineHtml();
+        if (cards) cards.innerHTML = emptyPipelineHtml();
         if (tableWrap) tableWrap.innerHTML = emptyPipelineHtml();
+        return;
+      }
+
+      if (!visible.length) {
+        const emptyFilter = `<div class="empty-state"><h3>No deals match filters</h3><p>Try clearing search or county/route/portfolio filters.</p></div>`;
+        if (cards) cards.innerHTML = emptyFilter;
+        if (tableWrap) tableWrap.innerHTML = emptyFilter;
         return;
       }
 
@@ -7479,17 +9369,18 @@
       const tbodyEl = document.getElementById('pipeline-tbody');
       if (!tbodyEl) return;
 
-      tbodyEl.innerHTML = deals.map(d => `
+      tbodyEl.innerHTML = visible.map(d => `
         <tr data-id="${d.id}">
           <td>
-            <div style="font-weight:500">${d.address}</div>
-            <div style="font-size:10px;color:var(--text-muted)">${d.city}, TX</div>
+            <div style="font-weight:500">${escapeHtml(dealDisplayTitle(d))}${parcelCountBadge(d)}</div>
+            <div style="font-size:10px;color:var(--text-muted)">${escapeHtml(d.city || '')}, TX</div>
+            ${renderDealMetaHtml(d)}
           </td>
           <td>${d.county}</td>
           <td class="mono">${fmtNum(d.acreage)}</td>
-          <td class="mono">${fmt(d.askingPerAcre)}</td>
+          <td class="mono">${fmt(dealDisplayPpa(d))}${d.contractPrice ? `<div style="font-size:9px;color:var(--text-muted)">${fmt(d.contractPrice)}</div>` : ''}</td>
           <td>
-            <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+            <span class="status-badge ${statusClass(pipelineStage(d))}">${statusLabel(pipelineStage(d))}</span>
             ${d.entitlement ? scorePillHtml(d.entitlement) : ''}
           </td>
           <td>
@@ -7505,29 +9396,35 @@
         </tr>
       `).join('');
 
-      cards.innerHTML = deals.map((d, i) => `
+      cards.innerHTML = visible.map((d, i) => `
         <div class="deal-card ${ROUTES[d.route].class}" data-id="${d.id}" style="animation-delay:${i * 0.05}s">
           <div class="deal-card-header">
             <div>
-              <div class="deal-card-address">${d.address}</div>
-              <div class="deal-card-county">${d.city}, ${d.county} Co.</div>
+              <div class="deal-card-address">${escapeHtml(dealDisplayTitle(d))}${parcelCountBadge(d)}</div>
+              <div class="deal-card-county">${escapeHtml(d.city || '')}, ${escapeHtml(d.county)} Co.</div>
+              ${renderDealMetaHtml(d)}
             </div>
             <div class="deal-card-header-right">
-              <span class="status-badge ${statusClass(d.enrichmentStatus)}">${statusLabel(d.enrichmentStatus)}</span>
+              <span class="status-badge ${statusClass(pipelineStage(d))}">${statusLabel(pipelineStage(d))}</span>
               ${d.entitlement ? scorePillHtml(d.entitlement) : ''}
               <button type="button" class="btn-remove-deal" data-remove-deal="${d.id}" title="Remove deal" aria-label="Remove deal">×</button>
             </div>
           </div>
           ${d.compBand ? `<div class="comp-band" style="margin-bottom:8px">Comp: <strong>${fmt(d.compBand.avg)}/ac</strong> · ${d.compBand.deltaPct >= 0 ? '+' : ''}${d.compBand.deltaPct}%</div>` : ''}
+          ${renderContractCardSummary(d)}
           <div class="deal-card-metrics">
             <div class="deal-card-metric">
               <div class="label">Acres</div>
               <div class="value accent">${fmtNum(d.acreage)}</div>
             </div>
             <div class="deal-card-metric">
-              <div class="label">$/Acre</div>
-              <div class="value">${fmt(d.askingPerAcre)}</div>
+              <div class="label">${d.contractPrice ? 'Blended' : '$/Acre'}</div>
+              <div class="value">${fmt(dealDisplayPpa(d))}</div>
             </div>
+            ${d.contractPrice ? `<div class="deal-card-metric"><div class="label">Contract</div><div class="value accent">${fmt(d.contractPrice)}</div></div>` : ''}
+          </div>
+          <div class="deal-card-actions">
+            <button type="button" class="btn-card-contract" data-edit-contract="${d.id}">Edit contract &amp; stage</button>
           </div>
           <select class="route-select ${ROUTES[d.route].class}" data-route-select="${d.id}" onclick="event.stopPropagation()" style="width:100%">
             ${Object.entries(ROUTES).map(([k, v]) =>
@@ -7542,7 +9439,7 @@
 
     function renderSilos() {
       const lanes = { DEVELOP: [], SELL: [], RETAIL: [] };
-      deals.forEach(d => lanes[d.route].push(d));
+      getFilteredDeals().forEach(d => lanes[d.route].push(d));
 
       const map = {
         DEVELOP: { count: 'silo-dev-count', acres: 'silo-dev-acres', body: 'silo-dev-body' },
@@ -7567,7 +9464,7 @@
         } else {
           body.innerHTML = items.map(d => `
             <div class="silo-deal" data-id="${d.id}">
-              <div class="silo-deal-addr">${d.address}</div>
+              <div class="silo-deal-addr">${escapeHtml(dealDisplayTitle(d))}${parcelCountBadge(d)}</div>
               <div class="silo-deal-meta">
                 <span>${fmtNum(d.acreage)} ac</span>
                 <span>${fmt(d.askingPerAcre)}/ac</span>
@@ -7583,21 +9480,30 @@
     }
 
     function renderModal(deal) {
+      normalizeDeal(deal);
       const margins = calcMargins(deal);
       const bestNet = Math.max(...margins.scenarios.map(s => s.net));
+      const parcels = getDealParcels(deal);
+      const hasTour = collectDealLandIdTours(deal).length > 0;
+      const modalPanel = document.getElementById('modal-panel');
 
       document.getElementById('modal-address').textContent = fullAddress(deal);
-      document.getElementById('modal-sub').textContent = `${deal.parcelId} · ${deal.county} County · ${fmtNum(deal.acreage)} acres`;
+      document.getElementById('modal-sub').textContent = dealParcelSummary(deal);
+      if (modalPanel) modalPanel.classList.toggle('has-landid-tour', hasTour);
 
       document.getElementById('modal-body').innerHTML = `
+        ${renderDealTermsSectionHtml(deal)}
+        ${renderDealLandIdPresentationHtml(deal)}
         ${renderEntitlementCard(deal)}
+        ${renderParcelsSectionHtml(deal)}
+        ${renderLandIdAssetsSectionHtml(deal)}
         <div class="modal-section">
           <h4>Enriched Property Data</h4>
           <div class="detail-grid">
-            <div class="detail-item"><div class="key">Parcel ID</div><div class="val">${deal.parcelId}</div></div>
+            <div class="detail-item"><div class="key">${parcels.length > 1 ? 'Parcel IDs' : 'Parcel ID'}</div><div class="val">${escapeHtml(deal.parcelId)}</div></div>
             <div class="detail-item"><div class="key">Owner of Record</div><div class="val">${deal.owner}</div></div>
             <div class="detail-item"><div class="key">Zoning</div><div class="val">${deal.zoning}</div></div>
-            <div class="detail-item"><div class="key">Asking Price</div><div class="val">${fmt(deal.askingPerAcre)}/ac (${fmt(deal.acreage * deal.askingPerAcre)} total)</div></div>
+            <div class="detail-item"><div class="key">${deal.contractPrice ? 'Contract' : 'Asking'} Price</div><div class="val">${fmt(deal.askingPerAcre)}/ac (${fmt(dealAcquisitionCost(deal))} total)${deal.buyerName ? ` · ${escapeHtml(deal.buyerName)}` : ''}</div></div>
           </div>
           <div style="margin-top:12px">
             <div class="key" style="font-size:10px;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">Tax History</div>
@@ -7698,8 +9604,15 @@
     function bindPipelineEvents() {
       document.querySelectorAll('#pipeline-tbody tr, .deal-card').forEach(el => {
         el.addEventListener('click', (e) => {
-          if (e.target.closest('[data-route-select]') || e.target.closest('[data-remove-deal]')) return;
+          if (e.target.closest('[data-route-select]') || e.target.closest('[data-remove-deal]') || e.target.closest('[data-edit-contract]')) return;
           openModal(el.dataset.id);
+        });
+      });
+
+      document.querySelectorAll('[data-edit-contract]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openModal(btn.dataset.editContract, { focus: 'contract' });
         });
       });
 
@@ -7724,6 +9637,7 @@
           const deal = deals.find(d => d.id === id);
           if (deal) {
             deal.route = sel.value;
+            markDealUpdated(deal);
             sel.className = `route-select ${ROUTES[deal.route].class}`;
             saveDeals();
             renderAll();
@@ -7733,7 +9647,60 @@
     }
 
     function bindModalEvents(deal) {
+      const refreshContractTotalLive = () => {
+        let total = 0;
+        document.querySelectorAll('.contract-line-row').forEach((row) => {
+          const acres = parseFloat(row.querySelector('.contract-line-acres')?.value) || 0;
+          const ppa = parseFloat(row.querySelector('.contract-line-ppa')?.value) || 0;
+          const amountRaw = row.querySelector('.contract-line-amount')?.value;
+          const amount = amountRaw === '' || amountRaw == null ? acres * ppa : (parseFloat(amountRaw) || 0);
+          total += amount;
+        });
+        const totalEl = document.getElementById('modal-contract-total-display');
+        if (totalEl) totalEl.textContent = fmt(total);
+        const blendedWrap = document.querySelector('.contract-line-total span');
+        if (blendedWrap && deal.acreage > 0 && total > 0) {
+          blendedWrap.innerHTML = `Contract total · blended <strong>${fmt(Math.round(total / deal.acreage))}/ac</strong> over ${fmtNum(deal.acreage)} ac`;
+        }
+      };
+
+      const saveContractFields = () => {
+        ensureContractLines(deal);
+        deal.dealStage = document.getElementById('modal-deal-stage')?.value || deal.dealStage || 'enriched';
+        deal.buyerName = document.getElementById('modal-buyer')?.value?.trim() || '';
+        document.querySelectorAll('.contract-line-row').forEach((row) => {
+          const idx = parseInt(row.dataset.contractLine, 10);
+          if (!deal.contractLines[idx]) return;
+          const line = deal.contractLines[idx];
+          line.label = row.querySelector('.contract-line-label')?.value?.trim() || line.label;
+          line.parcelId = row.querySelector('.contract-line-parcel')?.value || '';
+          line.acres = parseFloat(row.querySelector('.contract-line-acres')?.value) || 0;
+          line.pricePerAcre = parseFloat(row.querySelector('.contract-line-ppa')?.value) || 0;
+          const amountRaw = row.querySelector('.contract-line-amount')?.value;
+          line.amount = amountRaw === '' || amountRaw == null ? null : (parseFloat(amountRaw) || 0);
+        });
+        syncContractLinesToParcels(deal);
+        syncContractTotals(deal);
+        refreshContractTotalLive();
+        const crm = ensureOutreachCrm(deal);
+        if (deal.dealStage === 'under_contract') {
+          crm.outcome = 'under_contract';
+          const outcomeEl = document.getElementById('modal-crm-outcome');
+          if (outcomeEl) outcomeEl.value = 'under_contract';
+        }
+      };
+
       const save = () => {
+        saveContractFields();
+        deal.projectName = document.getElementById('modal-project-name')?.value?.trim() || '';
+        deal.portfolioName = document.getElementById('modal-portfolio-name')?.value?.trim() || '';
+        deal.ownerKey = document.getElementById('modal-owner-key')?.value?.trim().toLowerCase() || '';
+        deal.tags = parseTagsInput(document.getElementById('modal-tags')?.value || '');
+        if (deal.portfolioName) {
+          deal.portfolioId = deal.portfolioName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        } else {
+          deal.portfolioId = '';
+        }
         deal.sellerName = document.getElementById('modal-seller').value;
         deal.lastContact = document.getElementById('modal-last-contact').value;
         deal.callReminder = document.getElementById('modal-reminder').checked;
@@ -7744,14 +9711,172 @@
         crm.touches = parseInt(document.getElementById('modal-crm-touches')?.value, 10) || 0;
         const outcome = document.getElementById('modal-crm-outcome')?.value;
         crm.outcome = outcome || null;
+        if (deal.dealStage === 'under_contract') crm.outcome = 'under_contract';
+        syncDealAggregates(deal);
+        markDealUpdated(deal);
         saveDeals();
+        renderHeader();
+        renderPipeline();
+        renderSilos();
       };
 
-      ['modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes',
-        'modal-crm-status', 'modal-crm-sequence', 'modal-crm-touches', 'modal-crm-outcome'].forEach(id => {
+      ['modal-project-name', 'modal-portfolio-name', 'modal-owner-key', 'modal-tags', 'modal-seller', 'modal-last-contact', 'modal-reminder', 'modal-notes',
+        'modal-crm-status', 'modal-crm-sequence', 'modal-crm-touches', 'modal-crm-outcome',
+        'modal-deal-stage', 'modal-buyer'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', save);
         if (el && el.tagName === 'TEXTAREA') el.addEventListener('input', save);
+        if (el && el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'number')) el.addEventListener('input', save);
+      });
+
+      document.querySelectorAll('.contract-line-label, .contract-line-acres, .contract-line-ppa, .contract-line-amount, .contract-line-parcel').forEach((el) => {
+        el.addEventListener('input', () => {
+          if (el.classList.contains('contract-line-acres') || el.classList.contains('contract-line-ppa')) {
+            const row = el.closest('.contract-line-row');
+            const acres = parseFloat(row?.querySelector('.contract-line-acres')?.value) || 0;
+            const ppa = parseFloat(row?.querySelector('.contract-line-ppa')?.value) || 0;
+            const amountEl = row?.querySelector('.contract-line-amount');
+            if (amountEl && acres > 0 && ppa > 0) amountEl.value = Math.round(acres * ppa);
+          }
+          refreshContractTotalLive();
+          save();
+        });
+        el.addEventListener('change', save);
+      });
+
+      document.querySelectorAll('.contract-line-parcel').forEach((sel) => {
+        sel.addEventListener('change', () => {
+          const idx = parseInt(sel.dataset.lineIdx, 10);
+          const parcelId = sel.value;
+          const parcel = getDealParcels(deal).find((p) => p.id === parcelId);
+          const acresEl = document.querySelector(`.contract-line-acres[data-line-idx="${idx}"]`);
+          if (parcel && acresEl && !parseFloat(acresEl.value)) {
+            acresEl.value = parcel.acreage || '';
+          }
+          save();
+        });
+      });
+
+      document.getElementById('contract-line-add')?.addEventListener('click', () => {
+        saveContractFields();
+        addContractLineToDeal(deal);
+        markDealUpdated(deal);
+        saveDeals();
+        renderModal(deal);
+        showToast('Contract line added');
+      });
+
+      document.querySelectorAll('[data-remove-contract-line]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          saveContractFields();
+          const idx = parseInt(btn.dataset.removeContractLine, 10);
+          if (!removeContractLineFromDeal(deal, idx)) {
+            showToast('Keep at least one contract line', 'warn');
+            return;
+          }
+          markDealUpdated(deal);
+          saveDeals();
+          renderAll();
+          renderModal(deal);
+          showToast('Contract line removed');
+        });
+      });
+
+      document.getElementById('parcel-add-submit')?.addEventListener('click', () => {
+        const address = document.getElementById('parcel-add-address')?.value?.trim();
+        const parcelId = document.getElementById('parcel-add-id')?.value?.trim();
+        const acreage = parseFloat(document.getElementById('parcel-add-acres')?.value) || 0;
+        const tourRaw = document.getElementById('parcel-add-tour')?.value?.trim();
+        const notes = document.getElementById('parcel-add-notes')?.value?.trim();
+        if (!address && !parcelId) {
+          showToast('Enter an address or parcel ID', 'warn');
+          return;
+        }
+        const tour = tourRaw ? parseLandIdTourUrl(tourRaw) : null;
+        addParcelToDeal(deal, {
+          address: address || parcelId,
+          city: deal.city,
+          parcelId: parcelId || 'TBD',
+          acreage,
+          landIdTourUrl: tour?.url || (tourRaw && /id\.land/i.test(tourRaw) ? tourRaw : null),
+          notes,
+        });
+        if (tour) setDealPrimaryTour(deal, tourRaw, address || 'LandID presentation');
+        markDealUpdated(deal);
+        saveDeals();
+        renderAll();
+        renderModal(deal);
+        showToast('Parcel added to deal');
+      });
+
+      document.querySelectorAll('[data-remove-parcel]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!removeParcelFromDeal(deal, btn.dataset.removeParcel)) {
+            showToast('A deal must keep at least one parcel', 'warn');
+            return;
+          }
+          saveDeals();
+          renderAll();
+          renderModal(deal);
+          showToast('Parcel removed');
+        });
+      });
+
+      document.getElementById('landid-asset-submit')?.addEventListener('click', async () => {
+        const title = document.getElementById('landid-asset-title')?.value?.trim();
+        const type = document.getElementById('landid-asset-type')?.value || 'pdf';
+        const raw = document.getElementById('landid-asset-url')?.value?.trim();
+        const fileInput = document.getElementById('landid-asset-file');
+        const file = fileInput?.files?.[0];
+        try {
+          let asset = null;
+          if (file) {
+            const uploaded = await readUploadFile(file);
+            const parsed = parseLandIdAssetInput(uploaded.dataUrl, title || file.name.replace(/\.[^.]+$/, ''));
+            if (!parsed) throw new Error('Could not attach that file');
+            parsed.fileName = uploaded.name;
+            parsed.mime = uploaded.mime;
+            parsed.source = 'upload';
+            if (uploaded.mime.startsWith('image/')) parsed.type = 'image';
+            if (uploaded.mime === 'application/pdf') parsed.type = 'pdf';
+            asset = addLandIdAssetToDeal(deal, uploaded.dataUrl, parsed.title, parsed.type);
+            if (asset) {
+              asset.fileName = uploaded.name;
+              asset.mime = uploaded.mime;
+              asset.source = 'upload';
+            }
+            if (fileInput) fileInput.value = '';
+          } else if (raw) {
+            asset = addLandIdAssetToDeal(deal, raw, title, type);
+          } else {
+            showToast('Choose a PDF/image file or paste a URL', 'warn');
+            return;
+          }
+          if (!asset) {
+            showToast('Could not attach that file', 'warn');
+            return;
+          }
+          markDealUpdated(deal);
+          saveDeals();
+          renderModal(deal);
+          showToast('Attachment added');
+        } catch (err) {
+          showToast(err.message || 'Upload failed', 'warn');
+        }
+      });
+
+      bindLandIdPresentationEvents(deal);
+
+      document.querySelectorAll('[data-remove-asset]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeLandIdAssetFromDeal(deal, btn.dataset.removeAsset);
+          saveDeals();
+          renderModal(deal);
+          showToast('Attachment removed');
+        });
       });
 
       document.getElementById('modal-memo-internal')?.addEventListener('click', () => openDealMemo(deal, 'internal'));
@@ -7762,17 +9887,25 @@
       document.getElementById('modal-close-footer')?.addEventListener('click', closeModal);
     }
 
-    function openModal(id) {
+    function openModal(id, opts = {}) {
       activeDealId = id;
       const deal = deals.find(d => d.id === id);
       if (!deal) return;
       if (isMobileLayout() && mobilePanel !== 'pipeline') setMobilePanel('pipeline');
       renderModal(deal);
       document.getElementById('modal-overlay').classList.add('open');
+      if (opts.focus === 'contract') {
+        requestAnimationFrame(() => {
+          document.getElementById('modal-deal-terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.getElementById('modal-deal-stage')?.focus();
+        });
+      }
     }
 
     function closeModal() {
+      closeLandIdFullscreen();
       document.getElementById('modal-overlay').classList.remove('open');
+      document.getElementById('modal-panel')?.classList.remove('has-landid-tour');
       activeDealId = null;
     }
 
@@ -7815,6 +9948,7 @@
       document.getElementById('add-to-pipeline').style.display = '';
       document.getElementById('enrich-view-bar').style.display = 'flex';
       renderEnrichmentPanel(data);
+      refreshEnrichTargetDeals();
       el.classList.add('visible');
       if (isMobileLayout()) setMobilePanel('intake');
     }
@@ -7951,6 +10085,7 @@
     // =========================================================================
     const FEATURE_REQUEST_STORAGE_KEY = 'barn-to-bank-feature-requests';
     const FR_NAME_STORAGE_KEY = 'barn-to-bank-fr-submitter-name';
+    let serverFeatureRequests = null;
 
     const FR_TYPE_LABELS = {
       feature: 'New feature',
@@ -8001,11 +10136,15 @@
     }
 
     function formatFeatureRequestBody(req) {
+      const attachLine = Array.isArray(req.attachments) && req.attachments.length
+        ? `**Attachments:** ${req.attachments.map((a) => a.name).join(', ')} (saved in app)`
+        : null;
       return [
         `**Submitted by:** ${req.name}${req.email ? ` (${req.email})` : ''}`,
         `**Type:** ${FR_TYPE_LABELS[req.type] || req.type}`,
         `**Priority:** ${FR_PRIORITY_LABELS[req.priority] || req.priority}`,
         `**Context:** ${req.context}`,
+        attachLine,
         '',
         '## Description',
         req.description,
@@ -8014,13 +10153,50 @@
         `Request ID: ${req.id}`,
         `Submitted: ${req.submittedAt}`,
         'App: Barn to Bank (barn-to-bank.html)',
-      ].join('\n');
+      ].filter(Boolean).join('\n');
+    }
+
+    function activeFeatureRequests() {
+      if (Array.isArray(serverFeatureRequests)) return serverFeatureRequests;
+      return loadFeatureRequests();
+    }
+
+    async function fetchFeatureRequestsFromServer() {
+      const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+      if (!cfg.apiUrl) return null;
+      try {
+        const res = await fetch(cfg.apiUrl, { credentials: 'same-origin' });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!data.ok || !Array.isArray(data.requests)) return null;
+        serverFeatureRequests = data.requests;
+        return serverFeatureRequests;
+      } catch (err) {
+        console.warn('Could not load feature requests from server:', err);
+        return null;
+      }
+    }
+
+    async function pushFeatureRequestToServer(req) {
+      const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+      if (!cfg.apiUrl) return null;
+      const res = await fetch(cfg.apiUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `Server save failed (${res.status})`);
+      }
+      return { request: data.request || req, emailed: !!data.emailed };
     }
 
     function updateFeatureRequestBadge() {
       const badge = document.getElementById('fr-badge');
       if (!badge) return;
-      const count = loadFeatureRequests().length;
+      const count = activeFeatureRequests().length;
       badge.textContent = String(count);
       badge.classList.toggle('hidden', count === 0);
     }
@@ -8028,7 +10204,7 @@
     function renderFeatureRequestQueue() {
       const list = document.getElementById('fr-queue-list');
       if (!list) return;
-      const requests = loadFeatureRequests().slice().reverse();
+      const requests = activeFeatureRequests().slice();
       if (!requests.length) {
         list.innerHTML = '<div class="fr-queue-empty">No requests yet, Jack can submit the first one above.</div>';
         return;
@@ -8036,13 +10212,13 @@
       list.innerHTML = requests.slice(0, 8).map(r => `
         <div class="fr-queue-item">
           <strong>${escapeHtml(r.title)}</strong>
-          <div>${escapeHtml(FR_TYPE_LABELS[r.type] || r.type)} · ${escapeHtml(FR_PRIORITY_LABELS[r.priority] || r.priority)} · ${escapeHtml(r.name)}</div>
+          <div>${escapeHtml(FR_TYPE_LABELS[r.type] || r.type)} · ${escapeHtml(FR_PRIORITY_LABELS[r.priority] || r.priority)} · ${escapeHtml(r.name)}${r.attachments?.length ? ` · ${r.attachments.length} attachment(s)` : ''}</div>
           <div class="fr-meta">${escapeHtml(r.submittedAt)} · ${escapeHtml(r.id)}</div>
         </div>
       `).join('');
     }
 
-    function openFeatureRequestModal() {
+    async function openFeatureRequestModal() {
       const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
       const savedName = localStorage.getItem(FR_NAME_STORAGE_KEY) || cfg.defaultSubmitter || '';
       document.getElementById('fr-name').value = savedName;
@@ -8052,15 +10228,50 @@
       document.getElementById('fr-title').value = '';
       document.getElementById('fr-description').value = '';
       document.getElementById('fr-context').value = buildFeatureRequestContext();
+      const frFiles = document.getElementById('fr-attachments');
+      if (frFiles) frFiles.value = '';
+      renderFeatureRequestAttachmentPreview();
       document.getElementById('fr-success').classList.remove('visible');
       document.getElementById('fr-success').textContent = '';
-      renderFeatureRequestQueue();
       document.getElementById('fr-modal-overlay').classList.add('open');
       document.getElementById('fr-title').focus();
+      await fetchFeatureRequestsFromServer();
+      renderFeatureRequestQueue();
+      updateFeatureRequestBadge();
     }
 
     function closeFeatureRequestModal() {
       document.getElementById('fr-modal-overlay').classList.remove('open');
+    }
+
+    async function collectFeatureRequestAttachments() {
+      const input = document.getElementById('fr-attachments');
+      const files = input?.files ? [...input.files] : [];
+      if (!files.length) return [];
+      if (files.length > MAX_FR_ATTACHMENTS) {
+        throw new Error(`Max ${MAX_FR_ATTACHMENTS} attachments per request.`);
+      }
+      const out = [];
+      for (const file of files.slice(0, MAX_FR_ATTACHMENTS)) {
+        const uploaded = await readUploadFile(file);
+        out.push({
+          name: uploaded.name,
+          mime: uploaded.mime,
+          size: uploaded.size,
+          dataUrl: uploaded.dataUrl,
+        });
+      }
+      return out;
+    }
+
+    function renderFeatureRequestAttachmentPreview() {
+      const input = document.getElementById('fr-attachments');
+      const preview = document.getElementById('fr-attachment-preview');
+      if (!input || !preview) return;
+      const names = input.files?.length
+        ? [...input.files].map((f) => `${f.name} (${Math.round(f.size / 1024)}KB)`)
+        : [];
+      preview.innerHTML = names.map((n) => `<span class="attachment-chip">${escapeHtml(n)}</span>`).join('');
     }
 
     async function submitFeatureRequest(e) {
@@ -8068,6 +10279,14 @@
       const btn = document.getElementById('fr-submit');
       const successEl = document.getElementById('fr-success');
       const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+
+      let attachments = [];
+      try {
+        attachments = await collectFeatureRequestAttachments();
+      } catch (err) {
+        showToast(err.message || 'Attachment error', 'warn');
+        return;
+      }
 
       const req = {
         id: 'fr-' + Date.now(),
@@ -8078,6 +10297,7 @@
         title: document.getElementById('fr-title').value.trim(),
         description: document.getElementById('fr-description').value.trim(),
         context: document.getElementById('fr-context').value.trim(),
+        attachments,
         submittedAt: new Date().toISOString(),
       };
 
@@ -8088,12 +10308,34 @@
 
       try {
         localStorage.setItem(FR_NAME_STORAGE_KEY, req.name);
-        const list = loadFeatureRequests();
-        list.push(req);
-        saveFeatureRequests(list);
 
         const body = formatFeatureRequestBody(req);
         const clipboardText = `${req.title}\n\n${body}`;
+        const issueTitle = `[${FR_TYPE_LABELS[req.type] || req.type}] ${req.title}`;
+
+        let savedReq = req;
+        let cloudSaved = false;
+        let emailSent = false;
+        let cloudError = '';
+        if (cfg.apiUrl) {
+          try {
+            const pushed = await pushFeatureRequestToServer(req);
+            savedReq = pushed.request;
+            emailSent = pushed.emailed;
+            cloudSaved = true;
+            serverFeatureRequests = [savedReq, ...(serverFeatureRequests || []).filter(r => r.id !== savedReq.id)];
+          } catch (err) {
+            cloudError = err?.message || 'Cloud save failed';
+            console.warn('Feature request cloud save failed:', err);
+            if (String(cloudError).includes('401') || String(cloudError).toLowerCase().includes('unauthorized')) {
+              cloudError = 'Session expired — sign in again, then re-submit (saved locally for now).';
+            }
+          }
+        }
+
+        const list = loadFeatureRequests();
+        list.push(savedReq);
+        saveFeatureRequests(list);
 
         let copied = false;
         try {
@@ -8106,42 +10348,56 @@
             await fetch(cfg.webhookUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(req),
+              body: JSON.stringify(savedReq),
             });
           } catch (err) {
             console.warn('Feature request webhook failed:', err);
           }
         }
 
-        const issueTitle = `[${FR_TYPE_LABELS[req.type] || req.type}] ${req.title}`;
-        if (cfg.githubRepo) {
-          const ghUrl = `https://github.com/${cfg.githubRepo}/issues/new?` + new URLSearchParams({
-            title: issueTitle,
-            body,
-          });
-          window.open(ghUrl, '_blank', 'noopener');
-        } else if (cfg.ownerEmail) {
-          const mailUrl = `mailto:${encodeURIComponent(cfg.ownerEmail)}?` + new URLSearchParams({
-            subject: `Barn to Bank: ${issueTitle}`,
-            body: clipboardText,
-          });
-          window.location.href = mailUrl;
+        if (!cloudSaved) {
+          if (cfg.githubRepo) {
+            const ghUrl = `https://github.com/${cfg.githubRepo}/issues/new?` + new URLSearchParams({
+              title: issueTitle,
+              body,
+            });
+            window.open(ghUrl, '_blank', 'noopener');
+          } else if (cfg.ownerEmail) {
+            const mailUrl = `mailto:${encodeURIComponent(cfg.ownerEmail)}?` + new URLSearchParams({
+              subject: `Barn to Bank: ${issueTitle}`,
+              body: clipboardText,
+            });
+            window.location.href = mailUrl;
+          }
         }
 
         const channels = [];
-        if (cfg.githubRepo) channels.push('GitHub issue draft');
-        if (cfg.ownerEmail && !cfg.githubRepo) channels.push('email');
+        if (cloudSaved) channels.push('cloud');
+        if (emailSent) channels.push('email');
+        if (cfg.githubRepo && !cloudSaved) channels.push('GitHub issue draft');
+        if (cfg.ownerEmail && !cfg.githubRepo && !cloudSaved) channels.push('email draft');
         if (cfg.webhookUrl) channels.push('webhook');
         if (copied) channels.push('clipboard');
 
-        successEl.textContent = channels.length
-          ? `✓ Request saved (${req.id}). ${channels.join(' + ')} ready for review.`
-          : `✓ Request saved locally (${req.id}). Share the exported JSON with Jeremy.`;
+        if (cloudError) {
+          successEl.textContent = `⚠ Saved locally only (${savedReq.id}). ${cloudError}`;
+        } else if (cloudSaved && !emailSent) {
+          successEl.textContent = `✓ Saved to cloud (${savedReq.id}), but email notification failed — Jeremy can still see it in the app queue.`;
+        } else {
+          successEl.textContent = channels.length
+            ? `✓ Request saved (${savedReq.id}). ${channels.join(' + ')} ready for review.`
+            : `✓ Request saved locally (${savedReq.id}). Share the exported JSON with Jeremy.`;
+        }
         successEl.classList.add('visible');
+        renderFeatureRequestQueue();
+        updateFeatureRequestBadge();
 
         document.getElementById('fr-title').value = '';
         document.getElementById('fr-description').value = '';
         document.getElementById('fr-context').value = buildFeatureRequestContext();
+        const frFiles = document.getElementById('fr-attachments');
+        if (frFiles) frFiles.value = '';
+        renderFeatureRequestAttachmentPreview();
       } finally {
         btn.disabled = false;
       }
@@ -8208,33 +10464,40 @@
     document.addEventListener('DOMContentLoaded', async () => {
       initPrivateComps();
       loadAuditLog();
-      deals = initDeals();
+      deletedDealIds = loadDeletedDealIds();
+      deals = ensureAnchorDeals(filterHiddenDeals(initDeals().map((d) => normalizeDeal(d))));
       await Promise.all(deals.map(async (d) => {
         if (!d.ownerContact) d.ownerContact = await fetchForewarnOwnerContact(d);
         d.bottlenecked = computeBottlenecked(d);
         await buildSeedDealRecord(d);
         applyMoatToDeal(d);
-        return d;
+        return normalizeDeal(d);
       }));
       saveDeals();
       loadOutreachState();
+      onDealsSavedHook = () => MoatStore.scheduleAutoSync();
       await fetchMoatCloudConfig();
+      await MoatStore.autoSync({ silent: true });
+      MoatStore.startAutoSyncPolling();
       await fetchWebsiteLeads();
       renderAll();
       renderOutreachQueues();
       updateLandIdConnectStatus();
+      await fetchFeatureRequestsFromServer();
       updateFeatureRequestBadge();
       initPartnerWelcome();
       initMobileNav();
       initThemeToggle();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
-      document.getElementById('auth-sign-out')?.addEventListener('click', async () => {
+      async function signOutStaff() {
         try {
           await fetch('/api/auth', { method: 'DELETE', credentials: 'same-origin' });
         } catch { /* ignore */ }
         window.location.href = '/app/login';
-      });
+      }
+      document.getElementById('auth-sign-out')?.addEventListener('click', signOutStaff);
+      document.getElementById('mobile-sign-out')?.addEventListener('click', signOutStaff);
       document.getElementById('website-leads-refresh')?.addEventListener('click', async () => {
         const btn = document.getElementById('website-leads-refresh');
         if (btn) { btn.disabled = true; btn.textContent = '…'; }
@@ -8249,6 +10512,7 @@
       });
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
       document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
+      document.getElementById('fr-attachments')?.addEventListener('change', renderFeatureRequestAttachmentPreview);
       document.getElementById('fr-modal-overlay').addEventListener('click', (e) => {
         if (e.target === document.getElementById('fr-modal-overlay')) closeFeatureRequestModal();
       });
@@ -8392,6 +10656,27 @@
         }
       });
 
+      document.getElementById('pipeline-search')?.addEventListener('input', (e) => {
+        pipelineFilters.query = e.target.value;
+        renderPipeline();
+        renderSilos();
+      });
+      document.getElementById('pipeline-filter-county')?.addEventListener('change', (e) => {
+        pipelineFilters.county = e.target.value;
+        renderPipeline();
+        renderSilos();
+      });
+      document.getElementById('pipeline-filter-route')?.addEventListener('change', (e) => {
+        pipelineFilters.route = e.target.value;
+        renderPipeline();
+        renderSilos();
+      });
+      document.getElementById('pipeline-filter-portfolio')?.addEventListener('change', (e) => {
+        pipelineFilters.portfolio = e.target.value;
+        renderPipeline();
+        renderSilos();
+      });
+
       document.getElementById('pipeline-add-intake').addEventListener('click', () => scrollToIntake(true));
       document.getElementById('pipeline-quick-add').addEventListener('click', openQuickAddModal);
       document.getElementById('quick-add-close').addEventListener('click', closeQuickAddModal);
@@ -8411,6 +10696,8 @@
             price: document.getElementById('qa-price').value,
             owner: document.getElementById('qa-owner').value,
             route: document.getElementById('qa-route').value,
+            project: document.getElementById('qa-project')?.value || '',
+            tags: document.getElementById('qa-tags')?.value || '',
           });
           closeQuickAddModal();
           if (isMobileLayout()) setMobilePanel('pipeline');
@@ -8423,12 +10710,18 @@
       document.getElementById('add-to-pipeline').addEventListener('click', async () => {
         if (!pendingEnrichment) return;
         const btn = document.getElementById('add-to-pipeline');
+        const targetDealId = document.getElementById('enrich-target-deal')?.value || '';
         btn.disabled = true;
         try {
-          await addDealFromEnrichment(pendingEnrichment);
+          if (targetDealId) {
+            await addParcelFromEnrichmentToDeal(targetDealId, pendingEnrichment);
+          } else {
+            await addDealFromEnrichment(pendingEnrichment);
+          }
           pendingEnrichment = null;
           document.getElementById('enrichment-result').classList.remove('visible');
           document.getElementById('intake-query').value = '';
+          if (document.getElementById('enrich-target-deal')) document.getElementById('enrich-target-deal').value = '';
           if (isMobileLayout()) setMobilePanel('pipeline');
         } finally {
           btn.disabled = false;
@@ -8451,8 +10744,17 @@
       document.getElementById('modal-overlay').addEventListener('click', (e) => {
         if (e.target === document.getElementById('modal-overlay')) closeModal();
       });
+      document.getElementById('landid-fullscreen-close')?.addEventListener('click', closeLandIdFullscreen);
+      document.getElementById('landid-fullscreen-overlay')?.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('landid-fullscreen-overlay')) closeLandIdFullscreen();
+      });
+
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
+        if (document.getElementById('landid-fullscreen-overlay')?.classList.contains('open')) {
+          closeLandIdFullscreen();
+          return;
+        }
         if (document.getElementById('quick-add-overlay').classList.contains('open')) closeQuickAddModal();
         else if (document.getElementById('comp-modal-overlay').classList.contains('open')) closeCompModal();
         else if (document.getElementById('deal-memo-overlay').classList.contains('open')) {

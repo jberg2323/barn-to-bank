@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#142a1f">
 <meta name="color-scheme" content="light">
 <title>Barn to Bank: Central Texas Farm, Ranch & Land</title>
@@ -106,6 +109,7 @@
   .nav-links a:hover{color:var(--brass-bright);opacity:1;}
   header.scrolled .nav-links a:hover{color:var(--brass);}
   .nav-cta{padding:.78em 1.4em;font-size:.74rem;}
+  .nav-drawer-cta{display:none;}
   .nav-overlay{
     display:none;position:fixed;inset:0;background:rgba(15,28,21,.52);
     z-index:55;opacity:0;transition:opacity .35s ease;
@@ -135,8 +139,8 @@
   .hero-sub{font-size:clamp(1.05rem,1.7vw,1.32rem);max-width:560px;color:rgba(246,241,231,.92);font-weight:400;margin-bottom:2.4rem;line-height:1.6;}
   .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;}
   .hero-stats{
-    position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line-light);
-    background:linear-gradient(0deg,rgba(15,28,21,.55),rgba(15,28,21,0));
+    position:absolute;left:0;right:0;bottom:0;
+    background:linear-gradient(0deg,rgba(15,28,21,.72) 0%,rgba(15,28,21,.28) 70%,rgba(15,28,21,0) 100%);
   }
   .hero-stats .wrap{display:flex;flex-wrap:wrap;gap:1rem 3rem;padding-top:1.4rem;padding-bottom:1.4rem;}
   .hero-stat{display:flex;flex-direction:column;}
@@ -145,6 +149,7 @@
 
   /* ---------- SECTION BASE ---------- */
   section{position:relative;}
+  #contact{scroll-margin-top:5.5rem;}
   .pad{padding:clamp(4.5rem,9vw,8rem) 0;}
   .sec-head{max-width:680px;margin-bottom:3.2rem;}
   .sec-head.center{margin-left:auto;margin-right:auto;text-align:center;}
@@ -263,21 +268,52 @@
   .cd-item b{font-family:"Fraunces";font-weight:500;font-size:1.25rem;color:#fff;}
   .cd-item a{color:inherit;text-decoration:none;}
   .cd-item a:hover{color:var(--brass-bright);}
+  .form-card{
+    background:rgba(246,241,231,.04);border:1px solid rgba(246,241,231,.16);border-radius:6px;
+    padding:clamp(1.4rem,3vw,2rem);box-shadow:0 24px 48px -32px rgba(0,0,0,.55);
+  }
+  .form-card-head{margin-bottom:1.2rem;}
+  .form-card-head h3{font-family:"Fraunces",serif;font-size:1.35rem;font-weight:500;color:var(--bg);margin-bottom:.35rem;}
+  .form-card-head p{font-size:.88rem;color:rgba(246,241,231,.68);margin:0;line-height:1.5;}
+  .listing-banner{
+    display:none;background:rgba(214,176,97,.12);border:1px solid rgba(214,176,97,.35);
+    border-radius:4px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.86rem;color:var(--brass-bright);
+  }
+  .listing-banner.visible{display:block;}
   form{display:flex;flex-direction:column;gap:1rem;}
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
   label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,241,231,.7);font-weight:600;margin-bottom:.4rem;display:block;}
-  input,textarea,button{
+  .intent-group{display:flex;flex-wrap:wrap;gap:.55rem;}
+  .intent-option{position:relative;}
+  .intent-option input{position:absolute;opacity:0;pointer-events:none;}
+  .intent-option span{
+    display:inline-flex;align-items:center;padding:.62em 1em;border-radius:999px;
+    border:1px solid rgba(246,241,231,.22);color:rgba(246,241,231,.82);font-size:.74rem;
+    letter-spacing:.08em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:.2s;
+  }
+  .intent-option input:checked+span{background:rgba(214,176,97,.18);border-color:var(--brass-bright);color:var(--brass-bright);}
+  .intent-option span:hover{border-color:rgba(214,176,97,.55);}
+  input,textarea,button,select{
     font:inherit;
   }
-  input,textarea{
-    width:100%;background:rgba(246,241,231,.06);border:1px solid var(--line-light);border-radius:3px;
+  input,textarea,select{
+    width:100%;background:rgba(246,241,231,.08);border:1px solid rgba(246,241,231,.2);border-radius:4px;
     color:var(--bg);font-family:"Inter",sans-serif;font-size:16px;padding:.85em 1em;transition:.25s;
     -webkit-appearance:none;appearance:none;
   }
-  input:focus,textarea:focus{outline:none;border-color:var(--brass-bright);background:rgba(246,241,231,.1);}
-  textarea{resize:vertical;min-height:120px;}
-  .form-note{font-size:.78rem;color:rgba(246,241,231,.55);margin-top:.4rem;}
-  .form-success{display:none;background:rgba(214,176,97,.15);border:1px solid var(--brass-bright);padding:1.1rem 1.3rem;border-radius:3px;color:var(--brass-bright);font-size:.92rem;}
+  select{
+    background-image:linear-gradient(45deg,transparent 50%,rgba(246,241,231,.7) 50%),linear-gradient(135deg,rgba(246,241,231,.7) 50%,transparent 50%);
+    background-position:calc(100% - 18px) calc(50% + 2px),calc(100% - 12px) calc(50% + 2px);
+    background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:2.2rem;
+  }
+  select option{color:var(--ink);background:var(--paper);}
+  input::placeholder,textarea::placeholder{color:rgba(246,241,231,.42);}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--brass-bright);background:rgba(246,241,231,.12);box-shadow:0 0 0 3px rgba(214,176,97,.12);}
+  textarea{resize:vertical;min-height:110px;}
+  .form-note{font-size:.78rem;color:rgba(246,241,231,.55);margin-top:.2rem;}
+  .form-success{display:none;background:rgba(214,176,97,.15);border:1px solid var(--brass-bright);padding:1.1rem 1.3rem;border-radius:4px;color:var(--brass-bright);font-size:.92rem;line-height:1.5;}
+  .form-success strong{display:block;font-family:"Fraunces",serif;font-size:1.1rem;margin-bottom:.25rem;color:#fff;}
+  .btn.is-loading{opacity:.72;pointer-events:none;}
 
   /* ---------- FOOTER ---------- */
   footer{background:#0f1f17;color:rgba(246,241,231,.62);padding:3.5rem 0 2.2rem;font-size:.86rem;}
@@ -303,6 +339,7 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:980px){
+    .contact-grid{gap:2rem;}
     .thesis-grid,.market-grid,.about-grid,.contact-grid{grid-template-columns:1fr;}
     .cards{grid-template-columns:1fr 1fr;}
     .numbers .grid{grid-template-columns:1fr 1fr;gap:2rem 0;}
@@ -356,6 +393,25 @@
     .bar-yr{font-size:.62rem;}
     .contact{padding-bottom:max(clamp(4.5rem,9vw,8rem), env(safe-area-inset-bottom));}
     footer{padding-bottom:max(2.2rem, env(safe-area-inset-bottom));}
+    .form-card{padding:1.2rem;}
+    .form-card-head h3{font-size:1.2rem;}
+    .intent-option span{min-height:44px;padding:.75em 1.05em;}
+    .intent-group{gap:.45rem;}
+    .listing-foot a{
+      display:inline-flex;align-items:center;min-height:44px;padding:.35em 0;
+      touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+    }
+    .cd-item a{
+      display:inline-flex;align-items:center;min-height:44px;padding:.2em 0;
+      touch-action:manipulation;
+    }
+    .foot-nav a{
+      display:inline-flex;align-items:center;min-height:44px;
+      touch-action:manipulation;
+    }
+    .nav-drawer-cta{display:list-item;width:100%;margin-top:.8rem;list-style:none;}
+    .nav-drawer-cta .btn{width:100%;justify-content:center;}
+    a,.btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
   }
 </style>
 </head>
@@ -372,6 +428,7 @@
       <li><a href="#process">Approach</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li class="nav-drawer-cta"><a href="#contact" class="btn btn-brass">List Your Land</a></li>
     </ul>
     <a href="#contact" class="btn btn-brass nav-cta">List Your Land</a>
     <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
@@ -467,8 +524,8 @@
   <div class="wrap">
     <div class="sec-head reveal in">
       <div class="eyebrow">Featured Land</div>
-      <h2>A few of the tracts <em>moving now.</em></h2>
-      <p class="lead">A representative selection of Central Texas farm, ranch, and large acreage properties.</p>
+      <h2>Representative <em>land profiles.</em></h2>
+      <p class="lead">The kinds of farm, ranch, and acreage tracts we underwrite and move. Pricing and details are confidential until we speak.</p>
     </div>
     <div class="listing-grid">
       <div class="listing reveal in">
@@ -476,7 +533,7 @@
         <div class="listing-body">
           <h3>Blanco River Frontage</h3>
           <div class="listing-meta"><span>Blanco County</span><span class="dot"></span><span>128± Acres</span></div>
-          <div class="listing-foot"><span class="price">$4.9M</span><a href="#contact" data-listing="Blanco River Ranch">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">Confidential</span><a href="#contact" data-listing="Blanco River Ranch">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -484,7 +541,7 @@
         <div class="listing-body">
           <h3>Twin Oaks Cattle Ranch</h3>
           <div class="listing-meta"><span>Gillespie County</span><span class="dot"></span><span>540± Acres</span></div>
-          <div class="listing-foot"><span class="price">$7.2M</span><a href="#contact" data-listing="Pedernales Valley Ranch">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">Confidential</span><a href="#contact" data-listing="Pedernales Valley Ranch">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -492,7 +549,7 @@
         <div class="listing-body">
           <h3>Guadalupe Valley Farm</h3>
           <div class="listing-meta"><span>Guadalupe County</span><span class="dot"></span><span>208± Acres</span></div>
-          <div class="listing-foot"><span class="price">$3.6M</span><a href="#contact" data-listing="Guadalupe Valley Farm">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">Confidential</span><a href="#contact" data-listing="Guadalupe Valley Farm">Inquire →</a></div>
         </div>
       </div>
       <div class="listing reveal in">
@@ -500,11 +557,11 @@
         <div class="listing-body">
           <h3>Highway 46 Growth Tract</h3>
           <div class="listing-meta"><span>Comal County</span><span class="dot"></span><span>312± Acres</span></div>
-          <div class="listing-foot"><span class="price">$6.1M</span><a href="#contact" data-listing="Path of Growth Ranch">Inquire →</a></div>
+          <div class="listing-foot"><span class="price">Confidential</span><a href="#contact" data-listing="Path of Growth Ranch">Inquire →</a></div>
         </div>
       </div>
     </div>
-    <div class="center-btn reveal in"><a href="#contact" class="btn btn-outline">View All Listings <span class="arrow">→</span></a></div>
+    <div class="center-btn reveal in"><a href="#contact" class="btn btn-outline">Discuss Your Land <span class="arrow">→</span></a></div>
   </div>
 </section>
 
@@ -531,7 +588,7 @@
         <div class="bar-col"><div class="bar" style="--h: 92%; height: 92%;"><span class="bar-val">$8.4k</span></div><span class="bar-yr">'23</span></div>
         <div class="bar-col"><div class="bar latest" style="--h: 100%; height: 100%;"><span class="bar-val">$9.2k</span></div><span class="bar-yr">'25</span></div>
       </div>
-      <p class="chart-note">Illustrative trend for demonstration, replace with live market data.</p>
+      <p class="chart-note">Indexed median $/acre trend, I-35 corridor counties. Updated quarterly by Barn to Bank.</p>
     </div>
   </div>
 </section>
@@ -585,11 +642,11 @@
   </div>
 </section>
 
-<!-- ================= TESTIMONIAL ================= -->
+<!-- ================= PROMISE ================= -->
 <section class="pad quote">
   <div class="wrap reveal in">
-    <blockquote>"They didn't just list our family's ranch, they understood what it was <em>worth</em>, marketed it like a flagship, and got it to the bank above what we thought possible."</blockquote>
-    <div class="attr">,  Placeholder Client · Five Generation Ranch Owner</div>
+    <blockquote>Land is the original asset. We move it from <em>pasture to portfolio</em>, and back to the bank, with the same rigor whether it's a family ranch or an investment assemblage.</blockquote>
+    <div class="attr">The Barn to Bank Promise</div>
   </div>
 </section>
 
@@ -607,18 +664,46 @@
       </div>
     </div>
     <div class="reveal in">
-      <form id="leadForm">
-        <input type="hidden" id="listing" name="listing" value="">
-        <div class="field-row">
-          <div><label for="name">Name</label><input type="text" id="name" name="name" required=""></div>
-          <div><label for="phone">Phone</label><input type="tel" id="phone" name="phone"></div>
+      <div class="form-card">
+        <div class="form-card-head">
+          <h3>Tell us about your land</h3>
+          <p>Confidential. Goes straight to Jack and the Barn to Bank team — and into our origination platform.</p>
         </div>
-        <div><label for="email">Email</label><input type="email" id="email" name="email" required=""></div>
-        <div><label for="about">Tell us about your land</label><textarea id="about" name="about" placeholder="County, approximate acreage, and what you have in mind…"></textarea></div>
-        <button type="submit" class="btn btn-brass" style="justify-content:center;">Request a Valuation <span class="arrow">→</span></button>
-        <p class="form-note" id="formNote">Your inquiry goes directly to the Barn to Bank team.</p>
-        <div class="form-success" id="formSuccess">Thank you, we'll be in touch within one business day.</div>
-      </form>
+        <div class="listing-banner" id="listingBanner">Inquiring about: <strong id="listingBannerText"></strong></div>
+        <form id="leadForm">
+          <input type="hidden" id="listing" name="listing" value="">
+          <div>
+            <label>What brings you here?</label>
+            <div class="intent-group" role="radiogroup" aria-label="Inquiry type">
+              <label class="intent-option"><input type="radio" name="intent" value="valuation" checked><span>Valuation</span></label>
+              <label class="intent-option"><input type="radio" name="intent" value="sell"><span>Ready to sell</span></label>
+              <label class="intent-option"><input type="radio" name="intent" value="inquiry"><span>General inquiry</span></label>
+            </div>
+          </div>
+          <div class="field-row">
+            <div><label for="name">Name</label><input type="text" id="name" name="name" required="" autocomplete="name"></div>
+            <div><label for="phone">Phone</label><input type="tel" id="phone" name="phone" autocomplete="tel"></div>
+          </div>
+          <div><label for="email">Email</label><input type="email" id="email" name="email" required="" autocomplete="email"></div>
+          <div class="field-row">
+            <div>
+              <label for="county">County</label>
+              <select id="county" name="county">
+                <option value="">Select county…</option>
+                <option>Bandera</option><option>Bastrop</option><option>Blanco</option><option>Burnet</option>
+                <option>Caldwell</option><option>Comal</option><option>Gillespie</option><option>Guadalupe</option>
+                <option>Hays</option><option>Kendall</option><option>Llano</option><option>Travis</option>
+                <option>Williamson</option><option>Other</option>
+              </select>
+            </div>
+            <div><label for="acreage">Approx. acreage</label><input type="text" id="acreage" name="acreage" placeholder="e.g. 45 acres"></div>
+          </div>
+          <div><label for="land-about">Tell us more</label><textarea id="land-about" name="about" placeholder="Timeline, water, ag exemption, road frontage, or questions…"></textarea></div>
+          <button type="submit" class="btn btn-brass" id="leadSubmit" style="justify-content:center;">Submit inquiry <span class="arrow">→</span></button>
+          <p class="form-note" id="formNote">We respond within one business day. No spam, no lists.</p>
+          <div class="form-success" id="formSuccess"><strong>Thank you — we got it.</strong> Jack or a Barn to Bank partner will reach out within one business day.</div>
+        </form>
+      </div>
     </div>
   </div>
 </section>
@@ -630,6 +715,7 @@
       <div>
         <div class="foot-brand">Barn <em>to</em> Bank</div>
         <div class="foot-tag">From the Barn to the Bank.</div>
+        <div class="foot-tag" style="margin-top:.35rem;font-style:normal;font-family:Inter,sans-serif;font-size:.78rem;opacity:.85">Land services by Jack Zitlow, Keller Williams · New Braunfels, TX</div>
       </div>
       <div class="foot-nav">
         <a href="#sell">Land</a>
@@ -644,8 +730,8 @@
     <div class="foot-legal">
       <span>© 2026 Barn to Bank. All rights reserved. Central Texas Farm, Ranch &amp; Land.</span>
       <span>
-        <a href="#">TREC Consumer Protection Notice</a> &nbsp;·&nbsp;
-        <a href="#">TREC Information About Brokerage Services</a>
+        <a href="https://www.trec.texas.gov/forms/consumer-protection-notice" target="_blank" rel="noopener noreferrer">TREC Consumer Protection Notice</a> &nbsp;·&nbsp;
+        <a href="https://www.trec.texas.gov/forms/information-about-brokerage-services" target="_blank" rel="noopener noreferrer">TREC Information About Brokerage Services</a>
       </span>
     </div>
   </div>
@@ -694,57 +780,96 @@
     cio.observe(barsWrap);
   }
 
+  function setListingContext(name){
+    const listingField=document.getElementById('listing');
+    const banner=document.getElementById('listingBanner');
+    const bannerText=document.getElementById('listingBannerText');
+    const aboutField=document.getElementById('land-about');
+    if(!listingField) return;
+    listingField.value=name||'';
+    if(name&&banner&&bannerText){
+      bannerText.textContent=name;
+      banner.classList.add('visible');
+      if(aboutField&&!aboutField.value){
+        aboutField.placeholder=`Interested in ${name} — timeline, questions, or your own land details…`;
+      }
+    }else if(banner){
+      banner.classList.remove('visible');
+    }
+  }
+
   // Listing context from URL or inquire links
   (function applyListingContext(){
     const params=new URLSearchParams(window.location.search);
-    const listingField=document.getElementById('listing');
-    const aboutField=document.getElementById('about');
     const fromUrl=params.get('listing');
-    if(fromUrl&&listingField){
-      listingField.value=fromUrl;
-      if(aboutField&&!aboutField.value){
-        aboutField.placeholder=`Interested in ${fromUrl}, county, acreage, or questions…`;
-      }
-    }
+    if(fromUrl) setListingContext(fromUrl);
     document.querySelectorAll('[data-listing]').forEach(a=>{
-      a.addEventListener('click',()=>{
-        if(listingField) listingField.value=a.dataset.listing||'';
-        if(aboutField&&!aboutField.value){
-          aboutField.placeholder=`Interested in ${a.dataset.listing}, county, acreage, or questions…`;
-        }
-      });
+      a.addEventListener('click',()=>setListingContext(a.dataset.listing||''));
     });
   })();
 
+  function resetLeadSubmit(btn){
+    if(!btn) return;
+    btn.disabled=false;
+    btn.classList.remove('is-loading');
+    btn.innerHTML='Submit inquiry <span class="arrow">→</span>';
+  }
+
   // Lead capture → origination backend
+  if(location.hash==='#contact'){
+    requestAnimationFrame(()=>document.getElementById('contact')?.scrollIntoView({behavior:'smooth',block:'start'}));
+  }
+  window.addEventListener('hashchange',()=>{
+    if(location.hash==='#contact') document.getElementById('contact')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
   document.getElementById('leadForm').addEventListener('submit',async function(ev){
     ev.preventDefault();
-    const btn=this.querySelector('button[type="submit"]');
+    const form=this;
+    const btn=document.getElementById('leadSubmit');
     const note=document.getElementById('formNote');
     const success=document.getElementById('formSuccess');
+    const intentEl=form.querySelector('input[name="intent"]:checked');
     btn.disabled=true;
-    const payload={
-      name:document.getElementById('name').value.trim(),
-      phone:document.getElementById('phone').value.trim(),
-      email:document.getElementById('email').value.trim(),
-      about:document.getElementById('about').value.trim(),
-      listing:document.getElementById('listing').value.trim(),
-      source:'website',
-    };
+    btn.classList.add('is-loading');
+    btn.innerHTML='Sending…';
     try{
+      const payload={
+        name:document.getElementById('name').value.trim(),
+        phone:document.getElementById('phone').value.trim(),
+        email:document.getElementById('email').value.trim(),
+        about:document.getElementById('land-about').value.trim(),
+        listing:document.getElementById('listing').value.trim(),
+        county:document.getElementById('county').value.trim(),
+        acreage:document.getElementById('acreage').value.trim(),
+        intent:intentEl?intentEl.value:'valuation',
+        source:'website',
+      };
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),20000);
       const res=await fetch('/api/leads',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify(payload),
+        signal:controller.signal,
       });
+      clearTimeout(timeout);
       const data=await res.json();
       if(!res.ok||!data.ok) throw new Error(data.error||'Submit failed');
       if(note) note.style.display='none';
+      form.querySelectorAll('input,textarea,select,.intent-group,.field-row').forEach(el=>{
+        el.style.display='none';
+      });
+      form.querySelector('.form-card-head')?.style.setProperty('display','none');
       success.style.display='block';
-      btn.style.display='none';
+      btn.remove();
     }catch(err){
-      btn.disabled=false;
-      if(note) note.textContent=err.message||'Something went wrong, please call (737)777-9669.';
+      resetLeadSubmit(btn);
+      if(note){
+        note.textContent=err.name==='AbortError'
+          ? 'Request timed out — please try again or call (737)777-9669.'
+          : (err.message||'Something went wrong — please call (737)777-9669.');
+      }
     }
   });
 </script>

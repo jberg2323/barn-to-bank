@@ -1,5 +1,6 @@
 node_modules/
 .playwright-idland-profile/
+.playwright-google-profile/
 .landid-token
 .vercel
 .env
@@ -12,3 +13,4 @@ iframe-*.png
 raw-source.html
 local-preview.png
 public-site.html
+.env*.local

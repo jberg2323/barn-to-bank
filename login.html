@@ -74,7 +74,9 @@
     font-size:1.65rem;font-weight:600;margin:0 0 .35rem;
   }
   .brand em{color:var(--brass);font-style:italic;}
-  .sub{font-size:.92rem;color:var(--muted);margin:0 0 1.6rem;line-height:1.55;}
+  .sub{font-size:.92rem;color:var(--muted);margin:0 0 .5rem;line-height:1.55;}
+  .kw-credit{font-size:.78rem;color:var(--muted);margin:0 0 1.6rem;line-height:1.45;}
+  .kw-credit strong{color:var(--ink);font-weight:600;}
   label{
     display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
     color:var(--muted);font-weight:600;margin-bottom:.45rem;
@@ -102,6 +104,9 @@
     text-decoration:none;
   }
   .back:hover{color:var(--brass);}
+  @media(max-width:680px){
+    .back{display:inline-flex;align-items:center;min-height:44px;padding:.35em 0;touch-action:manipulation;}
+  }
   .theme-toggle{
     position:fixed;top:max(16px, env(safe-area-inset-top));right:max(16px, env(safe-area-inset-right));
     display:inline-flex;align-items:center;gap:6px;padding:.55rem .85rem;min-height:44px;
@@ -121,6 +126,7 @@
   <main class="panel">
     <h1 class="brand">Barn <em>to</em> Bank</h1>
     <p class="sub">Origination platform. Staff access only.</p>
+    <p class="kw-credit"><strong>Jack Zitlow</strong> · Keller Williams</p>
     <form id="loginForm">
       <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="current-password" required>

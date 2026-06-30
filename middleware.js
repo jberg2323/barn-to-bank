@@ -53,6 +53,8 @@ function isProtectedPath(pathname) {
   if (pathname === '/api/moat-sync') return true;
   if (pathname === '/api/moat-config') return true;
   if (pathname === '/api/dnc-scrub') return true;
+  if (pathname === '/api/feature-requests') return true;
+  if (pathname === '/api/geocode') return true;
   return false;
 }
 
@@ -91,5 +93,7 @@ export const config = {
     '/api/moat-sync',
     '/api/moat-config',
     '/api/dnc-scrub',
+    '/api/feature-requests',
+    '/api/geocode',
   ],
 };

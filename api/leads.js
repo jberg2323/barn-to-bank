@@ -1,9 +1,11 @@
 /**
  * Public website leads → Barn to Bank origination backend (Supabase moat bundle).
- * POST { name, phone?, email, about?, listing?, source? }
+ * POST { name, phone?, email, about?, listing?, county?, acreage?, intent?, source? }
  * GET  → inbound leads for staff app
  * PATCH { id, status } → update lead status (contacted | converted | dismissed)
  */
+
+const { sendLeadNotificationEmail } = require('../lib/lead-notification-email');
 
 const TABLE = 'moat_bundles';
 
@@ -128,6 +130,9 @@ module.exports = async function handler(req, res) {
         email,
         about: String(body.about || '').trim(),
         listing: String(body.listing || '').trim(),
+        county: String(body.county || '').trim(),
+        acreage: String(body.acreage || '').trim(),
+        intent: String(body.intent || 'valuation').trim(),
         source: body.source || 'website',
         status: 'new',
         createdAt: new Date().toISOString(),
@@ -136,6 +141,11 @@ module.exports = async function handler(req, res) {
       const { payload } = await loadBundle(tid);
       const inboundLeads = [...(payload.inboundLeads || []), lead];
       await saveBundle(tid, { ...payload, inboundLeads });
+
+      // Respond immediately; email Jack in the background so the form doesn't hang.
+      void sendLeadNotificationEmail(lead).catch((err) => {
+        console.warn('lead notification email failed:', err?.message || err);
+      });
 
       return json(res, 201, { ok: true, lead });
     }

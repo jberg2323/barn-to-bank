@@ -53,18 +53,62 @@ async function supabaseFetch(path, options = {}) {
   return data;
 }
 
+function dealTimestamp(d) {
+  return String(d?.updatedAt || d?.lastContact || '');
+}
+
+function normalizeDeletedEntry(entry) {
+  if (!entry) return null;
+  if (typeof entry === 'string') return { id: entry, deletedAt: '' };
+  if (!entry.id) return null;
+  return { id: entry.id, deletedAt: String(entry.deletedAt || '') };
+}
+
+function mergeDeletedDealIds(local, remote) {
+  const map = new Map();
+  [...(remote?.deletedDealIds || []), ...(local?.deletedDealIds || [])].forEach((entry) => {
+    const norm = normalizeDeletedEntry(entry);
+    if (!norm) return;
+    const prev = map.get(norm.id);
+    if (!prev || norm.deletedAt >= prev.deletedAt) map.set(norm.id, norm);
+  });
+  return [...map.values()];
+}
+
+function isDealTombstoned(dealId, deletedDealIds, dealUpdatedAt = '') {
+  const tomb = deletedDealIds.find((x) => x.id === dealId);
+  if (!tomb) return false;
+  if (!tomb.deletedAt) return true;
+  return !dealUpdatedAt || tomb.deletedAt >= String(dealUpdatedAt);
+}
+
 function mergeBundles(local, remote) {
-  if (!remote) return local;
-  if (!local) return remote;
+  if (!remote) return { ...local, deletedDealIds: mergeDeletedDealIds(local, null) };
+  if (!local) return { ...remote, deletedDealIds: mergeDeletedDealIds(null, remote) };
+
+  const deletedDealIds = mergeDeletedDealIds(local, remote);
+  const localExport = String(local.exportedAt || '');
+  const remoteExport = String(remote.exportedAt || remote.updated_at || '');
+  const localPipelineAuthoritative = localExport >= remoteExport;
+  const localDealIds = new Set((local.deals || []).map((d) => d.id));
 
   const dealMap = new Map();
   [...(remote.deals || []), ...(local.deals || [])].forEach((d) => {
     if (!d?.id) return;
+    if (isDealTombstoned(d.id, deletedDealIds, d.updatedAt)) return;
     const prev = dealMap.get(d.id);
-    if (!prev || String(d.updatedAt || d.lastContact || '') >= String(prev.updatedAt || prev.lastContact || '')) {
-      dealMap.set(d.id, d);
-    }
+    if (!prev || dealTimestamp(d) >= dealTimestamp(prev)) dealMap.set(d.id, d);
   });
+
+  // When the client just edited the pipeline, do not resurrect deals they removed locally.
+  if (localPipelineAuthoritative) {
+    for (const id of [...dealMap.keys()]) {
+      if (localDealIds.has(id)) continue;
+      const remoteDeal = dealMap.get(id);
+      const addedAfterLocalEdit = dealTimestamp(remoteDeal) > localExport;
+      if (!addedAfterLocalEdit) dealMap.delete(id);
+    }
+  }
 
   const compMap = new Map();
   [...(remote.comps || []), ...(local.comps || [])].forEach((c) => {
@@ -97,15 +141,28 @@ function mergeBundles(local, remote) {
   const localTime = local.exportedAt || '';
   const outreach = localTime >= remoteTime ? (local.outreach || remote.outreach) : (remote.outreach || local.outreach);
 
+  const SEED_DEAL_IDS = new Set([
+    'deal-bastrop-001',
+    'deal-caldwell-001',
+    'deal-comal-001',
+    'deal-bexar-001',
+  ]);
+
+  const deals = [...dealMap.values()].filter((d) => {
+    if (!SEED_DEAL_IDS.has(d.id)) return true;
+    return !isDealTombstoned(d.id, deletedDealIds, d.updatedAt);
+  });
+
   return {
     version: Math.max(local.version || 1, remote.version || 1),
     exportedAt: new Date().toISOString(),
     teamId: local.teamId || remote.teamId,
-    deals: [...dealMap.values()],
+    deals,
     comps: [...compMap.values()],
     audit: audit.slice(0, 500),
     outreach: outreach || {},
     inboundLeads: [...leadMap.values()],
+    deletedDealIds,
   };
 }
 
