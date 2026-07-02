@@ -49,12 +49,14 @@ function isPublicPath(pathname, method) {
 function isProtectedPath(pathname) {
   if (pathname === '/app' || pathname.startsWith('/app/')) return true;
   if (pathname === '/barn-to-bank.html') return true;
-  if (pathname === '/api/leads') return true;
-  if (pathname === '/api/moat-sync') return true;
-  if (pathname === '/api/moat-config') return true;
-  if (pathname === '/api/dnc-scrub') return true;
-  if (pathname === '/api/feature-requests') return true;
-  if (pathname === '/api/geocode') return true;
+  if (pathname.startsWith('/api/')) return true;
+  if (pathname.startsWith('/lib/')) return true;
+  if (
+    pathname === '/reference-page.html'
+    || pathname === '/iframe-page.html'
+    || pathname === '/raw-source.html'
+    || pathname === '/public-site.html'
+  ) return true;
   return false;
 }
 
@@ -75,7 +77,7 @@ export default async function middleware(request) {
     return;
   }
 
-  if (pathname.startsWith('/api/')) {
+  if (pathname.startsWith('/api/') || pathname.startsWith('/lib/')) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -89,11 +91,11 @@ export const config = {
     '/app',
     '/app/:path*',
     '/barn-to-bank.html',
-    '/api/leads',
-    '/api/moat-sync',
-    '/api/moat-config',
-    '/api/dnc-scrub',
-    '/api/feature-requests',
-    '/api/geocode',
+    '/api/:path*',
+    '/lib/:path*',
+    '/reference-page.html',
+    '/iframe-page.html',
+    '/raw-source.html',
+    '/public-site.html',
   ],
 };
