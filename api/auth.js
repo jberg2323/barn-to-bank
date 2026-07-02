@@ -5,14 +5,16 @@
  */
 
 const {
+  cookieName,
   originationPassword,
   sessionCookieHeader,
   clearSessionCookieHeader,
+  isValidSessionCookie,
 } = require('../lib/session-token');
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
@@ -29,6 +31,16 @@ function parseBody(req) {
 module.exports = async function handler(req, res) {
   cors(res);
   if (req.method === 'OPTIONS') return res.status(204).end();
+
+  if (req.method === 'GET') {
+    const cookieHeader = req.headers.cookie || '';
+    const match = cookieHeader.match(new RegExp(`${cookieName()}=([^;]+)`));
+    const session = match ? decodeURIComponent(match[1]) : '';
+    if (!isValidSessionCookie(session)) {
+      return json(res, 401, { ok: false, error: 'Unauthorized' });
+    }
+    return json(res, 200, { ok: true });
+  }
 
   if (req.method === 'POST') {
     try {

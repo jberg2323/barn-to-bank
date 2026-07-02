@@ -1,8 +1,6 @@
 {
   "rewrites": [
-    { "source": "/app/login", "destination": "/login.html" },
-    { "source": "/app", "destination": "/barn-to-bank.html" },
-    { "source": "/app/(.*)", "destination": "/barn-to-bank.html" }
+    { "source": "/app/login", "destination": "/login.html" }
   ],
   "headers": [
     {

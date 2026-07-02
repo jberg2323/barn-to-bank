@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/jberg2323/barn-to-bank#readme",
   "dependencies": {
+    "@vercel/functions": "^2.2.13",
     "nodemailer": "^7.0.13",
     "playwright": "^1.60.0"
   },

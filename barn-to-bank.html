@@ -10461,7 +10461,19 @@
     // =========================================================================
     // Init
     // =========================================================================
+    async function requireStaffSession() {
+      try {
+        const res = await fetch('/api/auth', { credentials: 'same-origin' });
+        if (res.ok) return true;
+      } catch { /* fall through */ }
+      const next = window.location.pathname + window.location.search;
+      window.location.replace('/app/login?next=' + encodeURIComponent(next));
+      return false;
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
+      if (!(await requireStaffSession())) return;
+
       initPrivateComps();
       loadAuditLog();
       deletedDealIds = loadDeletedDealIds();

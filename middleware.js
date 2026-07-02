@@ -1,3 +1,5 @@
+import { rewrite } from '@vercel/functions';
+
 const COOKIE_NAME = 'barn-session';
 
 function authSecret() {
@@ -60,6 +62,16 @@ function isProtectedPath(pathname) {
   return false;
 }
 
+function isAppRoute(pathname) {
+  return pathname === '/app' || (pathname.startsWith('/app/') && pathname !== '/app/login');
+}
+
+function redirectToLogin(url, pathname) {
+  const loginUrl = new URL('/app/login', url.origin);
+  loginUrl.searchParams.set('next', pathname + url.search);
+  return Response.redirect(loginUrl, 302);
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   const { pathname } = url;
@@ -69,21 +81,30 @@ export default async function middleware(request) {
     return;
   }
 
-  const cookies = parseCookies(request.headers.get('cookie'));
-  const session = cookies[COOKIE_NAME];
-  const expected = await sessionToken();
+  try {
+    const cookies = parseCookies(request.headers.get('cookie'));
+    const session = cookies[COOKIE_NAME];
+    const expected = await sessionToken();
+    const authed = !!(session && session === expected);
 
-  if (session && session === expected) {
+    if (!authed) {
+      if (pathname.startsWith('/api/') || pathname.startsWith('/lib/')) {
+        return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+      }
+      return redirectToLogin(url, pathname);
+    }
+
+    if (isAppRoute(pathname)) {
+      return rewrite(new URL('/barn-to-bank.html', url.origin));
+    }
+
     return;
+  } catch {
+    if (pathname.startsWith('/api/') || pathname.startsWith('/lib/')) {
+      return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
+    }
+    return redirectToLogin(url, pathname);
   }
-
-  if (pathname.startsWith('/api/') || pathname.startsWith('/lib/')) {
-    return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const loginUrl = new URL('/app/login', url.origin);
-  loginUrl.searchParams.set('next', pathname + url.search);
-  return Response.redirect(loginUrl, 302);
 }
 
 export const config = {
