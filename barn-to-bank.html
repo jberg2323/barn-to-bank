@@ -1544,12 +1544,27 @@
       flex-direction: column;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
-      transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+      transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
     }
 
     .silo-lane.lane-develop { border-top: 3px solid var(--develop); }
     .silo-lane.lane-sell { border-top: 3px solid var(--sell); }
     .silo-lane.lane-retail { border-top: 3px solid var(--retail); }
+
+    .silo-lane.is-drag-over {
+      border-color: var(--border-strong);
+      box-shadow: 0 0 0 2px var(--accent-glow), var(--shadow-sm);
+      background: var(--bg-elevated);
+    }
+    .silo-lane.lane-develop.is-drag-over {
+      box-shadow: 0 0 0 2px rgba(192,154,255,0.35), var(--shadow-sm);
+    }
+    .silo-lane.lane-sell.is-drag-over {
+      box-shadow: 0 0 0 2px rgba(114,212,138,0.35), var(--shadow-sm);
+    }
+    .silo-lane.lane-retail.is-drag-over {
+      box-shadow: 0 0 0 2px rgba(120,188,255,0.35), var(--shadow-sm);
+    }
 
     .silo-header {
       padding: 12px 14px 10px;
@@ -1607,6 +1622,7 @@
       flex: 1;
       overflow-y: auto;
       max-height: 420px;
+      min-height: 120px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -1618,13 +1634,23 @@
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       border-radius: 10px;
-      cursor: pointer;
+      cursor: grab;
       font-family: var(--sans);
       -webkit-font-smoothing: antialiased;
-      transition: background 0.15s var(--ease), border-color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s;
+      transition: background 0.15s var(--ease), border-color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s, opacity 0.15s;
       box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .silo-deal:active { cursor: grabbing; }
+
+    .silo-deal.is-dragging {
+      opacity: 0.45;
+      transform: rotate(1.5deg) scale(1.02);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.28);
     }
 
     [data-theme="dark"] .silo-deal {
@@ -1700,11 +1726,20 @@
     .silo-empty {
       padding: 28px 16px;
       text-align: center;
-      color: var(--text-muted);
-      font-size: 11px;
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
       line-height: 1.55;
-      border: 1px dashed var(--border-subtle);
+      border: 1px dashed var(--border);
       border-radius: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+      pointer-events: none;
     }
 
     .silo-empty-icon {
@@ -4147,7 +4182,7 @@
       <!-- SILO ROUTING -->
       <div class="silos">
         <div class="section-title">Three Silo Routing</div>
-        <p class="section-blurb">Trello-style lanes by route. Assign each deal to the path with the best margin, develop, flip, or retail, so nothing slips through.</p>
+        <p class="section-blurb">Trello-style lanes by route. Drag cards between Develop, Direct Sale, and Retail to assign the path with the best margin.</p>
         <div class="silo-grid" id="silo-grid">
           <div class="silo-lane lane-develop" data-route="DEVELOP">
             <div class="silo-header">
@@ -4157,7 +4192,7 @@
               </div>
               <div class="silo-stats"><span class="count" id="silo-dev-count">0</span> deals · <span id="silo-dev-acres">0</span> ac</div>
             </div>
-            <div class="silo-body" id="silo-dev-body"></div>
+            <div class="silo-body" id="silo-dev-body" data-route-drop="DEVELOP"></div>
           </div>
           <div class="silo-lane lane-sell" data-route="SELL">
             <div class="silo-header">
@@ -4167,7 +4202,7 @@
               </div>
               <div class="silo-stats"><span class="count" id="silo-sell-count">0</span> deals · <span id="silo-sell-acres">0</span> ac</div>
             </div>
-            <div class="silo-body" id="silo-sell-body"></div>
+            <div class="silo-body" id="silo-sell-body" data-route-drop="SELL"></div>
           </div>
           <div class="silo-lane lane-retail" data-route="RETAIL">
             <div class="silo-header">
@@ -4177,7 +4212,7 @@
               </div>
               <div class="silo-stats"><span class="count" id="silo-retail-count">0</span> deals · <span id="silo-retail-acres">0</span> ac</div>
             </div>
-            <div class="silo-body" id="silo-retail-body"></div>
+            <div class="silo-body" id="silo-retail-body" data-route-drop="RETAIL"></div>
           </div>
         </div>
       </div>
@@ -9926,14 +9961,14 @@
         const body = document.getElementById(cfg.body);
         if (items.length === 0) {
           const hints = {
-            DEVELOP: 'Entitled tracts with utility path, assign via route dropdown',
-            SELL: 'Comp supported flips where entitlement is the bottleneck',
-            RETAIL: 'Smaller tracts or brokerage commission plays',
+            DEVELOP: 'Drop deals here for utility & entitlement path',
+            SELL: 'Drop deals here for builder flip / direct sale',
+            RETAIL: 'Drop deals here for brokerage commission plays',
           };
           body.innerHTML = `<div class="silo-empty"><span class="silo-empty-icon">↓</span>${hints[route]}</div>`;
         } else {
           body.innerHTML = items.map(d => `
-            <div class="silo-deal" data-id="${d.id}">
+            <div class="silo-deal" data-id="${d.id}" draggable="true" role="button" tabindex="0" aria-label="${escapeHtml(dealDisplayTitle(d))}, drag to change route">
               <div class="silo-deal-addr">${escapeHtml(dealDisplayTitle(d))}${parcelCountBadge(d)}</div>
               <div class="silo-deal-meta">
                 <span>${fmtNum(d.acreage)} ac</span>
@@ -9945,8 +9980,88 @@
         }
       });
 
-      document.querySelectorAll('.silo-deal').forEach(el => {
-        el.addEventListener('click', () => openModal(el.dataset.id));
+      bindSiloDragAndDrop();
+    }
+
+    function moveDealToRoute(dealId, route) {
+      if (!ROUTES[route]) return false;
+      const deal = deals.find((d) => d.id === dealId);
+      if (!deal) return false;
+      if (deal.route === route) return false;
+      deal.route = route;
+      markDealUpdated(deal);
+      saveDeals();
+      renderAll();
+      showToast(`Routed to ${ROUTES[route].label}`, 'success');
+      return true;
+    }
+
+    function bindSiloDragAndDrop() {
+      const grid = document.getElementById('silo-grid');
+      if (!grid) return;
+
+      grid.querySelectorAll('.silo-deal[draggable="true"]').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          if (card.classList.contains('is-dragging')) return;
+          // Ignore click that follows a drag
+          if (card.dataset.didDrag === '1') {
+            card.dataset.didDrag = '';
+            return;
+          }
+          openModal(card.dataset.id);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          openModal(card.dataset.id);
+        });
+        card.addEventListener('dragstart', (e) => {
+          e.stopPropagation();
+          card.classList.add('is-dragging');
+          card.dataset.didDrag = '1';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', card.dataset.id || '');
+          e.dataTransfer.setData('application/x-deal-id', card.dataset.id || '');
+          e.dataTransfer.setData('application/x-deal-source', 'silo');
+        });
+        card.addEventListener('dragend', () => {
+          card.classList.remove('is-dragging');
+          grid.querySelectorAll('.silo-lane.is-drag-over').forEach((lane) => {
+            lane.classList.remove('is-drag-over');
+          });
+          // Clear didDrag after click event cycle if drag cancelled without move
+          setTimeout(() => { card.dataset.didDrag = ''; }, 0);
+        });
+      });
+
+      grid.querySelectorAll('.silo-lane').forEach((lane) => {
+        const dropZone = lane.querySelector('[data-route-drop]') || lane;
+        const route = lane.dataset.route || dropZone.dataset.routeDrop;
+
+        const onDragOver = (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          lane.classList.add('is-drag-over');
+        };
+        const onDragLeave = (e) => {
+          if (lane.contains(e.relatedTarget)) return;
+          lane.classList.remove('is-drag-over');
+        };
+        const onDrop = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          lane.classList.remove('is-drag-over');
+          const id = e.dataTransfer.getData('application/x-deal-id')
+            || e.dataTransfer.getData('text/plain');
+          if (!id || !route) return;
+          moveDealToRoute(id, route);
+        };
+
+        lane.addEventListener('dragover', onDragOver);
+        dropZone.addEventListener('dragover', onDragOver);
+        lane.addEventListener('dragleave', onDragLeave);
+        lane.addEventListener('drop', onDrop);
+        dropZone.addEventListener('drop', onDrop);
       });
     }
 
