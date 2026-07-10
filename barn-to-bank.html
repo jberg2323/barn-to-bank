@@ -1135,10 +1135,12 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
-      font-size: 13px;
+      font-family: var(--sans);
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
     }
 
     .trello-list-dot {
@@ -1156,19 +1158,19 @@
     .trello-list[data-stage="dead"] .trello-list-dot { background: var(--text-muted); }
 
     .trello-count {
-      min-width: 22px;
-      height: 22px;
-      padding: 0 7px;
-      border-radius: 11px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
       background: var(--bg-deep);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border);
     }
 
     .trello-list-cards {
@@ -1182,29 +1184,52 @@
     }
 
     .trello-list-empty {
-      padding: 18px 10px;
+      padding: 20px 12px;
       text-align: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      border: 1px dashed var(--border-subtle);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border: 1px dashed var(--border);
       border-radius: 8px;
-      line-height: 1.4;
+      line-height: 1.45;
       user-select: none;
     }
 
-    /* Trello card */
+    /* Trello card — high-contrast, readable type */
     .deal-card {
+      --card-fg: var(--text-primary);
+      --card-fg-soft: var(--text-secondary);
       background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 10px 10px 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 12px 12px 14px;
       cursor: grab;
+      color: var(--card-fg);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
       transition: border-color 0.18s var(--ease), transform 0.18s var(--ease), box-shadow 0.18s var(--ease), opacity 0.18s;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.1), 0 3px 10px rgba(0,0,0,0.08);
       position: relative;
       overflow: hidden;
       animation: cardIn 0.28s var(--ease) both;
       touch-action: manipulation;
+    }
+
+    [data-theme="dark"] .deal-card {
+      background: #25221c;
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 4px 14px rgba(0,0,0,0.28);
+    }
+
+    [data-theme="light"] .deal-card {
+      background: #ffffff;
+      border-color: rgba(28, 36, 29, 0.14);
+      box-shadow: 0 1px 0 rgba(20,42,31,0.04), 0 3px 12px rgba(20,42,31,0.08);
     }
 
     .deal-card::before {
@@ -1213,9 +1238,9 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 3px;
+      width: 4px;
       background: var(--text-muted);
-      opacity: 0.4;
+      opacity: 0.55;
     }
 
     .deal-card.route-develop::before { background: var(--develop); opacity: 1; }
@@ -1228,15 +1253,15 @@
     }
 
     .deal-card:hover {
-      border-color: var(--border);
+      border-color: var(--border-strong);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
     }
 
     .deal-card:active { cursor: grabbing; }
 
     .deal-card.is-dragging {
-      opacity: 0.45;
+      opacity: 0.5;
       transform: rotate(1.5deg) scale(1.02);
       box-shadow: 0 10px 28px rgba(0,0,0,0.28);
     }
@@ -1244,64 +1269,110 @@
     .deal-card-labels {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 6px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
     .trello-label {
       display: inline-flex;
       align-items: center;
       max-width: 100%;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-family: var(--sans);
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      text-transform: none;
       line-height: 1.35;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .trello-label.route-develop {
-      background: rgba(192,154,255,0.2);
-      color: var(--develop);
+      background: rgba(192,154,255,0.28);
+      color: #e8d6ff;
+      border: 1px solid rgba(192,154,255,0.35);
     }
     .trello-label.route-sell {
-      background: rgba(114,212,138,0.18);
-      color: var(--sell);
+      background: rgba(114,212,138,0.24);
+      color: #c8f0d2;
+      border: 1px solid rgba(114,212,138,0.35);
     }
     .trello-label.route-retail {
-      background: rgba(120,188,255,0.18);
-      color: var(--retail);
+      background: rgba(120,188,255,0.24);
+      color: #cfe6ff;
+      border: 1px solid rgba(120,188,255,0.35);
     }
     .trello-label.score {
-      background: var(--accent-soft);
-      color: var(--accent-bright);
+      background: rgba(212,181,106,0.22);
+      color: #f5e4b0;
+      border: 1px solid rgba(212,181,106,0.4);
+    }
+
+    [data-theme="light"] .trello-label.route-develop {
+      background: rgba(122,82,184,0.14);
+      color: #5a3a96;
+      border-color: rgba(122,82,184,0.28);
+    }
+    [data-theme="light"] .trello-label.route-sell {
+      background: rgba(47,122,69,0.12);
+      color: #1e5c32;
+      border-color: rgba(47,122,69,0.28);
+    }
+    [data-theme="light"] .trello-label.route-retail {
+      background: rgba(42,109,176,0.12);
+      color: #1a4f8a;
+      border-color: rgba(42,109,176,0.28);
+    }
+    [data-theme="light"] .trello-label.score {
+      background: rgba(154,111,34,0.14);
+      color: #6b4a12;
+      border-color: rgba(154,111,34,0.3);
     }
 
     .deal-card-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 6px;
-      margin-bottom: 6px;
+      gap: 8px;
+      margin-bottom: 4px;
     }
 
     .deal-card-address {
-      font-weight: 600;
-      font-size: 13px;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 15px;
       line-height: 1.35;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
       color: var(--text-primary);
       word-break: break-word;
     }
 
     .deal-card-county {
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .deal-card .deal-portfolio-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--purple);
+      margin-top: 4px;
+    }
+
+    .deal-card .deal-tag {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-      line-height: 1.3;
+      font-weight: 600;
+      padding: 3px 7px;
+      margin-top: 4px;
+      color: var(--text-primary);
+      background: var(--bg-deep);
+      border-color: var(--border);
     }
 
     .deal-card-header-right {
@@ -1309,7 +1380,7 @@
       align-items: flex-start;
       gap: 2px;
       flex-shrink: 0;
-      opacity: 0.55;
+      opacity: 0.7;
       transition: opacity 0.15s;
     }
     .deal-card:hover .deal-card-header-right { opacity: 1; }
@@ -1317,10 +1388,10 @@
     .deal-card-metrics {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px 10px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-subtle);
+      gap: 8px 14px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
     }
 
     .deal-card-metric {
@@ -1328,16 +1399,19 @@
     }
 
     .deal-card-metric .label {
-      font-size: 9px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-bottom: 1px;
     }
 
     .deal-card-metric .value {
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 500;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
       color: var(--text-primary);
       font-variant-numeric: tabular-nums;
       line-height: 1.3;
@@ -1347,69 +1421,99 @@
       color: var(--accent-bright);
     }
 
+    [data-theme="light"] .deal-card-metric .value.accent {
+      color: var(--accent-dim);
+    }
+
     .deal-card-contract {
-      margin-top: 8px;
-      padding: 6px 8px;
-      border-radius: 6px;
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
       background: var(--bg-deep);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border);
     }
     .deal-card-contract-lines {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      font-size: 10px;
-      color: var(--text-secondary);
-      font-family: var(--mono);
-      line-height: 1.35;
+      gap: 3px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
     }
     .deal-card-contract-total {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-top: 4px;
-      padding-top: 4px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 10px;
-      color: var(--text-muted);
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
     }
     .deal-card-contract-total strong {
-      font-family: var(--mono);
+      font-family: var(--sans);
+      font-weight: 700;
       color: var(--accent-bright);
-      font-size: 11px;
+      font-size: 14px;
+    }
+    [data-theme="light"] .deal-card-contract-total strong {
+      color: var(--accent-dim);
     }
     .deal-card-actions {
       display: flex;
       gap: 6px;
       align-items: center;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .btn-card-contract {
       flex: 1;
       font-family: var(--sans);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 8px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
       background: var(--bg-deep);
-      color: var(--text-secondary);
+      color: var(--text-primary);
       cursor: pointer;
       transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
     }
     .btn-card-contract:hover {
       background: var(--accent-soft);
-      border-color: var(--border);
+      border-color: var(--border-strong);
       color: var(--accent-bright);
     }
     .deal-card .route-select {
       width: 100%;
-      margin-top: 6px;
-      padding: 5px 8px;
-      font-size: 10px;
+      margin-top: 8px;
+      padding: 8px 10px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
       background: var(--bg-deep);
+      border-color: var(--border);
+    }
+
+    .deal-card .comp-band {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+    .deal-card .comp-band strong {
+      font-weight: 700;
+      color: var(--accent-bright);
+    }
+    [data-theme="light"] .deal-card .comp-band strong {
+      color: var(--accent-dim);
     }
     .modal-section-deal-terms {
       position: sticky;
@@ -1481,19 +1585,22 @@
     .lane-retail .silo-icon { background: rgba(120,188,255,0.12); border-color: rgba(120,188,255,0.25); }
 
     .silo-header h3 {
-      font-size: 12px;
+      font-family: var(--sans);
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: -0.01em;
       line-height: 1.25;
+      color: var(--text-primary);
     }
 
     .silo-stats {
-      font-family: var(--mono);
-      font-size: 11px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
       color: var(--text-secondary);
     }
 
-    .silo-stats .count { color: var(--text-primary); font-weight: 600; }
+    .silo-stats .count { color: var(--text-primary); font-weight: 700; }
 
     .silo-body {
       padding: 8px;
@@ -1507,15 +1614,27 @@
     }
 
     .silo-deal {
-      padding: 10px 10px 10px 12px;
+      padding: 12px 12px 12px 14px;
       background: var(--bg-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       cursor: pointer;
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
       transition: background 0.15s var(--ease), border-color 0.15s, transform 0.15s var(--ease), box-shadow 0.15s;
       box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
+    }
+
+    [data-theme="dark"] .silo-deal {
+      background: #25221c;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="light"] .silo-deal {
+      background: #ffffff;
+      border-color: rgba(28, 36, 29, 0.14);
     }
 
     .silo-deal::before {
@@ -1540,11 +1659,13 @@
     }
 
     .silo-deal-addr {
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 4px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 5px;
       line-height: 1.35;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -1552,9 +1673,10 @@
     }
 
     .silo-deal-meta {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-muted);
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
       gap: 8px;
@@ -1562,16 +1684,17 @@
 
     .silo-deal-stage {
       display: inline-flex;
-      margin-top: 6px;
-      font-size: 9px;
+      margin-top: 8px;
+      font-family: var(--sans);
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 4px;
+      letter-spacing: 0.01em;
+      text-transform: none;
+      padding: 3px 8px;
+      border-radius: 5px;
       background: var(--bg-deep);
-      color: var(--text-secondary);
-      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
     }
 
     .silo-empty {
