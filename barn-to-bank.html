@@ -19,6 +19,14 @@
       document.documentElement.setAttribute('data-theme', theme);
       var meta = document.getElementById('theme-color-meta');
       if (meta) meta.content = theme === 'light' ? '#f4eddf' : '#0c0b09';
+
+      // Text size preference (applied before paint to avoid flash)
+      var SIZE_KEY = 'barn-to-bank-text-size';
+      var SCALES = { sm: 0.875, md: 1, lg: 1.125, xl: 1.25, xxl: 1.4 };
+      var size = localStorage.getItem(SIZE_KEY);
+      if (!SCALES[size]) size = 'md';
+      document.documentElement.setAttribute('data-text-size', size);
+      document.documentElement.style.setProperty('--text-scale', String(SCALES[size]));
     })();
   </script>
   <meta property="og:title" content="Barn to Bank: Texas Land Origination">
@@ -136,6 +144,12 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Text size scale (A− / A+ control). Zoom scales px-based UI consistently. */
+    html {
+      --text-scale: 1;
+      zoom: var(--text-scale);
+    }
+
     body {
       font-family: var(--sans);
       background: var(--bg-deep);
@@ -146,6 +160,16 @@
       overflow-x: hidden;
       -webkit-text-size-adjust: 100%;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Firefox / browsers without zoom: scale root font + body base */
+    @supports not (zoom: 1) {
+      html {
+        font-size: calc(16px * var(--text-scale));
+      }
+      body {
+        font-size: calc(0.875rem * var(--text-scale));
+      }
     }
 
     body::before {
@@ -2968,6 +2992,54 @@
       line-height: 1;
     }
 
+    .text-size-control {
+      display: inline-flex;
+      align-items: stretch;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--bg-elevated);
+      min-height: 36px;
+    }
+    .text-size-control .btn-text-size {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      min-width: 40px;
+      padding: 9px 11px;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.2s var(--ease), color 0.2s var(--ease);
+    }
+    .text-size-control .btn-text-size + .btn-text-size {
+      border-left: 1px solid var(--border-subtle);
+    }
+    .text-size-control .btn-text-size:hover:not(:disabled) {
+      background: var(--bg-hover);
+      color: var(--accent-bright);
+    }
+    .text-size-control .btn-text-size:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+    .text-size-control .btn-text-size .ts-label {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .text-size-control .btn-text-size-up .ts-label {
+      font-size: 15px;
+    }
+
     .partner-welcome {
       margin-bottom: 16px;
       padding: 18px;
@@ -3502,6 +3574,14 @@
           <span class="theme-label hide-mobile">Light</span>
           <span class="theme-label show-mobile">Theme</span>
         </button>
+        <div class="text-size-control" role="group" aria-label="Text size">
+          <button type="button" class="btn-text-size btn-text-size-down" id="text-size-down" title="Make text smaller" aria-label="Make text smaller">
+            <span class="ts-label" aria-hidden="true">A−</span>
+          </button>
+          <button type="button" class="btn-text-size btn-text-size-up" id="text-size-up" title="Make text bigger" aria-label="Make text bigger">
+            <span class="ts-label" aria-hidden="true">A+</span>
+          </button>
+        </div>
         <a href="/" class="btn-share-link btn-public-site" title="Back to public marketing site" style="text-decoration:none;display:inline-flex;align-items:center;">Public Site</a>
         <button type="button" class="btn-share-link" id="auth-sign-out" title="Sign out of origination platform">Sign Out</button>
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
@@ -10459,6 +10539,58 @@
     }
 
     // =========================================================================
+    // Text size (A− / A+)
+    // =========================================================================
+    const TEXT_SIZE_STORAGE_KEY = 'barn-to-bank-text-size';
+    const TEXT_SIZE_LEVELS = ['sm', 'md', 'lg', 'xl', 'xxl'];
+    const TEXT_SIZE_SCALES = { sm: 0.875, md: 1, lg: 1.125, xl: 1.25, xxl: 1.4 };
+    const TEXT_SIZE_LABELS = { sm: 'Small', md: 'Default', lg: 'Large', xl: 'Extra large', xxl: 'Huge' };
+
+    function getActiveTextSize() {
+      const current = document.documentElement.getAttribute('data-text-size');
+      return TEXT_SIZE_LEVELS.includes(current) ? current : 'md';
+    }
+
+    function applyTextSize(level) {
+      const next = TEXT_SIZE_LEVELS.includes(level) ? level : 'md';
+      const scale = TEXT_SIZE_SCALES[next];
+      document.documentElement.setAttribute('data-text-size', next);
+      document.documentElement.style.setProperty('--text-scale', String(scale));
+      localStorage.setItem(TEXT_SIZE_STORAGE_KEY, next);
+      updateTextSizeControlsUi(next);
+    }
+
+    function updateTextSizeControlsUi(level) {
+      const idx = TEXT_SIZE_LEVELS.indexOf(level);
+      const down = document.getElementById('text-size-down');
+      const up = document.getElementById('text-size-up');
+      if (down) {
+        down.disabled = idx <= 0;
+        down.title = idx <= 0 ? 'Text is already at the smallest size' : 'Make text smaller';
+      }
+      if (up) {
+        up.disabled = idx >= TEXT_SIZE_LEVELS.length - 1;
+        up.title = idx >= TEXT_SIZE_LEVELS.length - 1 ? 'Text is already at the largest size' : 'Make text bigger';
+      }
+      const label = TEXT_SIZE_LABELS[level] || 'Default';
+      if (down) down.setAttribute('aria-label', `Make text smaller (currently ${label})`);
+      if (up) up.setAttribute('aria-label', `Make text bigger (currently ${label})`);
+    }
+
+    function initTextSizeControls() {
+      const stored = localStorage.getItem(TEXT_SIZE_STORAGE_KEY);
+      applyTextSize(TEXT_SIZE_LEVELS.includes(stored) ? stored : getActiveTextSize());
+      document.getElementById('text-size-down')?.addEventListener('click', () => {
+        const idx = TEXT_SIZE_LEVELS.indexOf(getActiveTextSize());
+        if (idx > 0) applyTextSize(TEXT_SIZE_LEVELS[idx - 1]);
+      });
+      document.getElementById('text-size-up')?.addEventListener('click', () => {
+        const idx = TEXT_SIZE_LEVELS.indexOf(getActiveTextSize());
+        if (idx < TEXT_SIZE_LEVELS.length - 1) applyTextSize(TEXT_SIZE_LEVELS[idx + 1]);
+      });
+    }
+
+    // =========================================================================
     // Init
     // =========================================================================
     async function requireStaffSession() {
@@ -10500,6 +10632,7 @@
       initPartnerWelcome();
       initMobileNav();
       initThemeToggle();
+      initTextSizeControls();
 
       document.getElementById('share-link-copy').addEventListener('click', copyAppShareLink);
       async function signOutStaff() {
