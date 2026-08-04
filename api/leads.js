@@ -5,6 +5,7 @@
  * PATCH { id, status } → update lead status (contacted | converted | dismissed)
  */
 
+const { waitUntil } = require('@vercel/functions');
 const { sendLeadNotificationEmail } = require('../lib/lead-notification-email');
 
 const TABLE = 'moat_bundles';
@@ -102,7 +103,9 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   try {
-    if (!process.env.SUPABASE_URL) {
+    // GET and PATCH read and mutate stored state, so they genuinely require Supabase.
+    // POST does not: it can still deliver a lead by email alone.
+    if (!process.env.SUPABASE_URL && req.method !== 'POST') {
       return json(res, 503, { ok: false, error: 'Lead capture not configured on server' });
     }
 
@@ -138,16 +141,56 @@ module.exports = async function handler(req, res) {
         createdAt: new Date().toISOString(),
       };
 
-      const { payload } = await loadBundle(tid);
-      const inboundLeads = [...(payload.inboundLeads || []), lead];
-      await saveBundle(tid, { ...payload, inboundLeads });
+      // A lead must never be lost because storage is unavailable. Persist if we can,
+      // but treat the notification email as an independent delivery path: as long as
+      // one of the two lands, the inquiry reached us.
+      let stored = false;
+      try {
+        const { payload } = await loadBundle(tid);
+        const inboundLeads = [...(payload.inboundLeads || []), lead];
+        await saveBundle(tid, { ...payload, inboundLeads });
+        stored = true;
+      } catch (err) {
+        console.error('lead storage failed, falling back to email only:', {
+          id: lead.id,
+          error: err?.message || err,
+        });
+      }
 
-      // Respond immediately; email Jack in the background so the form doesn't hang.
-      void sendLeadNotificationEmail(lead).catch((err) => {
-        console.warn('lead notification email failed:', err?.message || err);
+      if (stored) {
+        // Safely recorded, so respond now and let the email finish in the background.
+        // waitUntil keeps the instance alive until it settles — without it, Vercel can
+        // freeze the function the moment we respond and the email silently never sends.
+        waitUntil(
+          sendLeadNotificationEmail(lead).catch((err) => {
+            console.warn('lead notification email failed:', err?.message || err);
+          }),
+        );
+        return json(res, 201, { ok: true, lead });
+      }
+
+      // Storage is down, so the email is the only record of this lead. Wait for it and
+      // only tell the visitor we got their inquiry if it actually sent.
+      const emailed = await sendLeadNotificationEmail(lead).catch((err) => ({
+        ok: false,
+        error: err?.message || String(err),
+      }));
+
+      if (emailed?.ok) {
+        return json(res, 201, { ok: true, lead, degraded: 'storage-unavailable' });
+      }
+
+      // Last resort: both paths failed. Log the lead in full so it is recoverable
+      // from Vercel logs rather than lost outright, and tell the visitor to call.
+      console.error('LEAD LOST — storage and email both failed', {
+        id: lead.id,
+        lead,
+        emailError: emailed?.error,
       });
-
-      return json(res, 201, { ok: true, lead });
+      return json(res, 502, {
+        ok: false,
+        error: 'We could not record your inquiry — please call (737)777-9669 and we will take it directly.',
+      });
     }
 
     if (req.method === 'PATCH') {
