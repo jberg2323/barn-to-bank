@@ -9,7 +9,7 @@
     "provision-supabase-mcp": "node scripts/mcp-supabase-provision.mjs",
     "provision-dncscrub-mcp": "node scripts/mcp-dncscrub-provision.mjs",
     "generate-docs": "node scripts/generate-docs.mjs",
-    "open-training": "open docs/Barn-to-Bank-Training-Infographic.html",
+    "open-training": "open training.html",
     "open-google-docs": "node scripts/open-in-google-docs.mjs",
     "upload-google-sheets": "node scripts/import-xlsx-to-google-sheets.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"

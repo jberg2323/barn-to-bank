@@ -263,7 +263,9 @@ function buildHowToDoc() {
       ['Public marketing site', SITE_URL, 'Landowners, brokers, visitors'],
       ['Staff origination app', APP_URL, 'Jack, analysts, origination team'],
       ['Staff login', LOGIN_URL, 'Anyone with the origination password'],
+      ['Operator training', `${SITE_URL}/training`, 'Staff — behind the same password as the app'],
     ]),
+    body(`Visual operator training lives at ${SITE_URL}/training, or press How to Use inside the app. It is gated with the staff password because it describes internal workflow and comp strategy — do not send that link to anyone outside the team.`),
 
     h1('Quick Start — First 10 Minutes'),
     body('A short version of this guide also lives inside the app: press How to Use in the header at any time.'),

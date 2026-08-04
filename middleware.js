@@ -51,6 +51,9 @@ function isPublicPath(pathname, method) {
 function isProtectedPath(pathname) {
   if (pathname === '/app' || pathname.startsWith('/app/')) return true;
   if (pathname === '/barn-to-bank.html') return true;
+  // Operator training describes internal workflow and comp strategy, so it sits
+  // behind the same gate as the app rather than on the public site.
+  if (pathname === '/training' || pathname === '/training.html') return true;
   if (pathname.startsWith('/api/')) return true;
   if (pathname.startsWith('/lib/')) return true;
   if (
@@ -112,6 +115,8 @@ export const config = {
     '/app',
     '/app/:path*',
     '/barn-to-bank.html',
+    '/training',
+    '/training.html',
     '/api/:path*',
     '/lib/:path*',
     '/reference-page.html',

@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/app/login", "destination": "/login.html" }
+    { "source": "/app/login", "destination": "/login.html" },
+    { "source": "/training", "destination": "/training.html" }
   ],
   "headers": [
     {
@@ -11,6 +12,12 @@
     },
     {
       "source": "/barn-to-bank.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/training(.html)?",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
