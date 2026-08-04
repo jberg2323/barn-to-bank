@@ -3293,6 +3293,65 @@
 
     .fr-modal-panel { max-width: 520px; }
 
+    /* ---- How to use this app ---- */
+    .howto-panel { width: 660px; }
+    .howto-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+    .howto-lede { font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); margin: 0; }
+    .howto-flow {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+      padding: 12px; background: var(--bg-deep); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+    .howto-flow b {
+      font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 5px 9px; border-radius: 3px; font-weight: 600;
+    }
+    .howto-flow i { color: var(--text-muted); font-style: normal; font-size: 12px; }
+    .howto-step { border-top: 1px solid var(--border-subtle); padding-top: 15px; }
+    .howto-step h3 {
+      margin: 0 0 4px; font-size: 14.5px; color: var(--text-primary); font-weight: 600;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .howto-step h3 em {
+      font-style: normal; font-size: 11px; color: var(--accent);
+      font-variant-numeric: tabular-nums; letter-spacing: 0.08em;
+    }
+    .howto-where {
+      font-size: 10.5px; letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-muted); margin: 0 0 8px;
+    }
+    .howto-step p { margin: 0 0 8px; font-size: 13px; line-height: 1.58; color: var(--text-secondary); }
+    .howto-step ul, .howto-step ol { margin: 0 0 8px; padding-left: 18px; }
+    .howto-step li { font-size: 13px; line-height: 1.55; color: var(--text-secondary); margin-bottom: 5px; }
+    .howto-step strong { color: var(--text-primary); }
+    .howto-step code {
+      font-size: 12px; background: var(--bg-deep); padding: 1px 5px;
+      border-radius: 3px; color: var(--accent);
+    }
+    .howto-note {
+      border-left: 3px solid var(--green-dim); background: rgba(114, 212, 138, 0.07);
+      padding: 9px 12px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .howto-warn {
+      border-left: 3px solid var(--orange); background: rgba(236, 168, 90, 0.08);
+      padding: 9px 12px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .howto-fix { display: flex; flex-direction: column; gap: 0; }
+    .howto-fix-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      padding: 9px 0; border-bottom: 1px solid var(--border-subtle); font-size: 12.5px;
+    }
+    .howto-fix-row:last-child { border-bottom: 0; }
+    .howto-fix-row span:first-child { color: var(--text-primary); }
+    .howto-fix-row span:last-child { color: var(--text-muted); }
+    @media (max-width: 640px) {
+      .howto-panel { width: 100%; }
+      .howto-fix-row { grid-template-columns: 1fr; gap: 3px; }
+    }
+
     .fr-success {
       display: none;
       padding: 12px;
@@ -3974,6 +4033,9 @@
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
           <span class="hide-mobile">Copy App Link</span><span class="show-mobile">Share</span>
         </button>
+        <button type="button" class="btn-feature-request" id="howto-open" title="How to use this app, step by step">
+          <span class="hide-mobile">How to Use</span><span class="show-mobile">Help</span>
+        </button>
         <button type="button" class="btn-feature-request" id="feature-request-open" title="Submit a feature request or customization">
           <span class="hide-mobile">Feature Request</span><span class="show-mobile">Request</span>
           <span class="fr-badge hidden" id="fr-badge">0</span>
@@ -4386,6 +4448,107 @@
       </div>
     </div>
     <div class="mail-label-grid" id="mail-label-grid"></div>
+  </div>
+
+  <!-- HOW TO USE THIS APP -->
+  <div class="modal-overlay" id="howto-overlay">
+    <div class="modal-panel howto-panel" id="howto-panel" role="dialog" aria-modal="true" aria-labelledby="howto-heading">
+      <div class="modal-header">
+        <div>
+          <h2 id="howto-heading">How to use this app</h2>
+          <div class="sub">Barn to Bank origination, start to finish</div>
+        </div>
+        <button class="modal-close" id="howto-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="howto-body">
+
+        <p class="howto-lede">This is where a piece of land becomes a decision. You bring in a tract, the app pulls the county records around it, you pick which of three paths makes the most money, and then you contact the owner. Five sections, in the order you actually use them.</p>
+
+        <div class="howto-flow">
+          <b>Intake</b><i>&rarr;</i><b>Deals</b><i>&rarr;</i><b>Silos</b><i>&rarr;</i><b>Outreach</b><i>&rarr;</i><b>Intel</b>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>FIRST</em> Connect id.land</h3>
+          <p class="howto-where">Intake tab &middot; id.land Connection</p>
+          <p>Do this before anything else, or the app can't see who owns what. Enter your id.land email and password and press <strong>Sign In to id.land</strong>. The status line turns green and shows when the session expires.</p>
+          <ul>
+            <li>If an owner name reads <code>Blurred</code>, you're not connected — that's the tell</li>
+            <li>If it says <strong>Session expired</strong>, just sign in again. Sessions don't last forever</li>
+            <li>You sign in <strong>per computer</strong>. Signing in on the laptop doesn't sign you in on the iPad</li>
+          </ul>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>1</em> Bring a property in</h3>
+          <p class="howto-where">Intake tab</p>
+          <p>Two ways in. Either you go looking, or a landowner comes to you.</p>
+          <p><strong>You go looking:</strong> in <strong>Intake, The Net</strong>, choose Property Address or Parcel/APN, type it, pick the county, then press <strong>Run Automation 1</strong>. It assembles the tract from county GIS, flood maps, utility records, private comps, and nearby subdivisions — the five tabs you'd otherwise open by hand.</p>
+          <p><strong>They come to you:</strong> anyone filling out the form on barntobank.com lands in <strong>Website Leads</strong>. Press Refresh to pull the latest, then adopt the good ones into the pipeline and dismiss the rest.</p>
+          <p>When the enrichment finishes, review it and press <strong>+ Add to Pipeline</strong>. The <strong>Internal / Client</strong> toggle matters here: Internal shows your notes and numbers, Client is the version safe to send a seller.</p>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>2</em> Work the pipeline</h3>
+          <p class="howto-where">Deals tab</p>
+          <p>Every tract you've enriched, in one list. Search covers address, portfolio, owner, tags, and notes, and you can filter by county, route, or portfolio.</p>
+          <ul>
+            <li><strong>Table</strong> view to scan — acres, price per acre, status, route</li>
+            <li><strong>Board</strong> view to drag deals between stages</li>
+            <li><strong>+ Quick Add</strong> for a tract you already know, no enrichment needed</li>
+          </ul>
+          <p>Click any deal to open it and edit terms, buyer, stage, notes, and reminders.</p>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>3</em> Pick the path</h3>
+          <p class="howto-where">Silos tab</p>
+          <p>Three lanes. Drag a card into the one that makes the most money, and the deal's route updates. Lane headers keep a running count of deals and acres.</p>
+          <ul>
+            <li><strong>&#127959; Development &amp; Entitlement</strong> — utilities and nearby homebuilding support entitling it yourself</li>
+            <li><strong>&#129309; Direct Sale</strong> — comps support a builder flip, but sewer is the bottleneck</li>
+            <li><strong>&#128205; Retail Brokerage</strong> — smaller tract, or the money is the commission</li>
+          </ul>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>4</em> Reach the owner</h3>
+          <p class="howto-where">Outreach tab</p>
+          <p>Press <strong>Build Mail List</strong>, pick your tracts, and the queue builds. From there, <strong>Export CSV</strong> or <strong>Print Labels</strong>. Tracts with known bottlenecks are filtered out automatically, so you're not mailing dead ground.</p>
+          <div class="howto-note"><strong>Direct mail is the default, and it needs nothing set up.</strong> The federal Do Not Call list doesn't apply to postal mail, so you can start today.</div>
+          <div class="howto-warn"><strong>Cold texts are a different animal.</strong> Texting an owner who never contacted you requires a federal DNC scrub service. The app blocks un-scrubbed numbers on purpose — violations run $500 to $50,000 <em>each</em>. If you're not certain the scrub is wired up, use mail. Note this only applies to reaching out cold: someone who filled out the website form contacted <em>you</em>, so you can simply reply.</div>
+        </div>
+
+        <div class="howto-step">
+          <h3><em>5</em> Keep the team current</h3>
+          <p class="howto-where">Intel tab &middot; or Intel in the header</p>
+          <p>Log off-market comps as you learn them — Texas is a non-disclosure state, so the comps you record are ones the MLS will never show you, and they make every future underwriting sharper. Also here: plat alerts near your deals, and an audit log of every contact for compliance.</p>
+          <p>Syncing runs by itself in the background. <strong>Sync Now</strong> forces it if you want to be sure before closing the laptop. <strong>Export Bundle</strong> saves a file copy; <strong>Import Bundle</strong> loads one back.</p>
+          <div class="howto-warn"><strong>Your work starts in this browser and then syncs.</strong> Don't clear your browsing data for this site, and if the header ever reports a sync problem, press <strong>Sync Now</strong> before you close the tab.</div>
+        </div>
+
+        <div class="howto-step">
+          <h3>When something looks wrong</h3>
+          <div class="howto-fix">
+            <div class="howto-fix-row"><span>Owner name says &ldquo;Blurred&rdquo;</span><span>id.land not connected, or the session expired</span></div>
+            <div class="howto-fix-row"><span>Comps won't load</span><span>Same cause — check the id.land panel is green</span></div>
+            <div class="howto-fix-row"><span>No website leads showing</span><span>Press Refresh; they're fetched fresh each time</span></div>
+            <div class="howto-fix-row"><span>Sync says unauthorized</span><span>Sign out and back in to refresh your session</span></div>
+            <div class="howto-fix-row"><span>Text is too small</span><span>A&minus; and A+ in the header, top right</span></div>
+            <div class="howto-fix-row"><span>Something's missing or broken</span><span>Feature Request in the header — it reaches Jeremy</span></div>
+          </div>
+        </div>
+
+        <div class="howto-step">
+          <h3>Two things to be careful about</h3>
+          <ul>
+            <li>The whole app sits behind <strong>one shared password</strong>. Anyone with the link and password sees every deal, so don't forward it outside the team.</li>
+            <li>Before sending anything to a seller, switch to the <strong>Client</strong> view. The Internal view carries your margins and private notes.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
   </div>
 
   <!-- FEATURE REQUEST MODAL -->
@@ -10932,6 +11095,15 @@
       document.getElementById('fr-modal-overlay').classList.remove('open');
     }
 
+    function openHowToModal() {
+      document.getElementById('howto-overlay').classList.add('open');
+      document.getElementById('howto-close').focus();
+    }
+
+    function closeHowToModal() {
+      document.getElementById('howto-overlay').classList.remove('open');
+    }
+
     async function collectFeatureRequestAttachments() {
       const input = document.getElementById('fr-attachments');
       const files = input?.files ? [...input.files] : [];
@@ -11266,6 +11438,12 @@
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
       document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
       document.getElementById('fr-attachments')?.addEventListener('change', renderFeatureRequestAttachmentPreview);
+      document.getElementById('howto-open').addEventListener('click', openHowToModal);
+      document.getElementById('howto-close').addEventListener('click', closeHowToModal);
+      document.getElementById('howto-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('howto-overlay')) closeHowToModal();
+      });
+
       document.getElementById('fr-modal-overlay').addEventListener('click', (e) => {
         if (e.target === document.getElementById('fr-modal-overlay')) closeFeatureRequestModal();
       });
@@ -11520,6 +11698,7 @@
         else if (document.getElementById('deal-memo-overlay').classList.contains('open')) {
           document.getElementById('deal-memo-overlay').classList.remove('open');
         } else if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
+        else if (document.getElementById('howto-overlay').classList.contains('open')) closeHowToModal();
         else if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
         else closeModal();
       });
