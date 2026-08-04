@@ -5814,6 +5814,28 @@
       return trimmed;
     }
 
+    // id.land access tokens are JWTs. Read the `exp` claim so an expired session shows
+    // as expired instead of sitting there green while parcel lookups quietly come back
+    // blurred. Returns null for anything we cannot parse, so a non-JWT token still works.
+    function landIdTokenExpiry(token) {
+      const parts = String(token || '').split('.');
+      if (parts.length !== 3) return null;
+      try {
+        const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)));
+        return typeof payload?.exp === 'number' ? new Date(payload.exp * 1000) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function formatLandIdExpiry(date) {
+      const sameDay = date.toDateString() === new Date().toDateString();
+      return sameDay
+        ? date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+        : date.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
     function updateLandIdConnectStatus(message) {
       const el = document.getElementById('landid-connect-status');
       if (!el) return;
@@ -5824,7 +5846,18 @@
       }
       const token = landIdToken();
       if (token) {
-        el.textContent = `Connected · token ${token.slice(0, 8)}…${token.slice(-6)} (${token.length} chars)`;
+        const fingerprint = `token ${token.slice(0, 8)}…${token.slice(-6)} (${token.length} chars)`;
+        const expiry = landIdTokenExpiry(token);
+        if (expiry && expiry.getTime() <= Date.now()) {
+          el.textContent = `Session expired ${formatLandIdExpiry(expiry)} · sign in again, owner names will read "Blurred" until you do`;
+          el.style.color = 'var(--orange)';
+          el.style.borderColor = 'rgba(236,168,90,0.4)';
+          el.style.background = 'rgba(236,168,90,0.1)';
+          return;
+        }
+        el.textContent = expiry
+          ? `Connected · ${fingerprint} · expires ${formatLandIdExpiry(expiry)}`
+          : `Connected · ${fingerprint}`;
         el.style.color = 'var(--green)';
         el.style.borderColor = 'rgba(111,207,133,0.35)';
         el.style.background = 'rgba(111,207,133,0.08)';
@@ -11338,6 +11371,13 @@
         document.getElementById('landid-token-paste').value = '';
         updateLandIdConnectStatus(token ? null : 'Token cleared');
       });
+
+      // The app stays open for hours, so re-check the token's expiry on a timer.
+      // Without this a session that lapses mid-session keeps reading "Connected".
+      setInterval(() => {
+        const el = document.getElementById('landid-connect-status');
+        if (el && !document.hidden) updateLandIdConnectStatus();
+      }, 60000);
 
       // Intake type toggle
       document.getElementById('intake-type').addEventListener('change', (e) => {
