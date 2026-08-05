@@ -1,15 +1,15 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "barntobank.com" }],
-      "destination": "https://barntobanklandgroup.com/:path*",
+      "destination": "https://barntobanklandgroup.com/$1",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "www.barntobank.com" }],
-      "destination": "https://barntobanklandgroup.com/:path*",
+      "destination": "https://barntobanklandgroup.com/$1",
       "permanent": true
     }
   ],
