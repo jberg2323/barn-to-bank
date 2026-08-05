@@ -4090,7 +4090,7 @@
       </div>
     </div>
     </a>
-    <a href="/" class="btn-main-site" title="Back to barntobank.com">← Main Site</a>
+    <a href="/" class="btn-main-site" title="Back to barntobanklandgroup.com">← Main Site</a>
     <div class="header-right">
       <div class="header-actions">
         <button type="button" class="btn-share-link btn-theme-toggle" id="theme-toggle" title="Toggle light or dark mode" aria-label="Toggle theme">
@@ -4216,7 +4216,7 @@
           <div class="section-title" style="margin-top:0">Website Leads<span class="website-leads-badge" id="website-leads-badge" hidden></span></div>
           <button type="button" class="btn btn-ghost" id="website-leads-refresh" style="font-size:9px;padding:4px 8px;">Refresh</button>
         </div>
-        <p class="section-blurb" style="margin-top:-6px">Inquiries from the public site at <a href="/" target="_blank" rel="noopener" style="color:var(--accent)">barntobank.com</a> land here. Adopt into pipeline or dismiss.</p>
+        <p class="section-blurb" style="margin-top:-6px">Inquiries from the public site at <a href="/" target="_blank" rel="noopener" style="color:var(--accent)">barntobanklandgroup.com</a> land here. Adopt into pipeline or dismiss.</p>
         <div id="website-leads-list"><div class="silo-empty">Loading website leads…</div></div>
       </div>
 
@@ -4628,7 +4628,7 @@
           <p class="howto-where">Intake tab</p>
           <p>Two ways in. Either you go looking, or a landowner comes to you.</p>
           <p><strong>You go looking:</strong> in <strong>Intake, The Net</strong>, choose Property Address or Parcel/APN, type it, pick the county, then press <strong>Run Automation 1</strong>. It assembles the tract from county GIS, flood maps, utility records, private comps, and nearby subdivisions — the five tabs you'd otherwise open by hand.</p>
-          <p><strong>They come to you:</strong> anyone filling out the form on barntobank.com lands in <strong>Website Leads</strong>. Press Refresh to pull the latest, then adopt the good ones into the pipeline and dismiss the rest.</p>
+          <p><strong>They come to you:</strong> anyone filling out the form on barntobanklandgroup.com lands in <strong>Website Leads</strong>. Press Refresh to pull the latest, then adopt the good ones into the pipeline and dismiss the rest.</p>
           <p>When the enrichment finishes, review it and press <strong>+ Add to Pipeline</strong>. The <strong>Internal / Client</strong> toggle matters here: Internal shows your notes and numbers, Client is the version safe to send a seller.</p>
         </div>
 
@@ -4893,7 +4893,7 @@
       PARTNERS: {
         enabled: true,
         names: ['Jack'],
-        appUrl: 'https://barntobank.com/app',
+        appUrl: 'https://barntobanklandgroup.com/app',
       },
 
       // Feature requests, Jack (or anyone) submits via header button
@@ -9672,7 +9672,7 @@
       const active = inboundLeads.filter((l) => l.status !== 'dismissed' && l.status !== 'converted');
       updateWebsiteLeadsBadge();
       if (!active.length) {
-        el.innerHTML = '<div class="silo-empty">No new website inquiries yet. Leads from barntobank.com contact form appear here — check each morning.</div>';
+        el.innerHTML = '<div class="silo-empty">No new website inquiries yet. Leads from barntobanklandgroup.com contact form appear here — check each morning.</div>';
         return;
       }
       el.innerHTML = active.map((lead) => {

@@ -24,9 +24,9 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'docs');
-const SITE_URL = 'https://barntobank.com';
-const APP_URL = 'https://barntobank.com/app';
-const LOGIN_URL = 'https://barntobank.com/app/login';
+const SITE_URL = 'https://barntobanklandgroup.com';
+const APP_URL = 'https://barntobanklandgroup.com/app';
+const LOGIN_URL = 'https://barntobanklandgroup.com/app/login';
 const GOLD = '8B6914';
 const ACCENT = '2E5E34';
 const LIGHT = 'F5F1E8';
@@ -397,7 +397,7 @@ function buildHowToDoc() {
     body('Plat filings within ~8 miles of pipeline deals in the same county. Builder adjacency often drives the thesis.'),
 
     h3('Website Leads'),
-    body('Same inbound leads from barntobank.com — refresh, review, and mark contacted/converted from Intel or Intake.'),
+    body('Same inbound leads from barntobanklandgroup.com — refresh, review, and mark contacted/converted from Intel or Intake.'),
 
     h3('Outreach Audit Log'),
     body('Timestamped trail: DNC scrubs, queued texts, mail queue builds, comp logs, bundle import/export, cloud sync.'),
@@ -409,7 +409,7 @@ function buildHowToDoc() {
     bullet('Status bar shows Supabase connection and last sync time.'),
 
     h1('6. Working With Your Team'),
-    bullet('Copy App Link in header — sends partners to barntobank.com/app.'),
+    bullet('Copy App Link in header — sends partners to barntobanklandgroup.com/app.'),
     bullet('Each person signs in separately; id.land tokens are per-browser.'),
     bullet('Cloud Sync on Intel tab merges everyone\'s work into one team moat.'),
     bullet('Feature Request: submit product ideas from the header — you can attach screenshots or a PDF.'),
@@ -435,7 +435,7 @@ function buildHowToDoc() {
     h1('9. Admin & Setup (for operators)'),
     table([
       ['Task', 'How'],
-      ['Deploy', 'Git push to main → Vercel auto-deploys to barntobank.com'],
+      ['Deploy', 'Git push to main → Vercel auto-deploys to barntobanklandgroup.com'],
       ['Set staff password', 'Vercel env: ORIGINATION_PASSWORD'],
       ['Enable cloud sync', 'Vercel env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, MOAT_TEAM_ID'],
       ['Enable live DNC scrub', 'Vercel env: DNC_SCRUB_API_KEY — run npm run provision-dncscrub-mcp'],
@@ -456,7 +456,7 @@ function buildHowToDoc() {
       ['Text blocked after scrub', 'Number on DNC list — use mail, do not text'],
       ['Website lead not showing', 'Click Website Leads Refresh on Intake or Intel'],
       ['Stale UI after update', 'Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)'],
-      ['www vs apex domain', 'Both barntobank.com and www.barntobank.com point to Vercel'],
+      ['www vs apex domain', 'Both barntobanklandgroup.com and www.barntobanklandgroup.com point to Vercel'],
     ]),
 
     h1('11. Daily Workflow Cheat Sheet'),
