@@ -3353,6 +3353,48 @@
     .howto-training strong { display: block; font-size: 13.5px; color: var(--accent); margin-bottom: 2px; }
     .howto-training span { font-size: 12px; color: var(--text-muted); }
     .howto-training:hover { border-color: var(--accent); background: var(--accent-glow); }
+
+    /* ---- Quick comp capture ---- */
+    .qc-panel { width: 520px; }
+    .qc-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .qc-lede { font-size: 13px; line-height: 1.55; color: var(--text-secondary); margin: 0; }
+    .qc-input {
+      width: 100%; min-height: 84px; resize: vertical;
+      font-family: inherit; font-size: 15px; line-height: 1.5;
+      padding: 12px 14px; color: var(--text-primary);
+      background: var(--bg-deep); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+    }
+    .qc-input:focus { outline: none; border-color: var(--accent); }
+    .qc-examples { display: flex; flex-direction: column; gap: 5px; }
+    .qc-example {
+      text-align: left; cursor: pointer; font-size: 11.5px; line-height: 1.4;
+      color: var(--text-muted); background: none; border: 0; padding: 3px 0;
+      font-family: inherit; text-decoration: underline dotted var(--border-strong);
+      text-underline-offset: 3px;
+    }
+    .qc-example:hover { color: var(--accent); }
+    .qc-read {
+      font-size: 11px; letter-spacing: .04em; color: var(--text-muted);
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 20px;
+    }
+    .qc-chip {
+      font-size: 10.5px; font-weight: 600; letter-spacing: .03em;
+      padding: 3px 8px; border-radius: 3px;
+      background: rgba(114,212,138,0.12); color: var(--green); border: 1px solid rgba(114,212,138,0.3);
+    }
+    .qc-chip.miss { background: var(--bg-deep); color: var(--text-muted); border-color: var(--border-subtle); }
+    .qc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .qc-fields .form-group { margin: 0; }
+    .qc-fields .wide { grid-column: 1 / -1; }
+    .qc-warn {
+      font-size: 12px; color: var(--orange); background: rgba(236,168,90,0.08);
+      border-left: 3px solid var(--orange); padding: 8px 11px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    @media (max-width: 560px) {
+      .qc-panel { width: 100%; }
+      .qc-fields { grid-template-columns: 1fr; }
+    }
     .howto-fix-row span:first-child { color: var(--text-primary); }
     .howto-fix-row span:last-child { color: var(--text-muted); }
     @media (max-width: 640px) {
@@ -4041,6 +4083,9 @@
         <button type="button" class="btn-share-link" id="share-link-copy" title="Copy link to share with Jack">
           <span class="hide-mobile">Copy App Link</span><span class="show-mobile">Share</span>
         </button>
+        <button type="button" class="btn-sync primary" id="quick-comp-open" title="Log a comp in one sentence">
+          <span class="hide-mobile">+ Comp</span><span class="show-mobile">Comp</span>
+        </button>
         <button type="button" class="btn-feature-request" id="howto-open" title="How to use this app, step by step">
           <span class="hide-mobile">How to Use</span><span class="show-mobile">Help</span>
         </button>
@@ -4401,11 +4446,9 @@
       <div class="modal-body">
         <form id="log-comp-form" class="intake-form">
           <div class="form-group"><label>County</label>
-            <select id="lc-county" required>
-              <option value="Bastrop">Bastrop</option><option value="Bexar">Bexar</option><option value="Caldwell">Caldwell</option>
-              <option value="Comal">Comal</option><option value="Hays">Hays</option><option value="Williamson">Williamson</option>
-              <option value="Travis">Travis</option><option value="Smith">Smith</option><option value="Fort Bend">Fort Bend</option><option value="Guadalupe">Guadalupe</option>
-            </select>
+            <!-- Options are populated from COUNTY_NAMES so this list cannot drift
+                 out of step with intake again. -->
+            <select id="lc-county" required></select>
           </div>
           <div class="form-group"><label>Submarket</label><input type="text" id="lc-submarket" placeholder="e.g. South SA / Pearsall" required></div>
           <div class="form-group"><label>Acres</label><input type="number" id="lc-acres" min="0.1" step="0.1" required></div>
@@ -4456,6 +4499,66 @@
       </div>
     </div>
     <div class="mail-label-grid" id="mail-label-grid"></div>
+  </div>
+
+  <!-- QUICK COMP CAPTURE -->
+  <div class="modal-overlay" id="qc-overlay">
+    <div class="modal-panel qc-panel" id="qc-panel" role="dialog" aria-modal="true" aria-labelledby="qc-heading">
+      <div class="modal-header">
+        <div>
+          <h2 id="qc-heading">Log a comp</h2>
+          <div class="sub">Say it the way you heard it</div>
+        </div>
+        <button class="modal-close" id="qc-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="qc-body">
+        <p class="qc-lede">Type one sentence. Everything below fills itself in — correct anything that&rsquo;s wrong and save. Texas is non-disclosure, so a comp nobody writes down is gone.</p>
+
+        <textarea class="qc-input" id="qc-text" rows="3" autocomplete="off"
+          placeholder="40 ac off FM 1044 in Guadalupe traded at 22k an acre to Lennar last month"></textarea>
+
+        <div class="qc-read" id="qc-read"></div>
+
+        <div class="qc-examples">
+          <button type="button" class="qc-example" data-fill="140 acres Bastrop $18,500/acre sold to DR Horton March 2026">140 acres Bastrop $18,500/acre sold to DR Horton March 2026</button>
+          <button type="button" class="qc-example" data-fill="heard 65+/- acres near Pearsall went for $12k per acre">heard 65+/- acres near Pearsall went for $12k per acre</button>
+          <button type="button" class="qc-example" data-fill="80 acres in Burnet for $1.6m to KB Homes">80 acres in Burnet for $1.6m to KB Homes</button>
+        </div>
+
+        <div class="qc-fields">
+          <div class="form-group"><label for="qc-county">County</label>
+            <select id="qc-county"></select>
+          </div>
+          <div class="form-group"><label for="qc-acres">Acres</label>
+            <input type="number" id="qc-acres" min="0" step="0.1" inputmode="decimal">
+          </div>
+          <div class="form-group"><label for="qc-price">$ / acre</label>
+            <input type="number" id="qc-price" min="0" step="100" inputmode="numeric">
+          </div>
+          <div class="form-group"><label for="qc-date">Month</label>
+            <input type="text" id="qc-date" placeholder="2026-08">
+          </div>
+          <div class="form-group"><label for="qc-buyer">Buyer</label>
+            <input type="text" id="qc-buyer" placeholder="Optional">
+          </div>
+          <div class="form-group"><label for="qc-offmarket">Off market?</label>
+            <select id="qc-offmarket">
+              <option value="yes">Yes, off market</option>
+              <option value="no">MLS / public</option>
+            </select>
+          </div>
+          <div class="form-group wide"><label for="qc-submarket">Submarket</label>
+            <input type="text" id="qc-submarket" placeholder="Optional — e.g. FM 1044, South SA">
+          </div>
+          <div class="form-group wide"><label for="qc-notes">Notes</label>
+            <input type="text" id="qc-notes" placeholder="Optional — who told you, adjacency, terms">
+          </div>
+        </div>
+
+        <div class="qc-warn" id="qc-warn" style="display:none"></div>
+        <button type="button" class="btn btn-primary" id="qc-save" style="width:100%">Save to Comp Lake</button>
+      </div>
+    </div>
   </div>
 
   <!-- HOW TO USE THIS APP -->
@@ -8878,6 +8981,122 @@
     // Moat Intelligence, comp lake, entitlement score, sync, audit, memos
     // =========================================================================
 
+    // Every county the intake dropdown supports. The comp form used to hard-code a
+    // shorter list, which made six counties impossible to log a comp against.
+    const COUNTY_NAMES = [
+      'Williamson', 'Travis', 'Bastrop', 'Caldwell', 'Hays', 'Comal', 'Bexar',
+      'Guadalupe', 'Gillespie', 'Blanco', 'Burnet', 'Bandera', 'Kendall', 'Llano',
+      'Fort Bend', 'Smith',
+    ];
+
+    const MONTH_NAMES = ['january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'];
+
+    function monthStamp(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    /**
+     * Turn what a broker actually says into a comp.
+     * "40 ac off FM 1044 in Guadalupe traded at 22k an acre to Lennar last month"
+     * The point is that logging a comp should cost one sentence, not six form fields.
+     * Every field is best-effort; the UI shows what was found so it can be corrected.
+     */
+    function parseCompText(raw) {
+      const text = String(raw || '');
+      const lower = text.toLowerCase();
+      const found = {};
+      const out = { county: '', submarket: '', acres: 0, pricePerAcre: 0, buyer: '', date: '', offMarket: true, found };
+
+      // --- acres: "40 ac", "140 acres", "40+/- acres", "40-acre"
+      const acresMatch = lower.match(/(\d[\d,]*(?:\.\d+)?)\s*(?:\+\/-|±)?\s*(?:ac\b|acres?\b|-acre)/);
+      if (acresMatch) {
+        out.acres = parseFloat(acresMatch[1].replace(/,/g, '')) || 0;
+        if (out.acres) found.acres = true;
+      }
+
+      // --- $/acre: "22k an acre", "$22k/ac", "22,000 per acre", "$18k/acre"
+      const perAcre = lower.match(/\$?\s*(\d[\d,]*(?:\.\d+)?)\s*(k|m)?\s*(?:\/|per\s+|an?\s+)\s*(?:ac\b|acres?\b)/);
+      if (perAcre) {
+        let v = parseFloat(perAcre[1].replace(/,/g, '')) || 0;
+        if (perAcre[2] === 'k') v *= 1000;
+        else if (perAcre[2] === 'm') v *= 1000000;
+        if (v) { out.pricePerAcre = Math.round(v); found.pricePerAcre = true; }
+      }
+
+      // --- total price fallback: derive $/ac when only a lump sum is given
+      if (!out.pricePerAcre && out.acres) {
+        const total = lower.match(/\$\s*(\d[\d,]*(?:\.\d+)?)\s*(k|m|mm|million)?/);
+        if (total) {
+          let v = parseFloat(total[1].replace(/,/g, '')) || 0;
+          const unit = total[2];
+          if (unit === 'k') v *= 1000;
+          else if (unit === 'm' || unit === 'mm' || unit === 'million') v *= 1000000;
+          if (v > 0) {
+            out.pricePerAcre = Math.round(v / out.acres);
+            found.pricePerAcre = true;
+            found.derivedFromTotal = true;
+          }
+        }
+      }
+
+      // --- county: plain name match, plus Tyler as an alias for Smith
+      for (const name of COUNTY_NAMES) {
+        if (new RegExp(`\\b${name.toLowerCase()}\\b`).test(lower)) { out.county = name; found.county = true; break; }
+      }
+      if (!out.county && /\btyler\b/.test(lower)) { out.county = 'Smith'; found.county = true; }
+
+      // --- buyer: capitalised run after a transfer verb, so "to Lennar last month" stops at Lennar
+      const buyer = text.match(/(?:\bsold to|\bbought by|\bpurchased by|\bbuyer(?:\s+(?:is|was))?:?|\bto)\s+([A-Z][\w&.'-]*(?:\s+[A-Z][\w&.'-]*){0,3})/);
+      if (buyer) {
+        // A capitalised run happily swallows "March 2026", so peel time words off the end.
+        let cleaned = buyer[1].replace(/\s+20\d{2}$/, '');
+        const trailingMonth = new RegExp(`\\s+(?:${MONTH_NAMES.join('|')}|${MONTH_NAMES.map((m) => m.slice(0, 3)).join('|')})\\.?$`, 'i');
+        while (trailingMonth.test(cleaned)) cleaned = cleaned.replace(trailingMonth, '');
+        cleaned = cleaned.replace(/\s+(?:In|On|At|For|Last|This|Closed|Traded)$/i, '').trim();
+        if (cleaned && !COUNTY_NAMES.includes(cleaned)) { out.buyer = cleaned; found.buyer = true; }
+      }
+
+      // --- date → YYYY-MM
+      const now = new Date();
+      const ym = lower.match(/\b(20\d{2})[-\/](\d{1,2})\b/);
+      const my = lower.match(/\b(\d{1,2})\/(20\d{2})\b/);
+      const monthName = MONTH_NAMES.findIndex((m) => new RegExp(`\\b${m}\\b|\\b${m.slice(0, 3)}\\b`).test(lower));
+      if (ym) {
+        out.date = `${ym[1]}-${String(parseInt(ym[2], 10)).padStart(2, '0')}`;
+        found.date = true;
+      } else if (my) {
+        out.date = `${my[2]}-${String(parseInt(my[1], 10)).padStart(2, '0')}`;
+        found.date = true;
+      } else if (monthName >= 0) {
+        const yearMatch = lower.match(/\b(20\d{2})\b/);
+        const year = yearMatch ? parseInt(yearMatch[1], 10) : now.getFullYear();
+        out.date = `${year}-${String(monthName + 1).padStart(2, '0')}`;
+        found.date = true;
+      } else if (/\blast month\b/.test(lower)) {
+        out.date = monthStamp(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+        found.date = true;
+      } else {
+        // Unstated dates are almost always recent; default to this month rather than blocking.
+        out.date = monthStamp(now);
+      }
+
+      // --- off market unless it sounds listed
+      if (/\bmls\b|\blisted\b|\bon market\b|\bon the market\b|\bpublic listing\b/.test(lower)) {
+        out.offMarket = false;
+        found.offMarket = true;
+      }
+
+      // --- submarket: the locational phrase brokers actually use
+      const where = text.match(/\b(?:off|near|along|on)\s+((?:FM|CR|SH|US|Hwy|Highway)?\s*[A-Z0-9][\w.-]*(?:\s+[A-Z0-9][\w.-]*)?)/);
+      if (where) {
+        const w = where[1].trim();
+        if (w && !COUNTY_NAMES.includes(w) && !/^\d+\s*(ac|acres?)$/i.test(w)) { out.submarket = w; found.submarket = true; }
+      }
+
+      return out;
+    }
+
     function initPrivateComps() {
       try {
         const raw = localStorage.getItem(COMPS_STORAGE_KEY);
@@ -9806,7 +10025,14 @@
       },
     };
 
+    function populateLcCounties() {
+      const sel = document.getElementById('lc-county');
+      if (!sel || sel.options.length) return;
+      COUNTY_NAMES.forEach((c) => sel.appendChild(new Option(c === 'Smith' ? 'Smith (Tyler)' : c, c)));
+    }
+
     function openCompModal() {
+      populateLcCounties();
       document.getElementById('comp-modal-overlay').classList.add('open');
       document.getElementById('lc-submarket')?.focus();
     }
@@ -11108,6 +11334,126 @@
       document.getElementById('fr-modal-overlay').classList.remove('open');
     }
 
+    // Fields the user has edited by hand. Live parsing must never overwrite these,
+    // or correcting a misread value would fight the next keystroke in the sentence.
+    let qcDirty = new Set();
+
+    function qcFieldEls() {
+      return {
+        county: document.getElementById('qc-county'),
+        acres: document.getElementById('qc-acres'),
+        pricePerAcre: document.getElementById('qc-price'),
+        date: document.getElementById('qc-date'),
+        buyer: document.getElementById('qc-buyer'),
+        submarket: document.getElementById('qc-submarket'),
+        offMarket: document.getElementById('qc-offmarket'),
+      };
+    }
+
+    function populateQcCounties() {
+      const sel = document.getElementById('qc-county');
+      if (!sel || sel.options.length) return;
+      sel.appendChild(new Option('—', ''));
+      COUNTY_NAMES.forEach((c) => sel.appendChild(new Option(c === 'Smith' ? 'Smith (Tyler)' : c, c)));
+    }
+
+    function renderQcRead(parsed, hasText) {
+      const read = document.getElementById('qc-read');
+      if (!read) return;
+      if (!hasText) { read.innerHTML = ''; return; }
+      const bits = [
+        ['acres', parsed.acres ? `${parsed.acres} ac` : 'acres'],
+        ['pricePerAcre', parsed.pricePerAcre ? `${fmt(parsed.pricePerAcre)}/ac` : '$/acre'],
+        ['county', parsed.county || 'county'],
+        ['buyer', parsed.buyer || 'buyer'],
+      ];
+      read.innerHTML = bits.map(([key, label]) => {
+        const hit = !!parsed.found[key];
+        return `<span class="qc-chip${hit ? '' : ' miss'}">${hit ? '✓ ' : ''}${escapeHtml(label)}</span>`;
+      }).join('') + (parsed.found.derivedFromTotal
+        ? '<span class="qc-chip">÷ from total</span>' : '');
+    }
+
+    function applyQcParse() {
+      const text = document.getElementById('qc-text').value;
+      const parsed = parseCompText(text);
+      const els = qcFieldEls();
+      const set = (key, value) => {
+        if (qcDirty.has(key) || !els[key]) return;
+        els[key].value = value;
+      };
+      if (parsed.found.county) set('county', parsed.county);
+      if (parsed.acres) set('acres', parsed.acres);
+      if (parsed.pricePerAcre) set('pricePerAcre', parsed.pricePerAcre);
+      set('date', parsed.date);
+      if (parsed.found.buyer) set('buyer', parsed.buyer);
+      if (parsed.found.submarket) set('submarket', parsed.submarket);
+      if (parsed.found.offMarket) set('offMarket', parsed.offMarket ? 'yes' : 'no');
+      renderQcRead(parsed, !!text.trim());
+    }
+
+    function openQuickComp() {
+      populateQcCounties();
+      qcDirty = new Set();
+      ['qc-text', 'qc-acres', 'qc-price', 'qc-buyer', 'qc-submarket', 'qc-notes'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('qc-county').value = '';
+      document.getElementById('qc-offmarket').value = 'yes';
+      document.getElementById('qc-date').value = monthStamp(new Date());
+      document.getElementById('qc-warn').style.display = 'none';
+      document.getElementById('qc-read').innerHTML = '';
+      document.getElementById('qc-overlay').classList.add('open');
+      document.getElementById('qc-text').focus();
+    }
+
+    function closeQuickComp() {
+      document.getElementById('qc-overlay').classList.remove('open');
+    }
+
+    function saveQuickComp() {
+      const els = qcFieldEls();
+      const warn = document.getElementById('qc-warn');
+      const county = els.county.value;
+      const pricePerAcre = parseFloat(els.pricePerAcre.value) || 0;
+
+      // County and $/acre are the only two that matter: without them the comp cannot
+      // feed a county's comp band, which is the entire reason to log it.
+      const missing = [];
+      if (!county) missing.push('county');
+      if (!pricePerAcre) missing.push('$/acre');
+      if (missing.length) {
+        warn.textContent = `Need ${missing.join(' and ')} — that is what makes a comp usable for pricing.`;
+        warn.style.display = 'block';
+        (missing[0] === 'county' ? els.county : els.pricePerAcre).focus();
+        return;
+      }
+      warn.style.display = 'none';
+
+      const raw = document.getElementById('qc-text').value.trim();
+      const typedNotes = document.getElementById('qc-notes').value.trim();
+      const notes = [typedNotes, raw ? `Heard as: "${raw}"` : ''].filter(Boolean).join(' · ');
+
+      addComp({
+        county,
+        submarket: els.submarket.value.trim(),
+        acres: els.acres.value,
+        pricePerAcre,
+        buyer: els.buyer.value.trim(),
+        date: els.date.value.trim() || monthStamp(new Date()),
+        notes,
+        offMarket: els.offMarket.value === 'yes',
+      });
+
+      deals.forEach(applyMoatToDeal);
+      saveDeals();
+      renderAll();
+      closeQuickComp();
+      const total = privateComps.filter((c) => c.source !== 'seed').length;
+      showToast(`Comp saved · ${total} logged`);
+    }
+
     function openHowToModal() {
       document.getElementById('howto-overlay').classList.add('open');
       document.getElementById('howto-close').focus();
@@ -11451,6 +11797,30 @@
       document.getElementById('feature-request-open').addEventListener('click', openFeatureRequestModal);
       document.getElementById('fr-modal-close').addEventListener('click', closeFeatureRequestModal);
       document.getElementById('fr-attachments')?.addEventListener('change', renderFeatureRequestAttachmentPreview);
+      document.getElementById('quick-comp-open').addEventListener('click', openQuickComp);
+      document.getElementById('qc-close').addEventListener('click', closeQuickComp);
+      document.getElementById('qc-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('qc-overlay')) closeQuickComp();
+      });
+      document.getElementById('qc-text').addEventListener('input', applyQcParse);
+      document.getElementById('qc-save').addEventListener('click', saveQuickComp);
+      // Cmd/Ctrl+Enter saves, so a one-handed capture never needs the mouse.
+      document.getElementById('qc-text').addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); saveQuickComp(); }
+      });
+      ['qc-county', 'qc-acres', 'qc-price', 'qc-date', 'qc-buyer', 'qc-submarket', 'qc-offmarket'].forEach((id) => {
+        const key = { 'qc-price': 'pricePerAcre', 'qc-offmarket': 'offMarket' }[id] || id.replace('qc-', '');
+        document.getElementById(id)?.addEventListener('input', () => qcDirty.add(key));
+      });
+      document.querySelectorAll('.qc-example').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.getElementById('qc-text').value = btn.dataset.fill;
+          qcDirty = new Set();
+          applyQcParse();
+          document.getElementById('qc-text').focus();
+        });
+      });
+
       document.getElementById('howto-open').addEventListener('click', openHowToModal);
       document.getElementById('howto-close').addEventListener('click', closeHowToModal);
       document.getElementById('howto-overlay').addEventListener('click', (e) => {
@@ -11711,6 +12081,7 @@
         else if (document.getElementById('deal-memo-overlay').classList.contains('open')) {
           document.getElementById('deal-memo-overlay').classList.remove('open');
         } else if (document.getElementById('outreach-modal-overlay').classList.contains('open')) closeOutreachWizard();
+        else if (document.getElementById('qc-overlay').classList.contains('open')) closeQuickComp();
         else if (document.getElementById('howto-overlay').classList.contains('open')) closeHowToModal();
         else if (document.getElementById('fr-modal-overlay').classList.contains('open')) closeFeatureRequestModal();
         else closeModal();
