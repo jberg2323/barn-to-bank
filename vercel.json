@@ -1,4 +1,18 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "barntobank.com" }],
+      "destination": "https://barntobanklandgroup.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.barntobank.com" }],
+      "destination": "https://barntobanklandgroup.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/app/login", "destination": "/login.html" },
     { "source": "/training", "destination": "/training.html" }
