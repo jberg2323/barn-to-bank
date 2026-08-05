@@ -8,3 +8,6 @@ public-site.html
 scripts/
 supabase/
 docs/
+# Full-resolution originals stay in the repo as the source for re-encoding,
+# but nothing references them any more, so don't ship 22MB of dead weight.
+images/*.png
