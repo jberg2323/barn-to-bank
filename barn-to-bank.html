@@ -3354,6 +3354,34 @@
     .howto-training span { font-size: 12px; color: var(--text-muted); }
     .howto-training:hover { border-color: var(--accent); background: var(--accent-glow); }
 
+    /* ---- Feature request status ---- */
+    .fr-status-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .fr-status-pill {
+      font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 3px; border: 1px solid var(--border-subtle);
+      color: var(--text-muted); background: var(--bg-deep); white-space: nowrap;
+    }
+    .fr-status-new { color: var(--blue); border-color: rgba(120,188,255,0.35); background: rgba(120,188,255,0.1); }
+    .fr-status-planned { color: var(--accent); border-color: var(--border-strong); background: var(--accent-soft); }
+    .fr-status-in_progress { color: var(--orange); border-color: rgba(236,168,90,0.35); background: rgba(236,168,90,0.1); }
+    .fr-status-shipped { color: var(--green); border-color: rgba(114,212,138,0.35); background: rgba(114,212,138,0.1); }
+    .fr-status-declined { color: var(--text-muted); }
+    .fr-status-select {
+      font-size: 11px; padding: 3px 6px; background: var(--bg-deep);
+      color: var(--text-secondary); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm); font-family: inherit; cursor: pointer;
+    }
+    .fr-status-select:disabled { opacity: .5; cursor: wait; }
+
+    /* Marks a comp band that rests on the app's starter comps rather than logged sales. */
+    .band-provisional {
+      display: inline-block; margin-left: 6px; padding: 1px 6px;
+      font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--orange); background: rgba(236,168,90,0.12);
+      border: 1px solid rgba(236,168,90,0.35); border-radius: 3px; cursor: help;
+      vertical-align: middle;
+    }
+
     /* ---- Quick comp capture ---- */
     .qc-panel { width: 520px; }
     .qc-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
@@ -7398,12 +7426,22 @@
       const lines = top.map(c =>
         `${c.acres} ac @ ${fmt(c.pricePerAcre)}/ac (${c.buyer}, ${c.date}), ${c.notes}`
       );
+      // Distinguish comps someone actually logged from the demo records shipped in
+      // the app. Presenting seeded averages as real is how a made-up number ends up
+      // quoted to a seller — and labelling everything MOCK was just as wrong, because
+      // it made real logged comps look untrustworthy too.
+      const seedCount = comps.filter((c) => c.source === 'seed').length;
+      const allSeed = seedCount === comps.length;
+      const someSeed = seedCount > 0;
       return {
-        text: `${top.length} comps · avg ${fmt(avg)}/ac, ${lines.join('; ')}`,
-        status: 'MOCK',
+        text: `${top.length} comps · avg ${fmt(avg)}/ac${allSeed ? ' (starter data, not yet verified)' : someSeed ? ` (${comps.length - seedCount} of ${comps.length} logged by us)` : ''}, ${lines.join('; ')}`,
+        status: allSeed ? 'STARTER DATA' : someSeed ? 'PART LOGGED' : 'LOGGED',
         avg,
         comps: top,
         source: 'PRIVATE',
+        seedOnly: allSeed,
+        loggedCount: comps.length - seedCount,
+        totalCount: comps.length,
       };
     }
 
@@ -9223,7 +9261,15 @@
       if (!compData.avg || !deal.askingPerAcre) return null;
       const deltaPct = Math.round(((deal.askingPerAcre - compData.avg) / compData.avg) * 100);
       const label = deltaPct <= -10 ? 'Below band' : deltaPct <= 5 ? 'In band' : 'Above band';
-      return { avg: compData.avg, deltaPct, label, source: compData.source };
+      return {
+        avg: compData.avg,
+        deltaPct,
+        label,
+        source: compData.source,
+        // Carried through so the band can say when it rests on starter data.
+        seedOnly: !!compData.seedOnly,
+        loggedCount: compData.loggedCount || 0,
+      };
     }
 
     function computeEntitlementScore(deal) {
@@ -9345,7 +9391,7 @@
           <div style="font-size:11px;margin-bottom:8px">
             Recommended route: <span class="route-select ${rec.class}" style="display:inline;padding:2px 8px;font-size:10px">${escapeHtml(rec.label)}</span>
           </div>
-          ${band ? `<div class="comp-band">Comp band: <strong>${fmt(band.avg)}/ac</strong> · asking ${band.deltaPct >= 0 ? '+' : ''}${band.deltaPct}% · ${escapeHtml(band.label)}</div>` : ''}
+          ${band ? `<div class="comp-band">Comp band: <strong>${fmt(band.avg)}/ac</strong> · asking ${band.deltaPct >= 0 ? '+' : ''}${band.deltaPct}% · ${escapeHtml(band.label)}${band.seedOnly ? `<span class="band-provisional" title="This band comes from the starter comps shipped with the app, not sales we have logged. Log a real comp for this county to replace it.">starter data</span>` : ''}</div>` : ''}
           <ul class="entitlement-factors">
             ${ent.factors.slice(0, 6).map((f) => `<li>${escapeHtml(f.label)} <span style="font-family:var(--mono);color:var(--text-secondary)">${escapeHtml(f.pts)}</span></li>`).join('')}
           </ul>
@@ -10353,7 +10399,7 @@
             </div>
           </div>
           ${renderDealMetaHtml(d)}
-          ${d.compBand ? `<div class="comp-band" style="margin-top:6px;font-size:10px">Comp <strong>${fmt(d.compBand.avg)}/ac</strong> · ${d.compBand.deltaPct >= 0 ? '+' : ''}${d.compBand.deltaPct}%</div>` : ''}
+          ${d.compBand ? `<div class="comp-band" style="margin-top:6px;font-size:10px">Comp <strong>${fmt(d.compBand.avg)}/ac</strong> · ${d.compBand.deltaPct >= 0 ? '+' : ''}${d.compBand.deltaPct}%${d.compBand.seedOnly ? `<span class="band-provisional" title="Starter data, not comps we logged">starter</span>` : ''}</div>` : ''}
           ${renderContractCardSummary(d)}
           <div class="deal-card-metrics">
             <div class="deal-card-metric">
@@ -11286,7 +11332,11 @@
     function updateFeatureRequestBadge() {
       const badge = document.getElementById('fr-badge');
       if (!badge) return;
-      const count = activeFeatureRequests().length;
+      // Count what is still outstanding. Counting everything meant the badge could
+      // never go down, so it stopped carrying information.
+      const count = activeFeatureRequests().filter(
+        (r) => !['shipped', 'declined'].includes(r.status || 'new'),
+      ).length;
       badge.textContent = String(count);
       badge.classList.toggle('hidden', count === 0);
     }
@@ -11304,8 +11354,53 @@
           <strong>${escapeHtml(r.title)}</strong>
           <div>${escapeHtml(FR_TYPE_LABELS[r.type] || r.type)} · ${escapeHtml(FR_PRIORITY_LABELS[r.priority] || r.priority)} · ${escapeHtml(r.name)}${r.attachments?.length ? ` · ${r.attachments.length} attachment(s)` : ''}</div>
           <div class="fr-meta">${escapeHtml(r.submittedAt)} · ${escapeHtml(r.id)}</div>
+          <div class="fr-status-row">
+            <span class="fr-status-pill fr-status-${escapeHtml(r.status || 'new')}">${escapeHtml(FR_STATUS_LABELS[r.status] || r.status || 'New')}</span>
+            <select class="fr-status-select" data-fr-id="${escapeHtml(r.id)}" aria-label="Change status">
+              ${Object.entries(FR_STATUS_LABELS).map(([v, l]) =>
+                `<option value="${v}"${(r.status || 'new') === v ? ' selected' : ''}>${escapeHtml(l)}</option>`).join('')}
+            </select>
+          </div>
         </div>
       `).join('');
+
+      list.querySelectorAll('.fr-status-select').forEach((sel) => {
+        sel.addEventListener('change', () => updateFeatureRequestStatus(sel.dataset.frId, sel.value, sel));
+      });
+    }
+
+    const FR_STATUS_LABELS = {
+      new: 'New',
+      planned: 'Planned',
+      in_progress: 'In progress',
+      shipped: 'Shipped',
+      declined: 'Declined',
+    };
+
+    async function updateFeatureRequestStatus(id, status, selectEl) {
+      const cfg = DATA_SOURCES.FEATURE_REQUESTS || {};
+      if (!cfg.apiUrl || !id) return;
+      if (selectEl) selectEl.disabled = true;
+      try {
+        const res = await fetch(cfg.apiUrl, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ id, status }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || `Update failed (${res.status})`);
+        if (Array.isArray(serverFeatureRequests)) {
+          const row = serverFeatureRequests.find((r) => r.id === id);
+          if (row) row.status = status;
+        }
+        renderFeatureRequestQueue();
+        updateFeatureRequestBadge();
+        showToast(`Marked ${FR_STATUS_LABELS[status] || status}`);
+      } catch (err) {
+        showToast(`Could not update: ${err.message}`);
+        if (selectEl) selectEl.disabled = false;
+      }
     }
 
     async function openFeatureRequestModal() {

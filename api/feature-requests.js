@@ -9,7 +9,7 @@ const { sendFeatureRequestEmail } = require('../lib/feature-request-email');
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
@@ -177,6 +177,25 @@ module.exports = async function handler(req, res) {
       }
 
       return json(res, 201, { ok: true, request, emailed, emailError });
+    }
+
+    // Without this, a request is stamped 'new' on insert and can never leave that
+    // state — which is why four delivered requests still read as untouched.
+    if (req.method === 'PATCH') {
+      const body = parseBody(req);
+      const id = String(body.id || '').trim();
+      const status = String(body.status || '').trim();
+      const ALLOWED = ['new', 'planned', 'in_progress', 'shipped', 'declined'];
+      if (!id || !ALLOWED.includes(status)) {
+        return json(res, 400, { ok: false, error: `id required and status must be one of: ${ALLOWED.join(', ')}` });
+      }
+      const rows = await supabaseFetch(
+        `${TABLE}?id=eq.${encodeURIComponent(id)}&team_id=eq.${encodeURIComponent(tid)}`,
+        { method: 'PATCH', body: JSON.stringify({ status }) },
+      );
+      const updated = Array.isArray(rows) ? rows[0] : null;
+      if (!updated) return json(res, 404, { ok: false, error: 'Request not found' });
+      return json(res, 200, { ok: true, request: toClientRow(updated) });
     }
 
     return json(res, 405, { ok: false, error: 'Method not allowed' });
